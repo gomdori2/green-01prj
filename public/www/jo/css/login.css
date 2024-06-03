@@ -1,0 +1,79 @@
+.wrapper {
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+}
+
+.login-head {
+  height: 100px;
+  background-color: skyblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.login-head-subtitle {
+  height: 50px;
+  background-color: pink;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.login-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form-inner {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 50px 0px;
+  margin: 20px;
+}
+
+.login-container label {
+  margin-top: 50px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.login-container input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+.login-container button {
+  padding: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.login-container button:hover {
+  background-color: #45a049;
+}
+.other-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.other-buttons button {
+  padding: 10px;
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 48%;
+}
+.other-buttons button:hover {
+  background-color: #ccc;
+}

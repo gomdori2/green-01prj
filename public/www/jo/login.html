@@ -5,12 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login page</title>
     <link rel="stylesheet" href="./css/common/common.css" />
+    <link rel="stylesheet" href="./css/login.css" />
   </head>
   <body>
     <div class="wrap">
       <div class="inner">
         <header class="header"></header>
-        <main></main>
+
+        <main>
+            <div class="wrapper">
+                <div class="login-head">식물 일정 관리</div>
+                <div class="login-head-subtitle">소제목</div>
+                <div class="login-container">
+                    <form action="/login" method="post">
+                        <div class="login-form-inner">
+                            <input type="text" id="username" name="username" required placeholder="로그인"/>
+                            <input type="password" id="password" name="password" required placeholder="비밀번호"/>
+                            <button type="submit">로그인</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="other-buttons">
+                    <button>회원가입</button>
+                    <button>비회원으로 시작하기</button>
+                </div>
+        </main>
+
         <footer class="footer"></footer>
       </div>
     </div>
