@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SignUp</title>
+    <link rel="stylesheet" href="./css/common/reset.css" />
+    <link rel="stylesheet" href="./css/common/common.css" />
+    <link rel="stylesheet" href="./css/common/verify-email.css"/>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="inner">
+        <header class="header"></header>
+
+        <main>
+          <header class="header">
+            <a href="#" class="back-button">뒤로가기</a>
+            <h2 class="page-title">회원가입</h2>
+          </header>
+          <form action="verify-email.php" method="post">
+            <h1>이메일</h1>
+            <input type="email" id="email" name="email" required placeholder="메일 주소를 입력해주세요.">
+            <input type="submit" value="전송">
+        </form>
+        </main>
+        
+        <footer class="footer"></footer>
+      </div>
+    </div>
+  </body>
+</html>
