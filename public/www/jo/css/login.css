@@ -1,39 +1,30 @@
-.wrapper {
-  width: 100%;
-}
-
-h2 {
-  height: 100px;
+body {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
+  background-color: beige;
 }
 
-.login-head-subtitle {
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.login{
+  height: 618px;
+}
+
+.login header{
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+  margin: 30px 0;
+}
+
+.login h1{
   font-size: 18px;
-  margin-bottom: 10px;
+  text-align: center;
+  padding: 10px;
+  margin: 20px 0;
 }
 
 .login-container {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
   padding: 10px;
-}
-
-.login-form-inner {
-  width: 100%;
-  padding: 30px 0px;
-}
-
-.login-container label {
-  margin-bottom: 5px;
-  font-weight: bold;
 }
 
 .login-container input {
@@ -44,7 +35,7 @@ h2 {
   width: 100%;
 }
 
-.login-container button {
+.login-btn {
   width: 100%;
   background-color: #4caf50;
   color: #fff;
@@ -53,29 +44,26 @@ h2 {
   cursor: pointer;
   font-size: 16px;
   padding: 10px;
+  margin-bottom: 20px;
 }
 
-.login-container button:hover {
+.login-btn:hover {
   background-color: #45a049;
 }
 
-.other-buttons {
+.signup-btn {
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 10px;
-}
-
-.other-buttons button {
-  width: 50%;
-  font-size: 14px;
-  color: #000;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 14px;
   padding: 10px;
-  margin: 10px auto;
 }
 
-.other-buttons button:hover {
-  background-color: #ccc;
+.signup-btn:hover {
+  background-color: #ccc
 }

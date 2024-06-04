@@ -3,8 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login page</title>
+    <title>로그인 페이지</title>
+    <link rel="stylesheet" href="./css/common/reset.css">
     <link rel="stylesheet" href="./css/common/common.css" />
+
     <link rel="stylesheet" href="./css/login.css" />
   </head>
   <body>
@@ -13,23 +15,18 @@
         <header class="header"></header>
 
         <main>
-            <div class="wrapper">
-                <h2>식물 일정 관리</h2>
-                <div class="login-head-subtitle">소제목</div>
-                <div class="login-container">
-                    <form action="/login" method="post">
-                        <div class="login-form-inner">
-                            <input type="text" id="username" name="username" required placeholder="아이디 또는 이메일"/>
-                            <input type="password" id="password" name="password" required placeholder="비밀번호"/>
-                            <button type="submit">로그인</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="other-buttons">
-                    <button>회원가입</button>
-                    <button>비회원으로 시작하기</button>
-                </div>
-            </div>   
+          <div class="login">
+            <header>식물 일정 관리</header>  
+            <h1>소제목</h1>
+            <div class="login-container">
+              <form action="/login" method="post">
+                <input type="text" id="username" name="username" required placeholder="아이디 또는 이메일"/>
+                <input type="password" id="password" name="password" required placeholder="비밀번호"/>
+                <button type="submit" class="login-btn">로그인</button>
+                <button type="submit" class="signup-btn">회원가입</button>
+              </form>
+            </div>
+          </div>   
         </main>
 
         <footer class="footer"></footer>
