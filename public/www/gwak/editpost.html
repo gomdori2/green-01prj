@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>커뮤니티 글쓰기</title>
+    <title>커뮤니티 글쓰기 edit</title>
     <link rel="stylesheet" href="./css/common/reset.css" />
     <link rel="stylesheet" href="./css/common/common.css" />
     <!-- 개인 css -->
-    <link rel="stylesheet" href="./css/addpost.css" />
+    <link rel="stylesheet" href="./css/editpost.css" />
   </head>
 
   <body>
@@ -19,7 +19,7 @@
             <header>
               <button><</button>
               <h2>글쓰기</h2>
-              <button class="hidden">저장</button>
+              <button>삭제</button>
             </header>
             <div class="main">
               <div class="카테고리">
@@ -30,14 +30,17 @@
                 class="글쓰기제목"
                 type="text"
                 placeholder="제목(필수) - 식물명을 언급하면 인기가 많아요."
+                value="불러온 제목"
               />
               <textarea
                 class="글쓰기내용"
                 name=""
                 id=""
                 placeholder="본문(필수)"
-              ></textarea>
-              <button class="저장하기버튼">저장하기</button>
+              >
+불러온 내용</textarea
+              >
+              <button class="저장하기버튼">수정하기</button>
             </div>
           </div>
         </main>
