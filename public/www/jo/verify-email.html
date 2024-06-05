@@ -3,10 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SignUp</title>
+    <title>메일인증 페이지</title>
     <link rel="stylesheet" href="./css/common/reset.css" />
     <link rel="stylesheet" href="./css/common/common.css" />
-    <link rel="stylesheet" href="./css/common/verify-email.css"/>
+    
+    <link rel="stylesheet" href="./css/verify-email.css"/>
   </head>
   <body>
     <div class="wrap">
@@ -14,15 +15,21 @@
         <header class="header"></header>
 
         <main>
-          <header class="header">
-            <a href="#" class="back-button">뒤로가기</a>
-            <h2 class="page-title">회원가입</h2>
-          </header>
-          <form action="verify-email.php" method="post">
-            <h1>이메일</h1>
-            <input type="email" id="email" name="email" required placeholder="메일 주소를 입력해주세요.">
-            <input type="submit" value="전송">
-        </form>
+          <div class="verify-email">
+            <header>
+              <button><</button>
+              <!-- 뒤로가기 버튼 클릭시 로그인 화면으로 이동 -->
+              <h2>회원가입</h2>
+            </header>
+            <hr>
+            <label for="email">이메일</label>
+            <form action="verify-email.php" method="post">
+              <input type="email" id="email" name="email" required placeholder="메일 주소를 입력해주세요.">
+              <input type="submit" value="전송" class="send-btn">
+            </form>
+            <p>발송된 메일에서 링크를 클릭해주세요.</p>
+              <!-- 메일 전송 후 나타날 것 -->
+          </div>            
         </main>
         
         <footer class="footer"></footer>
