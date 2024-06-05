@@ -9,7 +9,9 @@
   width: 100%;
 } */
 .inner {
+  display: block;
   max-width: 768px;
+  margin: 0 auto;
 }
 
 .footer {

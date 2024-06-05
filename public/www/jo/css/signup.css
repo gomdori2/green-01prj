@@ -1,56 +1,66 @@
 body {
-    display: flex;
-    justify-content: center;
     background-color: beige;
 }
-  
-header + hr {
+
+header {
+    position: relative;
+    padding: 20px 0px 20px 20px;
+}
+header hr {
     border: 1px solid #ccc; /* 선 스타일 설정 */
     margin-top: 10px; /* 선 위 여백 설정 */
-    margin-bottom: 20px;
 }
   
-.signup{
-    width: 500px;
-    padding: 20px;
-}
-
-.signup button{
-    position: fixed;
-    cursor: pointer;
-    border: none;
-    margin-bottom: 10px;
-}
-  
-.signup h2{
+header h2{
     font-size: 18px;
     font-weight: 600;
     text-align: center;
     margin-bottom: 10px;
 }
 
+header button{
+    position: absolute;
+    left: 20px;
+    top: 18px;
+
+    cursor: pointer;
+    border: none;
+} 
+
+.signup{
+    position: relative;
+    padding: 20px;
+}
+  
+
+
 .signup form{
-    display: flex;
-    justify-content: space-between;
     margin-top: 10px;
     margin-bottom: 15px;
     gap: 5px;
 }
+
 .signup input{
     width: 100%;
     padding: 10px;
+    margin-top: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
+.id-input-wrap {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
 label:after {
     content: "*";
     color: rgb(236, 5, 5);
-  }
+}
 
-  .check-btn{
-    width: 30%;
+.check-btn{
     background-color: #4caf50;
     color: #fff;
     border: none;
@@ -59,7 +69,18 @@ label:after {
     font-size: 16px;
     padding: 10px;
     margin-bottom: 10px;
-  }
+}
+
+.next-btn{
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
 
 .check-btn:hover{
     background-color: #45a049;

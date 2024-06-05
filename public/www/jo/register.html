@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./css/common/reset.css" />
     <link rel="stylesheet" href="./css/common/common.css" />
     
-    <link rel="stylesheet" href="./css/verify-email.css"/>
+    <link rel="stylesheet" href="./css/register.css"/>
   </head>
   <body>
     <div class="wrap">
@@ -15,16 +15,17 @@
         <header class="header"></header>
 
         <main>
-          <div class="verify-email">
+          <div class="register-wrap">
             <header>
               <button><</button>
               <!-- 뒤로가기 버튼 클릭시 로그인 화면으로 이동 -->
               <h2>회원가입</h2>
             </header>
             <hr>
-            <label for="email">이메일</label>
-            <form action="verify-email.php" method="post">
-              <input type="email" id="email" name="email" required placeholder="메일 주소를 입력해주세요.">
+            
+            <label for="useremail">이메일</label>
+            <form action="" id="email" method="post">
+              <input type="email" id="useremail" name="email" class="email-form" required placeholder="메일 주소를 입력해주세요.">
               <input type="submit" value="전송" class="send-btn">
             </form>
             <p>발송된 메일에서 링크를 클릭해주세요.</p>
