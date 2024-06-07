@@ -4,13 +4,14 @@ body {
 
 header {
     position: relative;
-    padding: 20px 0px 20px 20px;
+    padding: 20px;
 }
+
 header hr {
     border: 1px solid #ccc; /* 선 스타일 설정 */
     margin-top: 10px; /* 선 위 여백 설정 */
 }
-  
+
 header h2{
     font-size: 18px;
     font-weight: 600;
@@ -21,43 +22,45 @@ header h2{
 header button{
     position: absolute;
     left: 20px;
-    top: 18px;
-
+    top: 25px;
     cursor: pointer;
     border: none;
+    background-color: beige;
+    /* 버튼색상 배경색이랑 동일하게 줌 */
 } 
 
 .signup{
-    position: relative;
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
 }
-  
 
+.signupform-wrap{
+    margin-bottom: 20px;
+}
 
 .signup form{
-    margin-top: 10px;
-    margin-bottom: 15px;
-    gap: 5px;
+}
+
+.signup label{
+    display: block;
+    margin-bottom: 12px;
+}
+
+label:after {
+    content: "*";
+    color: rgb(236, 5, 5);
 }
 
 .signup input{
     width: 100%;
     padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 .id-input-wrap {
     display: flex;
-    margin-bottom: 10px;
     gap: 10px;
-}
-
-label:after {
-    content: "*";
-    color: rgb(236, 5, 5);
 }
 
 .check-btn{
@@ -83,5 +86,9 @@ label:after {
 }
 
 .check-btn:hover{
+    background-color: #45a049;
+}
+
+.next-btn:hover{
     background-color: #45a049;
 }
