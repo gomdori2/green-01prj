@@ -3,11 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>메일인증 페이지</title>
+    <title>닉네임설정 및 이용약관 동의 페이지</title>
     <link rel="stylesheet" href="./css/common/reset.css" />
     <link rel="stylesheet" href="./css/common/common.css" />
-    
-    <link rel="stylesheet" href="./css/register.css"/>
+    <link rel="stylesheet" href="./css/set-nickname.css">
   </head>
   <body>
     <div class="wrap">
@@ -15,24 +14,24 @@
         <header class="header"></header>
 
         <main>
-          <div class="register-wrap">
+          <div class="signup-nickname">
             <header>
               <button><</button>
               <!-- 뒤로가기 버튼 클릭시 로그인 화면으로 이동 -->
               <h2>회원가입</h2>
             </header>
             <hr>
+            <div class="set-nickname-wrap">
             
-            <label for="useremail">이메일</label>
-            <form action="" id="email" method="post">
-              <input type="email" id="useremail" name="email" class="email-form" required placeholder="메일 주소를 입력해주세요.">
-              <input type="submit" value="전송" class="send-btn">
-            </form>
-            <p>발송된 메일에서 링크를 클릭해주세요.</p>
-              <!-- 메일 전송 후 나타날 것 -->
-          </div>            
+              <p>닉네임을 설정해주세요</p>
+              <form action="" id="nickname" method="post">
+                <input type="text" id="nickname" name="nickname" required placeholder="닉네임을 설정해주세요">
+                <input type="submit" value="완료" class="send-btn">
+              </form>
+            </div>
+          </div>                      
         </main>
-        
+
         <footer class="footer"></footer>
       </div>
     </div>

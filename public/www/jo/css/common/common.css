@@ -4,10 +4,10 @@
   box-sizing: border-box;
 }
 
-.header {
+/* .header {
   height: 100px;
   width: 100%;
-}
+} */
 .inner {
   display: block;
   max-width: 768px;
