@@ -12,32 +12,32 @@ header hr {
   margin-top: 10px; /* 선 위 여백 설정 */
 }
 
-header h2{
+header h2 {
   font-size: 18px;
   font-weight: 600;
   text-align: center;
   margin-bottom: 10px;
 }
 
-header button{
+header button {
   position: absolute;
   left: 20px;
   top: 25px;
   cursor: pointer;
-  border: none;
-  background-color: beige;
-  /* 버튼색상 배경색이랑 동일하게 줌 */
-} 
+  border: none; /* 박스 테두리 제거 */
+  background-color: transparent; /* 배경색 제거 */
+  padding: 0; /* 내부 여백 제거 */
+}
 
-.register{
+.register {
   padding: 0px 20px 20px 20px;
 }
 
-.register-wrap{
+.register-wrap {
   margin-bottom: 20px;
 }
 
-.register label{
+.register label {
   display: block;
   margin-bottom: 12px;
 }
@@ -47,28 +47,28 @@ label:after {
   color: rgb(236, 5, 5);
 }
 
-.register-wrap form{
+.register-wrap form {
   display: flex;
   gap: 5px;
 }
 
-.register-wrap input{
+.register-wrap input {
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-.register-wrap input[type="email"]{
+.register-wrap input[type="email"] {
   width: 100%;
 }
 
-.register-wrap p{
+.register-wrap p {
   font-size: 12px;
   color: gray;
 }
 
-.send-btn{
+.send-btn {
   background-color: #4caf50;
   color: #fff;
   border: none;
