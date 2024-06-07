@@ -29,41 +29,36 @@ header button{
     /* 버튼색상 배경색이랑 동일하게 줌 */
 } 
 
-.signup{
+.signup-nickname {
     padding: 0px 20px 20px 20px;
 }
 
-.signupform-wrap{
+.signup-nickname-wrap{
     margin-bottom: 20px;
 }
 
-.signup form{
+.signup-nickname-wrap button{
+    position: fixed;
+    cursor: pointer;
+    border: none;
+    margin-bottom: 10px;
 }
 
-.signup label{
-    display: block;
-    margin-bottom: 12px;
-}
-
-label:after {
-    content: "*";
-    color: rgb(236, 5, 5);
-}
-
-.signup input{
+.signup-nickname-wrap input{
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.id-input-wrap {
-    display: flex;
-    gap: 10px;
+.signup-nickname-wrap p{
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 12px;
 }
 
-.check-btn{
+.send-btn{
     background-color: #4caf50;
     color: #fff;
     border: none;
@@ -74,21 +69,6 @@ label:after {
     margin-bottom: 10px;
 }
 
-.next-btn{
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-
-.check-btn:hover{
-    background-color: #45a049;
-}
-
-.next-btn:hover{
+.send-btn:hover {
     background-color: #45a049;
 }

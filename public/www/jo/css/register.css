@@ -1,32 +1,45 @@
 body {
-  display: flex;
-  justify-content: center;
   background-color: beige;
 }
 
-header + hr {
-  border: 1px solid #ccc; /* 선 스타일 설정 */
-  margin-top: 10px; /* 선 위 여백 설정 */
-  margin-bottom: 20px;
-}
-
-.register-wrap{
-  width: 768px;
+header {
+  position: relative;
   padding: 20px;
 }
 
-.register-wrap button{
-  position: fixed;
-  cursor: pointer;
-  border: none;
-  margin-bottom: 10px;
+header hr {
+  border: 1px solid #ccc; /* 선 스타일 설정 */
+  margin-top: 10px; /* 선 위 여백 설정 */
 }
 
-.register-wrap h2{
+header h2{
   font-size: 18px;
   font-weight: 600;
   text-align: center;
   margin-bottom: 10px;
+}
+
+header button{
+  position: absolute;
+  left: 20px;
+  top: 25px;
+  cursor: pointer;
+  border: none;
+  background-color: beige;
+  /* 버튼색상 배경색이랑 동일하게 줌 */
+} 
+
+.register{
+  padding: 0px 20px 20px 20px;
+}
+
+.register-wrap{
+  margin-bottom: 20px;
+}
+
+.register label{
+  display: block;
+  margin-bottom: 12px;
 }
 
 label:after {
@@ -36,8 +49,6 @@ label:after {
 
 .register-wrap form{
   display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
   gap: 5px;
 }
 
@@ -47,14 +58,14 @@ label:after {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-.email-form{
+
+.register-wrap input[type="email"]{
   width: 100%;
 }
 
 .register-wrap p{
   font-size: 12px;
   color: gray;
-  margin-bottom: 20px;
 }
 
 .send-btn{
