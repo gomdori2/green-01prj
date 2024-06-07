@@ -26,109 +26,158 @@ import { CiSun } from "react-icons/ci";
 // ***************************************** 물주기 아이콘  ********************************************* //
 
 const ReactCalendar = () => {
-  const [calendarData, setCalendarData] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  // ************************* 데이터 ********************************* //
-  // 그냥 옛날에 서버 파둔거 활용 get
-  const getDateList = async () => {
-    // 일단 events로 함.
-    const data = { title: "ㅁㄴㅇㄹ" };
-    setCalendarData(data);
-
-    // try {
-    //   const response = await axios.get("");
-    //   if (response.status === 200) {
-    //     setCalendarData(response.data);
-    //   }
-    //   return response;
-    // } catch (error) {
-    //   console.log(error);
-    // }
+  // 날짜 요일 출력
+  // 캘린더의 날짜 출력을 US 달력으로 변경하기
+  const weekName = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+  const formatShortWeekday = (locale, date) => {
+    const idx = date.getDay();
+    return weekName[idx];
   };
-  // 일단 events로 함
-  //   useEffect(() => {
-  //     getDateList();
-  //   }, []);
 
-  useEffect(() => {
-    const handleClick = () => {
-      console.log(calendarData);
-    };
-    window.addEventListener("click", handleClick);
+  // 특정 날짜 클래스 적용하기
+  //   const tileClassName = ({ date }) => {
+  //     // 날짜 요일 잡아주기
+  //     // 0 > Sun May 26 2024 00:00:00 GMT+0900 (한국 표준시) _ 일요일임.
+  //     // console.log(date.getDay());
+  //     const day = date.getDay();
+  //     let classNames = "";
+  //     // 화요일
+  //     if (day === 2) {
+  //       classNames += "rain";
+  //     }
+  //     if (day === 4) {
+  //       classNames += "thu";
+  //     }
+  //     return classNames;
+  //   };
 
-    return () => {
-      window.removeEventListener("click", handleClick);
-    };
-  }, [calendarData]);
-  // ************************* 데이터 ********************************* //
+  // 외부 데이터의 내용을 날짜에 출력하기
+  // axios.get("todos") 리턴결과
 
-  // ************************* 데이터 변경 ********************************* //
-  // 객체 리터럴에 메서드로 한번에 하려 했는데
-  // 따로 정의하는게 좋다라고 gpt 쪽에서 알려줘서 수정
-  // 얘(events)를 axios로 데이터 받아서 써야할듯싶음.
-  // date 양식이 2024-05-30 이런식으로 넣으니까 안됬었음.
-  // 아이콘이 들어가야 될듯 싶은데...
-  const asd = `img.jpg`;
-  const events = [
-    { date: new Date(2024, 5, 30), text: "ss" },
-    { date: new Date(2024, 5, 15), text: "내용2" },
+  const todoApi = [
+    {
+      pk: 0,
+      title: [1],
+      text: "내용1",
+      day: "2024-06-01",
+      img: "/logo192.png",
+    },
+    {
+      pk: 1,
+      title: [1, 2, 3, 4],
+      text: "내용2",
+      day: "2024-05-31",
+      img: "/logo192.png",
+    },
+    {
+      pk: 2,
+      title: [3],
+      text: "내용3",
+      day: "2024-06-04",
+      img: "/logo192.png",
+    },
+    {
+      pk: 3,
+      title: [4],
+      text: "내용4",
+      day: "2024-06-29",
+      img: "/logo192.png",
+    },
   ];
-  // 텍스트 변경
-  function changeAllTexts(newText) {
-    events.forEach(event => {
-      event.text = newText;
-    });
-  }
+  const [allData, setAllData] = useState([]);
+  useEffect(() => {
+    setAllData(todoApi);
+    return () => {};
+  }, []);
+  // 내용 출력하기
+  const tileContent = ({ date }) => {
+    // MM : 2자리 월
+    // DD : 2자리 일
 
-  // axios로 받아온 값 forEach로 텍스트 변경
-  // 일단 연습용이라 a() 이런 식으로 해둠.
-  function a() {
-    // 계속 못돌게 막아놓음.
-    if (!calendarData) return;
-    calendarData.forEach(data => {
-      console.log(data);
-      changeAllTexts(data?.title);
+    const checkDay = moment(date).format("yyyy-MM-DD");
+    // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
+    const dayResult = allData.find(item => checkDay === item.day);
+
+    //const filteredDay = ;
+    const uiIcon = {
+      1: <GiWateringCan />,
+      2: <IoIosWater />,
+      3: <GiPlantWatering />,
+      4: <PiSunFill />,
+    };
+    todoApi.forEach((item, index) => {
+      item.title.forEach(element => {
+        for (const ms in uiIcon) {
+          console.log(element);
+          console.log(ms);
+        }
+      });
     });
-  }
-  a();
-  // 데이터 넣는 양식 인거 같은데 조금 알아봐야함
-  const tileContent = ({ date, view }) => {
-    if (view === "month") {
-      // 날짜 / 월 / 년도을 events와 date의 날짜와 비교하기 위한 거 같음
-      const event = events.find(
-        event =>
-          event.date.getDate() === date.getDate() &&
-          event.date.getMonth() === date.getMonth() &&
-          event.date.getFullYear() === date.getFullYear(),
+    if (dayResult) {
+      return (
+        <div>
+          <h2></h2>
+          {dayResult.title.map(iconKey => (
+            <span key={iconKey}>{uiIcon[iconKey]}</span>
+          ))}
+        </div>
       );
-      const ac = moment(event).format("YYYY,MM,DD");
-      console.log(ac === "2024,06,03");
-      // 어차피 각각의 아이콘이 여러개 들어가야함.
-      return ac === "2024,06,03" ? (
-        <>
-          <GiPlantWatering color="blue" />
-          <PiSunFill color="yellow" />
-          <GiPlantWatering color="blue" />
-        </>
-      ) : null;
     }
   };
-  const handleDateClick = date => {
-    setSelectedDate(date);
-    console.log("Clicked date:", date);
-    console.log(selectedDate);
-    const dates = new Date("Sat Jun 01 2024 19:21:27 GMT+0900");
-    const formattedDate = moment(dates).format("YYYY,MM,DD");
-    console.log(formattedDate);
+  // 날짜 css 꾸미기
+  const tileClassName = ({ date }) => {
+    // MM : 2자리 월
+    // DD : 2자리 일
+
+    const checkDay = moment(date).format("yyyy-MM-DD");
+    // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
+    const dayResult = allData.find(item => checkDay === item.day);
+    if (dayResult) {
+      return "sun";
+    }
+  };
+  // 일자의 날짜 출력 포맷 변경하기
+  // 오늘날짜 리스트에서 보여주기
+  const [clickDay, setClickDay] = useState(moment().format("YYYY-MM-DD"));
+  const [clickInfo, setClickInfo] = useState(null);
+  useEffect(() => {
+    // 죄송합니다. 강제로 onClickDay 함수를
+    // 실행하면서 날짜를 전달하였습니다.
+    console.log();
+    onClickDay(moment().format("yyyy-MM-DD"));
+  }, []);
+  const formatDay = (locale, date) => moment(date).format("D");
+  // 날짜 선택 시 처리
+  const onClickDay = (value, event) => {
+    const checkDay = moment(value).format("yyyy-MM-DD");
+    setClickDay(checkDay);
+    // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
+    const dayResult = allData.find(item => checkDay === item.day);
+    if (dayResult) {
+      console.log(dayResult.text);
+      setClickInfo(dayResult);
+    } else {
+      setClickInfo(null);
+    }
   };
   // ************************* 데이터 변경 ********************************* //
   return (
     <div>
-      <Calendar
-        value={selectedDate}
-        tileContent={tileContent}
-        onClickDay={handleDateClick}
-      />
+      <h1>캘린더 출력</h1>
+      <div>
+        {clickDay}의 상세정보 : {clickInfo?.title}
+      </div>
+      <div>
+        <Calendar
+          calendarType={"gregory"}
+          formatShortWeekday={formatShortWeekday}
+          tileClassName={tileClassName}
+          tileContent={tileContent}
+          formatDay={formatDay}
+          onClickDay={onClickDay}
+          value={clickDay}
+        />
+      </div>
     </div>
   );
 };
