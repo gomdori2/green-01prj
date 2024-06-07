@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const HeaderDiv = styled.div`
   height: 70px;
@@ -22,30 +22,38 @@ const HeaderDiv = styled.div`
 `;
 
 const Header = ({ children }) => {
-  return (
-    <HeaderDiv>
-      <ul>
-        <li>
-          <Link
-            to="/"
-            style={{
-              height: "35px",
-              width: "140px",
-              display: "block",
-              background: "url(./www/images/logo.png) no-repeat",
-              backgroundSize: "contain",
-            }}
-          ></Link>
-        </li>
-        <li className="menuHeader">
-          <Link to="/reactCalendar">식물관리</Link>
-          <Link to="/plantResister">식물등록</Link>
-          <Link to="/notice">커뮤니티</Link>
-        </li>
-        <li>{children}</li>
-      </ul>
-    </HeaderDiv>
-  );
+  const location = useLocation();
+  console.log(typeof location.pathname);
+  if (location.pathname !== "/") {
+    return (
+      <>
+        <HeaderDiv>
+          <ul>
+            <li>
+              <Link
+                to="/"
+                style={{
+                  height: "35px",
+                  width: "140px",
+                  display: "block",
+                  background: "url(./www/images/logo.png) no-repeat",
+                  backgroundSize: "contain",
+                }}
+              ></Link>
+            </li>
+            <li className="menuHeader">
+              <Link to="/reactCalendar">식물관리</Link>
+              <Link to="/plantResister">식물등록</Link>
+              <Link to="/notice">커뮤니티</Link>
+            </li>
+            <li>{children}</li>
+          </ul>
+        </HeaderDiv>
+      </>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 export default Header;

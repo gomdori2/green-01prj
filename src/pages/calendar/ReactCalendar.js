@@ -2,22 +2,31 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // css import
+import CalendarList from "../../components/calendar/CalendarList";
 // ***************************************** 물주기 아이콘  ********************************************* //
 import { GiWateringCan } from "react-icons/gi";
 import { IoIosWater } from "react-icons/io";
 import { GiPlantWatering } from "react-icons/gi";
-// ***************************************** 환경 아이콘  ********************************************* //
+// ***************************************** 물주기 아이콘  ********************************************* //
+
+// ***************************************** 환경(일조량) 아이콘  ********************************************* //
 import { PiSunFill } from "react-icons/pi";
 import { CiSun } from "react-icons/ci";
-// ***************************************** 물주기 아이콘  ********************************************* //
+import { IoIosSunny } from "react-icons/io";
+// ***************************************** 환경(일조량) 아이콘  ********************************************* //
 
-// ***************************************** 물주기 아이콘  ********************************************* //
+// ***************************************** 환기 아이콘  ********************************************* //
+import { FaWind } from "react-icons/fa6";
+import { LuWind } from "react-icons/lu";
+import { BsWind } from "react-icons/bs";
+// ***************************************** 환기 아이콘  ********************************************* //
 
-// ***************************************** 물주기 아이콘  ********************************************* //
-
-// ***************************************** 물주기 아이콘  ********************************************* //
-
-// ***************************************** 물주기 아이콘  ********************************************* //
+// ***************************************** 형태(가지치기)  아이콘  ********************************************* //
+import { RiTreeFill } from "react-icons/ri";
+import { BiSolidTreeAlt } from "react-icons/bi";
+import { RiPlantFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
+// ***************************************** 형태(가지치기) 아이콘  ********************************************* //
 
 // ***************************************** 물주기 아이콘  ********************************************* //
 
@@ -26,6 +35,7 @@ import { CiSun } from "react-icons/ci";
 // ***************************************** 물주기 아이콘  ********************************************* //
 
 const ReactCalendar = () => {
+  const [calendarFilterData, setCalendarFilterData] = useState([]);
   // 날짜 요일 출력
   // 캘린더의 날짜 출력을 US 달력으로 변경하기
   const weekName = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
@@ -56,28 +66,43 @@ const ReactCalendar = () => {
 
   const todoApi = [
     {
-      pk: 0,
+      pk: 1,
       title: [1],
       text: "내용1",
       day: "2024-06-01",
       img: "/logo192.png",
     },
     {
-      pk: 1,
+      pk: 2,
       title: [1, 2, 3, 4],
-      text: "내용2",
+      text: "내용8",
       day: "2024-05-31",
       img: "/logo192.png",
     },
     {
-      pk: 2,
+      pk: 3,
+      title: [1, 2, 3, 4],
+      text: "내용7",
+      day: "2024-05-31",
+      img: "/logo192.png",
+    },
+    {
+      pk: 4,
+      title: [1, 2, 3, 4],
+      text: "내용6",
+      day: "2024-05-31",
+      img: "/logo192.png",
+    },
+
+    {
+      pk: 5,
       title: [3],
       text: "내용3",
       day: "2024-06-04",
       img: "/logo192.png",
     },
     {
-      pk: 3,
+      pk: 6,
       title: [4],
       text: "내용4",
       day: "2024-06-29",
@@ -99,20 +124,13 @@ const ReactCalendar = () => {
     const dayResult = allData.find(item => checkDay === item.day);
 
     //const filteredDay = ;
+
     const uiIcon = {
-      1: <GiWateringCan />,
-      2: <IoIosWater />,
-      3: <GiPlantWatering />,
-      4: <PiSunFill />,
+      1: <PiSunFill size="20" color="yellow" />,
+      2: <GiPlantWatering size="20" color="#fff" />,
+      3: <FaWind size="20" color="blue" />,
+      4: <RiTreeFill size="20" color="#fff" />,
     };
-    todoApi.forEach((item, index) => {
-      item.title.forEach(element => {
-        for (const ms in uiIcon) {
-          console.log(element);
-          console.log(ms);
-        }
-      });
-    });
     if (dayResult) {
       return (
         <div>
@@ -154,12 +172,17 @@ const ReactCalendar = () => {
     // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
     const dayResult = allData.find(item => checkDay === item.day);
     if (dayResult) {
-      console.log(dayResult.text);
       setClickInfo(dayResult);
     } else {
       setClickInfo(null);
     }
   };
+  // getOneData
+  useEffect(() => {
+    const dayFilterData = allData.filter(item => item.day === clickDay);
+    console.log(dayFilterData);
+    setCalendarFilterData(dayFilterData);
+  }, [clickDay]);
   // ************************* 데이터 변경 ********************************* //
   return (
     <div>
@@ -178,6 +201,9 @@ const ReactCalendar = () => {
           value={clickDay}
         />
       </div>
+      {calendarFilterData?.map((item, index) => (
+        <CalendarList key={item.pk} item={item}></CalendarList>
+      ))}
     </div>
   );
 };
