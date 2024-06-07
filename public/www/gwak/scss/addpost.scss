@@ -1,37 +1,74 @@
+/* post-add.css */
 .post-add {
-  .hidden {
-    visibility: hidden;
-  }
+  /* 기존 스타일 유지 */
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 80px;
+    padding: 0 20px; /* 좌우 패딩 추가 */
   }
-  .카테고리 {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 0;
-  }
-  .글쓰기제목 {
-    width: 100%;
-    padding: 20px 0;
-    border: 1px solid #000;
-  }
-  .글쓰기내용 {
-    width: 100%;
-    min-height: 200px;
-  }
+
   .main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     gap: 20px;
+    padding: 20px; /* 전체적인 패딩 추가 */
   }
-  .저장하기버튼 {
+
+  /* 새롭게 추가된 스타일 */
+  .category {
+    display: flex;
+    align-items: center; /* 레이블과 select 요소 세로 정렬 */
+    gap: 10px; /* 레이블과 select 요소 간격 */
+  }
+
+  label[for="category"] {
+    /* 카테고리 레이블 스타일 */
+    font-weight: bold;
+  }
+
+  select#category {
+    /* 카테고리 select 요소 스타일 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .title {
     width: 100%;
-    color: #fff;
-    background-color: #000;
-    padding: 20px 0;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* padding을 width에 포함 */
   }
+
+  .content {
+    width: 100%;
+    min-height: 200px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* padding을 width에 포함 */
+    resize: vertical; /* 세로 크기 조절만 가능 */
+  }
+
+  button[type="submit"] {
+    /* 저장 버튼 스타일 */
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff; /* 파란색 */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* 커서 모양 변경 */
+  }
+}
+
+/* common.css (또는 reset.css) */
+button {
+  background: none; /* 버튼 기본 스타일 초기화 (선택 사항) */
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
