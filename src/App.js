@@ -15,10 +15,8 @@ import Main from "./components/layout/Main";
 import "./css/calendar.css";
 function App() {
   const [isLogin, setIsLogin] = useState(true);
-
   return (
     <BrowserRouter>
-      {/* 공통 레이아웃 적용 */}
       <Wrap>
         <Header>
           {isLogin ? (
@@ -29,14 +27,17 @@ function App() {
         </Header>
         <Main>
           <Routes>
-            {/* 첫페이지 루트 경로 */}
-            {/* a > link */}
-            {/* 첫페이지 로그인이라고 일단 알고있음 */}
-            <Route path="/" element={<Login></Login>}></Route>
+            {/* 공통 레이아웃 적용 */}
+            <Route path="/" element={<Login />}></Route>
             <Route path="/notice" element={<Notice></Notice>}></Route>
             <Route path="/register" element={<Register></Register>}></Route>
             <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
+            <Route
+              path="/reactCalendar/:pk"
+              element={<ReactCalendar />}
+            ></Route>
             <Route path="/plantResister" element={<PlantResister />}></Route>
+
             {/* 잘못된 경로 */}
             <Route path="*" element={<NotFound />}></Route>
           </Routes>

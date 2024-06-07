@@ -8,6 +8,8 @@ const NotFoundPage = styled.div`
 `;
 
 const NotFound = () => {
+  const location = location();
+
   return <NotFoundPage></NotFoundPage>;
 };
 
