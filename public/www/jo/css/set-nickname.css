@@ -29,41 +29,58 @@ header button {
   padding: 0; /* 내부 여백 제거 */
 }
 
-.signup {
+.signup-nickname {
   padding: 0px 20px 20px 20px;
 }
 
-.signupform-wrap {
+.signup-nickname-wrap {
   margin-bottom: 20px;
 }
-
-.signup form {
-}
-
-.signup label {
+.nickname-txt {
   display: block;
   margin-bottom: 12px;
 }
 
-label:after {
-  content: "*";
-  color: rgb(236, 5, 5);
+.signup-nickname-wrap button {
+  position: fixed;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 10px;
 }
 
-.signup input {
+.signup-nickname-wrap input[type="text"] {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-.id-input-wrap {
-  display: flex;
-  gap: 10px;
+/* 약관 동의 */
+.terms {
+  margin-bottom: 12px;
 }
 
-.check-btn {
+.terms p {
+  margin-bottom: 12px;
+}
+
+.checkbox-container {
+  /* background-color: skyblue; */
+  padding: 10px;
+}
+
+.checkbox-inner {
+  align-items: center;
+}
+
+.agree-all-line {
+  height: 1px;
+  background-color: #ccc;
+}
+
+.send-btn {
+  width: 100%;
   background-color: #4caf50;
   color: #fff;
   border: none;
@@ -74,21 +91,6 @@ label:after {
   margin-bottom: 10px;
 }
 
-.next-btn {
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.check-btn:hover {
-  background-color: #45a049;
-}
-
-.next-btn:hover {
+.send-btn:hover {
   background-color: #45a049;
 }
