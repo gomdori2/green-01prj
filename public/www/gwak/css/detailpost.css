@@ -1,0 +1,171 @@
+@charset "UTF-8";
+/* detailpost.css */
+.post-detail header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 80px;
+  padding: 0 20px; /* 좌우 패딩 추가 */
+}
+.post-detail .post-title {
+  /* 게시글 제목 스타일 추가 */
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.post-detail .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 15px; /* 내부 여백 조정 */
+  border-bottom: 1px solid #ddd; /* 아래쪽 테두리만 */
+}
+.post-detail .info__left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* 프로필 이미지와 사용자 정보 세로 정렬 */
+  gap: 10px; /* 간격 조절 */
+}
+.post-detail .info__detail {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.post-detail .profile-image {
+  /* 프로필 이미지 스타일 추가 */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover; /* 이미지 비율 유지 */
+  margin-right: 10px;
+}
+.post-detail .username {
+  /* 사용자 이름 스타일 추가 */
+  font-weight: bold;
+}
+.post-detail .plant-count {
+  /* 식물 개수 스타일 추가 */
+  font-size: 0.9rem;
+  color: #666;
+}
+.post-detail .created-at {
+  /* 작성 시간 스타일 추가 */
+  font-size: 0.9rem;
+  color: #666;
+}
+.post-detail .body {
+  padding: 20px;
+}
+.post-detail .content {
+  /* 게시글 내용 스타일 추가 */
+  line-height: 1.6;
+  white-space: pre-wrap; /* 줄바꿈 유지 */
+}
+
+.post-info {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.post-info__cover {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* 세로 정렬 추가 */
+}
+
+.likes-count {
+  /* 좋아요 개수 스타일 추가 */
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px; /* 아래쪽 여백 */
+}
+
+.post-info__bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px; /* 간격 조절 */
+}
+
+.view-count,
+.comment-count {
+  /* 조회수, 댓글수 스타일 추가 */
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.post-info__right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.like-button {
+  /* 좋아요 버튼 스타일 추가 */
+  background: none; /* 배경 없음 */
+  border: none; /* 테두리 없음 */
+  padding: 0; /* 패딩 없음 */
+  font-size: 1rem;
+  cursor: pointer;
+  /* 아이콘 이미지 등을 추가하여 버튼 디자인 */
+}
+
+.comment-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; /* 입력 필드와 버튼 세로 정렬 */
+  margin-top: 20px;
+  padding: 15px;
+  border-top: 1px solid #ddd; /* 위쪽 테두리만 */
+}
+
+.comment-form input[type=text] {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1; /* 입력 필드 너비 최대한 확장 */
+  margin: 0 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.comment-form button {
+  /* 댓글 등록 버튼 스타일 추가 */
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}

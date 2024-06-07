@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시물 상세보기</title>
+    <link rel="stylesheet" href="./css/common/reset.css" />
+    <link rel="stylesheet" href="./css/common/common.css" />
+    <link rel="stylesheet" href="./css/detailpost.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="inner">
+        <header class="header"></header>
+        <main>
+          <article class="post-detail">
+            <header>
+              <button type="button" onclick="history.back()">&lt;</button>
+              <h2 class="post-title"></h2>
+              <button type="button" class="edit-button">수정</button>
+            </header>
+            <div class="main">
+              <h3 class="title"></h3>
+              <div class="info">
+                <div class="info__left">
+                  <div class="info__detail">
+                    <img
+                      src="./images/test.jpg"
+                      alt="프로필 이미지"
+                      class="profile-image"
+                    />
+                    <div class="info__user">
+                      <div class="username">작성자</div>
+                      <div class="plant-count">ㅇㅇㅇ</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="info__right created-at"></div>
+              </div>
+              <div class="body content">
+                - **기본적인 이름:** - Plant Manager (플랜트 매니저) - Plant
+                Care (플랜트 케어) - My Plant (마이 플랜트) - Plant Diary
+                (플랜트 다이어리) - **친근하고 귀여운 이름:** - 초록 친구 - 풀잎
+                친구 - 꽃잎 일기 - 반려 식물 - 우리집 정원 - **기능을 강조하는
+                이름:** - Plant Watering Alarm (플랜트 워터링 알람) - Plant Care
+                Guide (플랜트 케어 가이드) - Plant Growth Tracker (플랜트 그로스
+                트래커) - **독특하고 창의적인 이름:** - Green Thumb (초록 엄지)
+                - Plant Whisperer (식물 속삭임) - Blooming Moments (블루밍
+                모먼츠) - Urban Jungle (어반 정글)
+              </div>
+              <div class="post-info">
+                <div class="post-info__cover">
+                  <div class="post-info__left">
+                    <div class="likes-count"></div>
+                    <div class="post-info__bottom">
+                      <div class="view-count"></div>
+                      <div class="comment-count"></div>
+                    </div>
+                  </div>
+                  <div class="post-info__right">
+                    <button type="button" class="like-button"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="main__footer">
+              <form class="comment-form">
+                <img
+                  src="./images/test.jpg"
+                  alt="프로필 이미지"
+                  class="profile-image"
+                />
+                <input
+                  type="text"
+                  name="comment"
+                  placeholder="댓글 입력하세요"
+                />
+                <button type="submit">등록</button>
+              </form>
+              <div class="comments-container"></div>
+            </div>
+          </article>
+        </main>
+        <footer class="footer"></footer>
+      </div>
+    </div>
+
+    <script>
+      // 게시글 데이터 가져오기 (예: AJAX 요청)
+      // 가져온 데이터를 사용하여 페이지 내용 채우기
+      // 댓글 기능 구현 (예: AJAX 요청, 동적 댓글 추가)
+    </script>
+  </body>
+</html>
