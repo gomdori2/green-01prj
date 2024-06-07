@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import Wrap from "./components/layout/Wrap";
 import Main from "./components/layout/Main";
 import "./css/calendar.css";
+import NoticeWrite from "./components/notice/NoticeWrite";
 function App() {
   const [isLogin, setIsLogin] = useState(true);
   return (
@@ -30,6 +31,11 @@ function App() {
             {/* 공통 레이아웃 적용 */}
             <Route path="/" element={<Login />}></Route>
             <Route path="/notice" element={<Notice></Notice>}></Route>
+            <Route path="/notice/:id"></Route>
+            <Route
+              path="/noticeWrite"
+              element={<NoticeWrite></NoticeWrite>}
+            ></Route>
             <Route path="/register" element={<Register></Register>}></Route>
             <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
             <Route
