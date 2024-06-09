@@ -26,14 +26,38 @@ import { RiTreeFill } from "react-icons/ri";
 import { BiSolidTreeAlt } from "react-icons/bi";
 import { RiPlantFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import styled from "@emotion/styled";
 // ***************************************** 형태(가지치기) 아이콘  ********************************************* //
 
-// ***************************************** 물주기 아이콘  ********************************************* //
-
-// ***************************************** 물주기 아이콘  ********************************************* //
-
-// ***************************************** 물주기 아이콘  ********************************************* //
-
+const ReactCalendarStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
+const ReactCalendarListStyle = styled.div`
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  li {
+    padding-left: 10px;
+    height: 30px;
+    border-bottom: 1px solid gray;
+    display: flex;
+    gap: 30px;
+    font-size: 18px !important;
+    font-weight: 700;
+    color: black;
+  }
+`;
+const TitleDivStyle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  padding-left: 5px;
+`;
 const ReactCalendar = () => {
   const [calendarFilterData, setCalendarFilterData] = useState([]);
   // 날짜 요일 출력
@@ -63,13 +87,19 @@ const ReactCalendar = () => {
 
   // 외부 데이터의 내용을 날짜에 출력하기
   // axios.get("todos") 리턴결과
-
+  // 이건 api 만들어지면 해당 데이터 아이디 매칭해야됨
+  // 데이터도 가라임
   const todoApi = [
     {
+      // pk
       pk: 1,
+      // 가드닝
       title: [1],
-      text: "내용1",
+      // 텍스트
+      text: "내용1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+      // 날짜
       day: "2024-06-01",
+      // 이미지는 공공데이터
       img: "/logo192.png",
     },
     {
@@ -124,7 +154,7 @@ const ReactCalendar = () => {
     const dayResult = allData.find(item => checkDay === item.day);
 
     //const filteredDay = ;
-
+    // map으로 객체 1,2,3,4 값에 해당 되는 아이콘 빼기.
     const uiIcon = {
       1: <PiSunFill size="20" color="yellow" />,
       2: <GiPlantWatering size="20" color="#fff" />,
@@ -185,12 +215,13 @@ const ReactCalendar = () => {
   }, [clickDay]);
   // ************************* 데이터 변경 ********************************* //
   return (
-    <div>
-      <h1>캘린더 출력</h1>
+    <ReactCalendarStyle>
+      <TitleDivStyle>일정 관리</TitleDivStyle>
       <div>
-        {clickDay}의 상세정보 : {clickInfo?.title}
-      </div>
-      <div>
+        {/* 굳이 밑에 리스트형식 및 아이콘으로 표현 해주는데 알려줄 필요가 있나? */}
+        {/* <div>
+          {clickDay}의 상세정보 : {clickInfo?.title}
+        </div> */}
         <Calendar
           calendarType={"gregory"}
           formatShortWeekday={formatShortWeekday}
@@ -201,10 +232,13 @@ const ReactCalendar = () => {
           value={clickDay}
         />
       </div>
-      {calendarFilterData?.map((item, index) => (
-        <CalendarList key={item.pk} item={item}></CalendarList>
-      ))}
-    </div>
+      <TitleDivStyle>관리 기록</TitleDivStyle>
+      <ReactCalendarListStyle>
+        {calendarFilterData?.map((item, index) => (
+          <CalendarList key={item.pk} item={item}></CalendarList>
+        ))}
+      </ReactCalendarListStyle>
+    </ReactCalendarStyle>
   );
 };
 
