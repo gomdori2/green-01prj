@@ -73,6 +73,26 @@ label:after {
   padding: 10px;
   margin-bottom: 10px;
 }
+.using-message{
+  display: none;
+  font-size: 12px;
+  margin-bottom: 20px;
+  color: grey
+}
+
+.available-message{
+  display: none;
+  font-size: 12px;
+  margin-bottom: 20px;
+  color: grey
+}
+
+.pw-error-message{
+  font-size: 12px;
+  color: red;
+  margin-bottom: 20px;
+  display: none;
+}
 
 .next-btn {
   background-color: #4caf50;

@@ -6,8 +6,8 @@
     <title>로그인 페이지</title>
     <link rel="stylesheet" href="./css/common/reset.css">
     <link rel="stylesheet" href="./css/common/common.css" />
-
     <link rel="stylesheet" href="./css/login.css" />
+    <script src="./js/login.js"></script>
   </head>
   <body>
     <div class="wrap">
@@ -22,6 +22,8 @@
                 <form>
                     <input type="text" id="login-id" name="id" required placeholder="아이디 또는 이메일"/>
                     <input type="password" id="login-pw" name="pw" required placeholder="비밀번호"/>
+                    <p class="error-message">아이디 또는 비밀번호를 잘못 입력했습니다.<br/>
+                      입력하신 내용을 다시 확인해주세요.</p>
                     <button type="submit" class="login-btn">로그인</button>
                 </form>
                 <button type="button" class="signup-btn">회원가입</button>
