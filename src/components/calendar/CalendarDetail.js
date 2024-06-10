@@ -86,6 +86,13 @@ const CalendarDetail = () => {
         : [...prevValues, value],
     );
   };
+  const uiIcon = {
+    1: <FaSun size="20" style={{ color: "#fff" }} />,
+    2: <FaSeedling size="20" style={{ color: "#fff" }} />,
+    3: <FaWind size="20" color="#fff" />,
+    4: <FaTree size="20" style={{ color: "#fff" }} />,
+  };
+  console.log(checkedValues);
   return (
     <DetailDivStyle>
       <DetailDivInnerStyle>

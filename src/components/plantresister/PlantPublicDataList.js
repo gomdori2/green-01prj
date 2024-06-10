@@ -12,7 +12,7 @@ const FixedArea = styled.div`
 const PlantPublicDataListStyle = styled.div`
   position: absolute;
   top: 20%;
-  left: 40%;
+  left: 50%;
   display: none;
   flex-direction: column;
   margin: 0 auto;
