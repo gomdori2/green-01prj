@@ -1,0 +1,132 @@
+// 리셋
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  border: 0;
+  font-size: inherit;
+}
+
+// 공통 CSS
+
+.inner {
+  max-width: 768px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 5px;
+}
+
+// 임시
+
+img {
+  width: 40px;
+  height: 40px;
+}
+
+// CSS
+
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .content__top {
+    &__title {
+      font-size: 32px;
+      font-weight: 700;
+    }
+    &__info {
+      display: flex;
+      justify-content: space-between;
+      &__user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      &__profile {
+        display: flex;
+        flex-direction: column;
+      }
+      &__meta {
+        display: flex;
+        gap: 10px;
+      }
+    }
+  }
+
+  .content__center {
+    line-height: 1.5;
+  }
+
+  .content__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    &__user-info {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__comment {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .comment__top {
+    display: flex;
+  }
+}
+
+.comment-info {
+  display: flex;
+  gap: 10px;
+}
+
+.comment-wrap {
+  padding: 20px;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
+.comment__bottom__input {
+  display: flex;
+  height: 50px;
+  textarea {
+    flex-grow: 1;
+    border: 0;
+  }
+}
+
+.post__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.post__footer {
+  display: flex;
+  justify-content: space-between;
+}
