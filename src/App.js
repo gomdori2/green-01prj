@@ -14,6 +14,7 @@ import Wrap from "./components/layout/Wrap";
 import Main from "./components/layout/Main";
 import "./css/calendar.css";
 import NoticeWrite from "./components/notice/NoticeWrite";
+import CalendarDetail from "./components/calendar/CalendarDetail";
 function App() {
   const [isLogin, setIsLogin] = useState(true);
   return (
@@ -40,7 +41,7 @@ function App() {
             <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
             <Route
               path="/reactCalendar/:pk"
-              element={<ReactCalendar />}
+              element={<CalendarDetail />}
             ></Route>
             <Route path="/plantResister" element={<PlantResister />}></Route>
 
