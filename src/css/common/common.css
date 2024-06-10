@@ -18,8 +18,13 @@ body {
   font-style: normal;
   font-weight: 400;
   font-optical-sizing: auto;
+  /* 스크롤 없애고 스크롤 기능만 살려둠 */
+  -ms-overflow-style: none;
 }
-
+/* 스크롤 없애고 스크롤 기능만 살려둠 */
+::-webkit-scrollbar {
+  display: none;
+}
 .header {
   height: 100px;
   width: 100%;

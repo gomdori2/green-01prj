@@ -7,12 +7,13 @@
     <link rel="stylesheet" href="./css/common/reset.css" />
     <link rel="stylesheet" href="./css/common/common.css" />
     <link rel="stylesheet" href="./css/signup.css" />
+    <script src="./js/signup.js"></script>
   </head>
   <body>
     <div class="wrap">
       <div class="inner">
         <header>
-          <button><</button>
+          <button class="back-btn"><</button>
           <!-- 뒤로가기 버튼 클릭시 로그인 화면으로 이동 -->
           <h2>회원가입</h2>
           <hr />
@@ -47,6 +48,8 @@
                     onclick="checkUserID()"
                   />
                 </div>
+                <p class="using-message">이미 사용중인 아이디입니다.</p>
+                <p class="available-message">사용 가능한 아이디입니다.</p>
                 <label for="password">비밀번호</label>
                 <input
                   type="password"
@@ -63,6 +66,7 @@
                   required
                   placeholder="비밀번호를 한번 더 입력해주세요"
                 />
+                <p class="pw-error-message">비밀번호가 일치하지 않습니다.</p>
                 <label for="name">이름</label>
                 <input
                   type="text"
