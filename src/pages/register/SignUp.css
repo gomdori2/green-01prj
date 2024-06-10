@@ -1,0 +1,123 @@
+.signup-wrap{
+  min-width: 500px;
+  height: 618px;
+}
+
+.signup-wrap header {
+  position: relative;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+  margin: 30px 0;
+}
+
+.signup-wrap header .back-btn {
+  position: absolute;
+  left: 10px;
+  top: 5px;
+}
+
+.signup-wrap header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.signup-wrap header hr{
+  border: 1px solid #ccc;
+}
+
+.signup-wrap label{
+  display: block;
+}
+
+label:after {
+  content: "*";
+  color: rgb(236, 5, 5);
+}
+
+.signup {
+  padding: 0px 20px 20px 20px;
+}
+
+.signupform-wrap {
+  margin-bottom: 20px;
+}
+
+.signup form {
+}
+
+.signup label {
+  display: block;
+  margin-bottom: 12px;
+}
+
+label:after {
+  content: "*";
+  color: rgb(236, 5, 5);
+}
+
+.signup input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.id-input-wrap {
+  display: flex;
+  gap: 10px;
+}
+
+.check-btn {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.using-message{
+  display: none;
+  font-size: 12px;
+  margin-bottom: 20px;
+  color: grey
+}
+
+.available-message{
+  display: none;
+  font-size: 12px;
+  margin-bottom: 20px;
+  color: grey
+}
+
+.pw-error-message{
+  font-size: 12px;
+  color: red;
+  margin-bottom: 20px;
+  display: none;
+}
+
+.next-btn {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.check-btn:hover {
+  background-color: #45a049;
+}
+
+.next-btn:hover {
+  background-color: #45a049;
+}

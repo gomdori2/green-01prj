@@ -1,45 +1,36 @@
-body {
-  background-color: beige;
+.register-wrap {
+  min-width: 500px;
+  height: 618px;
 }
 
-.header {
+.register-wrap header {
   position: relative;
-  padding: 20px;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px;
+  margin: 30px 0;
+}
+.register-wrap header .back-btn {
+  position: absolute;
+  left: 10px;
+  top: 5px;
 }
 
-.header hr {
-  border: 1px solid #ccc; /* 선 스타일 설정 */
-  margin-top: 10px; /* 선 위 여백 설정 */
-}
-
-.header h2 {
+.register-wrap header h2 {
   font-size: 18px;
   font-weight: 600;
   text-align: center;
   margin-bottom: 10px;
 }
 
-.header span {
-  position: absolute;
-  left: 20px;
-  top: 25px;
-  cursor: pointer;
-  border: none; /* 박스 테두리 제거 */
-  background-color: transparent; /* 배경색 제거 */
-  padding: 0; /* 내부 여백 제거 */
+.register-wrap header hr{
+  border: 1px solid #ccc;
 }
 
-.register {
-  padding: 0px 20px 20px 20px;
-}
-
-.register-wrap {
-  margin-bottom: 20px;
-}
-
-.register label {
+.register-wrap label{
   display: block;
-  margin-bottom: 12px;
+  padding: 10px;
 }
 
 label:after {
@@ -47,29 +38,32 @@ label:after {
   color: rgb(236, 5, 5);
 }
 
-.register-wrap form {
+.registerform-group {
   display: flex;
-  gap: 5px;
-}
-
-.register-wrap input {
+  align-items: center;
+  gap: 10px;
+  width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
+}
+.registerform-group form {
+}
+.registerform-group input {
+  padding: 10px;
+  /* margin-bottom: 10px; */
   border: 1px solid #ccc;
   border-radius: 5px;
+  width: 70%;
+  line-height: 20px;
 }
-
-.register-wrap input[type="email"] {
-  width: 100%;
-}
-
-.info-message {
-  display: none;
+.error-message {
+  /* display: none; */
+  line-height: 150%;
   font-size: 12px;
-  color: gray;
+  color: red;
 }
 
 .send-btn {
+  width: 30%;
   background-color: #4caf50;
   color: #fff;
   border: none;
@@ -77,9 +71,16 @@ label:after {
   cursor: pointer;
   font-size: 16px;
   padding: 10px;
-  margin-bottom: 10px;
+  /* margin: 20px 0px; */
 }
 
 .send-btn:hover {
   background-color: #45a049;
+}
+
+.info-message{
+  display: block;
+  padding: 10px;
+  font-size: 12px;
+  color: gray;
 }
