@@ -1,7 +1,6 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css"; // css import
 import CalendarList from "../../components/calendar/CalendarList";
 // ***************************************** 물주기 아이콘  ********************************************* //
 import { GiWateringCan } from "react-icons/gi";
@@ -16,7 +15,7 @@ import { IoIosSunny } from "react-icons/io";
 // ***************************************** 환경(일조량) 아이콘  ********************************************* //
 
 // ***************************************** 환기 아이콘  ********************************************* //
-import { FaWind } from "react-icons/fa6";
+import { FaSeedling, FaSun, FaTree, FaWind } from "react-icons/fa6";
 import { LuWind } from "react-icons/lu";
 import { BsWind } from "react-icons/bs";
 // ***************************************** 환기 아이콘  ********************************************* //
@@ -27,6 +26,8 @@ import { BiSolidTreeAlt } from "react-icons/bi";
 import { RiPlantFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
+import Loading from "../../components/common/Loading";
+import { toast } from "react-toastify";
 // ***************************************** 형태(가지치기) 아이콘  ********************************************* //
 
 const ReactCalendarStyle = styled.div`
@@ -156,15 +157,15 @@ const ReactCalendar = () => {
     //const filteredDay = ;
     // map으로 객체 1,2,3,4 값에 해당 되는 아이콘 빼기.
     const uiIcon = {
-      1: <PiSunFill size="20" color="yellow" />,
-      2: <GiPlantWatering size="20" color="#fff" />,
-      3: <FaWind size="20" color="blue" />,
-      4: <RiTreeFill size="20" color="#fff" />,
+      1: <FaSun size="20" style={{ color: "#fff" }} />,
+      2: <FaSeedling size="20" style={{ color: "#fff" }} />,
+      3: <FaWind size="20" color="#fff" />,
+      4: <FaTree size="20" style={{ color: "#fff" }} />,
     };
+
     if (dayResult) {
       return (
         <div>
-          <h2></h2>
           {dayResult.title.map(iconKey => (
             <span key={iconKey}>{uiIcon[iconKey]}</span>
           ))}
@@ -203,6 +204,7 @@ const ReactCalendar = () => {
     const dayResult = allData.find(item => checkDay === item.day);
     if (dayResult) {
       setClickInfo(dayResult);
+      toast.success("조회 되었습니다.");
     } else {
       setClickInfo(null);
     }
@@ -232,6 +234,7 @@ const ReactCalendar = () => {
           value={clickDay}
         />
       </div>
+      {/* <ToastContainer /> */}
       <TitleDivStyle>관리 기록</TitleDivStyle>
       <ReactCalendarListStyle>
         {calendarFilterData?.map((item, index) => (
