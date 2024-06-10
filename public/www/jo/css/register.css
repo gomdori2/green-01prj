@@ -63,7 +63,8 @@ label:after {
   width: 100%;
 }
 
-.register-wrap p {
+.prompt {
+  display: none;
   font-size: 12px;
   color: gray;
 }
