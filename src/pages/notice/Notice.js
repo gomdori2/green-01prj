@@ -60,9 +60,9 @@ function Notice({ posts = [] }) {
   return (
     <div className="inner">
       <article className="notice">
-        <h2>게시판</h2>
+        <h2 className="title">커뮤니티</h2>
         <div className="notice__top">
-          <button className="best-post btn">추천글</button>
+          <button className="best-post1 btn">추천글</button>
           <div className="notice__top__icon">
             <button className="view-Type">
               <BsCardText size={23} />
@@ -71,6 +71,7 @@ function Notice({ posts = [] }) {
               <BsViewStacked size={21} />
             </button>
             <select
+              className="select-box"
               name="itemsPerPage"
               value={itemsPerPage}
               onChange={handleItemsPerPageChange}

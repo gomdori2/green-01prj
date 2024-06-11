@@ -1,32 +1,5 @@
-// 리셋
-
-a {
-  text-decoration: none;
-}
-
-button {
-  border: 0;
-  font-size: inherit;
-}
-
-// 공통 CSS
-
-.inner {
-  max-width: 768px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.hidden {
-  display: none;
-}
-
-.btn {
-  padding: 8px 16px;
-  background-color: #4caf50;
-  color: white;
-  border-radius: 5px;
-}
+@import "./reset.scss";
+@import "./common.scss";
 
 // CSS
 

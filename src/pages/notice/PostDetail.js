@@ -28,6 +28,7 @@ const PostDetail = ({ posts, onDelete }) => {
   return (
     <div className="inner">
       <div className="post">
+        <h2 className="title">상세페이지</h2>
         <div className="post__header">
           <div className="post__header__left">
             <button
@@ -64,7 +65,6 @@ const PostDetail = ({ posts, onDelete }) => {
           </div>
         </div>
         <div className="post__content">
-          <p>디테일페이지</p>
           {post ? (
             <div>
               <content__top>

@@ -1,4 +1,5 @@
 import React from "react";
+import "./SearchContainer.scss";
 
 const SearchContainer = ({
   searchOption,

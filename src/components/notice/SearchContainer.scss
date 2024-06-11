@@ -1,0 +1,19 @@
+.search-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    align-self: center;
+  }
+}

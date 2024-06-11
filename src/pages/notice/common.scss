@@ -1,0 +1,33 @@
+// 색상
+
+// 공통 CSS
+
+.inner {
+  max-width: 768px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn {
+  padding: 8px 12px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 4px;
+  align-self: center;
+}
+
+// 임시
+
+img {
+  width: 40px;
+  height: 40px;
+}
+
+h2.title {
+  font-size: 24px;
+  font-weight: 700;
+}

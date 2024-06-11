@@ -1,45 +1,5 @@
-// 리셋
-
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-a {
-  text-decoration: none;
-}
-
-button {
-  border: 0;
-  font-size: inherit;
-}
-
-// 공통 CSS
-
-.inner {
-  max-width: 768px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.hidden {
-  display: none;
-}
-
-.btn {
-  padding: 8px 16px;
-  background-color: #4caf50;
-  color: white;
-  border-radius: 5px;
-}
-
-// 임시
-
-img {
-  width: 40px;
-  height: 40px;
-}
+@import "./reset.scss";
+@import "./common.scss";
 
 // CSS
 
