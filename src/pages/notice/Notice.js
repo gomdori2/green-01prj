@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Notice.scss";
 import { BsViewStacked, BsCardText } from "react-icons/bs";
+import SearchContainer from "../../components/notice/SearchContainer";
 
 function Notice({ posts = [] }) {
   const navigate = useNavigate();
@@ -120,20 +121,13 @@ function Notice({ posts = [] }) {
             </button>
           ))}
         </div>
-        <div className="search-container">
-          <select value={searchOption} onChange={handleSearchOptionChange}>
-            <option value="title">제목</option>
-            <option value="titleContent">제목+내용</option>
-            <option value="author">글쓴이</option>
-          </select>
-          <input
-            type="text"
-            placeholder="검색어를 입력하세요"
-            value={searchTerm}
-            onChange={handleSearchTermChange}
-          />
-          <button onClick={handleSearch}>검색</button>
-        </div>
+        <SearchContainer
+          searchOption={searchOption}
+          handleSearchOptionChange={handleSearchOptionChange}
+          searchTerm={searchTerm}
+          handleSearchTermChange={handleSearchTermChange}
+          handleSearch={handleSearch}
+        />
       </article>
     </div>
   );
