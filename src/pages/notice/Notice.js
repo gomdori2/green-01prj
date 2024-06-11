@@ -3,34 +3,42 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Notice.scss";
 
 function Notice({ posts = [] }) {
-  const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 20;
+  // posts 데이터를 props로 받음 (기본값: 빈 배열)
+  const navigate = useNavigate(); // 페이지 이동을 위한 hook
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+  const postsPerPage = 20; // 페이지당 보여줄 게시글 수
+
+  // 필터링된 게시글, 검색어, 검색 옵션 상태 관리
   const [filteredPosts, setFilteredPosts] = useState(posts);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchOption, setSearchOption] = useState("title");
 
+  // 게시글 행 클릭 시 상세 페이지로 이동
   const handleRowClick = postId => {
     navigate(`/notice/post/${postId}`);
   };
 
+  // posts 데이터가 변경될 때마다 필터링된 게시글 초기화
   useEffect(() => {
     setFilteredPosts(posts);
   }, [posts]);
 
+  // 페이지네이션 관련 계산
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost); // 현재 페이지에 보여줄 게시글
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(filteredPosts.length / postsPerPage); i++) {
-    pageNumbers.push(i);
+    pageNumbers.push(i); // 페이지 번호 배열 생성
   }
 
+  // 검색 처리 함수
   const handleSearch = () => {
-    let filtered = posts;
-
+    let filtered = posts; // 필터링된 결과 초기화
     if (searchTerm) {
+      // 검색어가 있을 때
       filtered = posts.filter(post => {
+        // 검색 조건에 맞는 게시글 필터링
         const searchFields = {
           title: post.title.toLowerCase(),
           titleContent: `${post.title.toLowerCase()} ${post.content.toLowerCase()}`,
@@ -39,15 +47,16 @@ function Notice({ posts = [] }) {
         return searchFields[searchOption].includes(searchTerm.toLowerCase());
       });
     }
-
     setFilteredPosts(filtered);
-    setCurrentPage(1);
+    setCurrentPage(1); // 검색 후 첫 페이지로 이동
   };
 
+  // 검색어 변경 처리 함수
   const handleSearchTermChange = event => {
     setSearchTerm(event.target.value);
   };
 
+  // 검색 옵션 변경 처리 함수
   const handleSearchOptionChange = event => {
     setSearchOption(event.target.value);
   };
