@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import "../register/Register.css";
+import "../register/register.css";
 import { useEffect, useState } from "react";
 import { getUserEmail } from "../../apis/user/userapi";
 
@@ -11,12 +11,12 @@ const Register = () => {
   const mailSubmit = async event => {
     // 웹브라우저 새로고침 방지 코드(기본기능 막기)
     event.preventDefault();
-    
+
     // 백엔드로 전달한 이메일주소
     const reqData = `/api/user/auth/email?email=${userEmail}`;
-      const result = await getUserEmail(reqData);
-      
-      console.log(result);   
+    const result = await getUserEmail(reqData);
+
+    console.log(result);
   };
 
   useEffect(() => {
