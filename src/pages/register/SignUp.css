@@ -1,4 +1,4 @@
-.signup-wrap{
+.signup-wrap {
   min-width: 500px;
   height: 618px;
 }
@@ -25,11 +25,11 @@
   margin-bottom: 10px;
 }
 
-.signup-wrap header hr{
+.signup-wrap header hr {
   border: 1px solid #ccc;
 }
 
-.signup-wrap label{
+.signup-wrap label {
   display: block;
 }
 
@@ -82,21 +82,21 @@ label:after {
   padding: 10px;
   margin-bottom: 10px;
 }
-.using-message{
+.using-message {
   display: none;
   font-size: 12px;
   margin-bottom: 20px;
-  color: grey
+  color: grey;
 }
 
-.available-message{
+.available-message {
   display: none;
   font-size: 12px;
   margin-bottom: 20px;
-  color: grey
+  color: grey;
 }
 
-.pw-error-message{
+.pw-error-message {
   font-size: 12px;
   color: red;
   margin-bottom: 20px;
