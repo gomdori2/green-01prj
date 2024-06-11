@@ -11,6 +11,7 @@
   padding: 10px;
   margin: 30px 0;
 }
+
 .register-wrap header .back-btn {
   position: absolute;
   left: 10px;
@@ -24,11 +25,11 @@
   margin-bottom: 10px;
 }
 
-.register-wrap header hr{
+.register-wrap header hr {
   border: 1px solid #ccc;
 }
 
-.register-wrap label{
+.register-wrap label {
   display: block;
   padding: 10px;
 }
@@ -62,7 +63,7 @@ label:after {
   color: red;
 }
 
-.send-btn {
+.send-button {
   width: 30%;
   background-color: #4caf50;
   color: #fff;
@@ -71,14 +72,13 @@ label:after {
   cursor: pointer;
   font-size: 16px;
   padding: 10px;
-  /* margin: 20px 0px; */
 }
 
-.send-btn:hover {
+.send-button:hover {
   background-color: #45a049;
 }
 
-.info-message{
+.info-message {
   display: block;
   padding: 10px;
   font-size: 12px;
