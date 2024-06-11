@@ -17,11 +17,14 @@ import Register from "./pages/register/Register";
 import PostWrite from "./pages/notice/PostWrite";
 import PostDetail from "./pages/notice/PostDetail";
 import PostEdit from "./pages/notice/PostEdit";
+import usePosts from "./hooks/usePosts"; // Custom hook import
 import SignUp from "./pages/register/SignUp";
 import SetNickName from "./pages/register/SetNickName";
 
+
 function App() {
   const [isLogin, setIsLogin] = useState(true);
+  const { posts, addPost, handleDelete, handleUpdate, postIdRef } = usePosts();
   // const [posts, setPosts] = useState(dummy); // 게시글 데이터 상태
   // const postIdRef = useRef(27); // useRef를 App 컴포넌트에서 관리
 
@@ -55,13 +58,23 @@ function App() {
           <Routes>
             {/* 공통 레이아웃 적용 */}
             <Route path="/" element={<Login />}></Route>
-            <Route path="/notice" element={<Notice />} />
-            <Route path="/notice/write" element={<PostWrite />} />
-            <Route path="/notice/post/:id" element={<PostDetail />} />
-            <Route path="/notice/edit/:id" element={<PostEdit />} />
+            <Route path="/notice" element={<Notice posts={posts} />} />
+            <Route
+              path="/notice/write"
+              element={<PostWrite addPost={addPost} postIdRef={postIdRef} />}
+            />
+            <Route
+              path="/notice/post/:postId"
+              element={<PostDetail posts={posts} onDelete={handleDelete} />}
+            />
+            <Route
+              path="/notice/edit/:postId"
+              element={<PostEdit posts={posts} onUpdate={handleUpdate} />}
+            />
             <Route path="/register" element={<Register/>}></Route>
             <Route path="/signup" element={<SignUp/>}></Route>
             <Route path="/set-nickname" element={<SetNickName/>}></Route>
+
             <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
             <Route
               path="/reactCalendar/:pk"
