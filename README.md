@@ -10,3 +10,4 @@
 
 - 파비콘
 - `<a href="https://www.flaticon.com/kr/free-icons/" title="화분 아이콘">화분 아이콘 제작자: DinosoftLabs - Flaticon</a>`
+- 수정
