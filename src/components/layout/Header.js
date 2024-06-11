@@ -25,7 +25,7 @@ const Header = ({ children }) => {
   const location = useLocation();
   console.log(typeof location.pathname);
   // 여기에 헤더를 제외하고 싶은 path를 넣으세요
-  const excludedPaths = ["/", "/register"];
+  const excludedPaths = ["/", "/register","/signup","/set-nickname"];
 
   if (!excludedPaths.includes(location.pathname)) {
     return (
