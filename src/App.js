@@ -18,6 +18,9 @@ import PostWrite from "./pages/notice/PostWrite";
 import PostDetail from "./pages/notice/PostDetail";
 import PostEdit from "./pages/notice/PostEdit";
 import usePosts from "./hooks/usePosts"; // Custom hook import
+import SignUp from "./pages/register/SignUp";
+import SetNickName from "./pages/register/SetNickName";
+
 
 function App() {
   const [isLogin, setIsLogin] = useState(true);
@@ -68,7 +71,10 @@ function App() {
               path="/notice/edit/:postId"
               element={<PostEdit posts={posts} onUpdate={handleUpdate} />}
             />
-            <Route path="/register" element={<Register></Register>}></Route>
+            <Route path="/register" element={<Register/>}></Route>
+            <Route path="/signup" element={<SignUp/>}></Route>
+            <Route path="/set-nickname" element={<SetNickName/>}></Route>
+
             <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
             <Route
               path="/reactCalendar/:pk"
