@@ -1,134 +1,145 @@
 import styled from "@emotion/styled";
+import PlantRegisterList from "../../components/plantresister/PlantRegisterList";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { FaSeedling, FaSun, FaTree, FaWind } from "react-icons/fa6";
-import axios from "axios";
-import TextArea from "../../components/common/TextArea";
-import PlantPublicDataList from "../../components/plantresister/PlantPublicDataList";
 
-const DetailDivStyle = styled.div`
+const ReactCalendarStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   width: 100%;
-  height: 100%;
-  background-color: #fff;
-  box-shadow: 2px 2px 2px gray;
-  border-radius: 4px 4px 4px 4px;
-  border: 1px solid gray;
-  padding: 20px;
 `;
-const DetailDivInnerStyle = styled.div`
-  form {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    gap: 20px;
-    max-width: 600px;
-  }
+const ReactCalendarListStyle = styled.div`
+  border: 1px solid gray;
+  width: 100%;
+  border-radius: 4px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 
-  div {
+  ul {
     display: flex;
-    align-items: center;
     width: 100%;
-    gap: 60px;
+    align-items: center;
+    //justify-content: space-around;
   }
-  input {
-    padding: 10px;
+  span {
+    display: block;
+    width: 100%;
+  }
+  li {
+    padding-left: 10px;
     height: 30px;
-    border: 1px solid gray !important;
-    font-size: 14px;
-    border-radius: 4px 4px 4px 4px !important;
+    width: 100%;
+    border-bottom: 1px solid gray;
+    display: flex;
+    font-size: 18px !important;
+    font-weight: 700;
+    color: black;
   }
-  .text-area-div {
+`;
+const TitleDivStyle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  padding-left: 5px;
+`;
+const CalendarListUlStyle = styled.div`
+  display: flex;
+  text-align: center;
+  a {
     display: block;
   }
-  .text-area-style {
-    margin-top: 15px;
-  }
-  label {
-    font-weight: bold;
-    font-size: 20px;
-    width: 30%;
-  }
 `;
-const PlantResister = () => {
-  // text area 때문에 만들어 놓음
-  const [textData, setTextData] = useState("");
-  const [plantsName, setPlantsName] = useState("");
-  const [plantsAlias, setPlantsAlias] = useState("");
-  const [isClicked, setIsClicked] = useState(false);
-  useEffect(() => {
-    const datas = { plantsName, textData, plantsAlias };
-    // post 할 데이터_상세페이지_수정, 삭제
 
-    console.log(datas);
-  }, [plantsAlias, setPlantsAlias, textData]);
-  const postData = async () => {
-    // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
-    console.log(
-      await axios.post("/api/post", { plantsAlias, textData, plantsName }),
-    );
-  };
-  // 해당 되는 컴포넌트 하나 필요
-  const getPlantsData = async () => {
-    // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
-    console.log(await axios.get("/api/getPlants"));
-  };
+const PlantResister = () => {
+  const todoApi = [
+    {
+      // pk
+      pk: 1,
+
+      // 제목 _ 없음
+      title: [1],
+
+      // 텍스트 > 상세페이지에 출력
+      text: "내용",
+
+      // 아이콘
+      gardning: [1, 2, 3, 4],
+
+      // 날짜
+      day: "2024-06-01",
+
+      // 이미지는 공공데이터
+      img: "./www/images/404Page.jpg",
+    },
+    {
+      pk: 2,
+      title: [1, 2, 3, 4],
+      gardning: [1, 3, 4],
+      text: "내용8",
+      day: "2024-05-31",
+      img: "/logo192.png",
+    },
+    {
+      pk: 3,
+      title: [1, 2, 3, 4],
+      gardning: [1, 2, 3],
+      text: "내용7",
+      day: "2024-05-31",
+      img: "/logo192.png",
+    },
+    {
+      pk: 4,
+      title: [1, 2, 3, 4],
+      gardning: [2, 3, 4],
+      text: "내용6",
+      day: "2024-05-31",
+      img: "/logo192.png",
+    },
+
+    {
+      pk: 5,
+      title: [3],
+      text: "내용3",
+      gardning: [1, 4],
+      day: "2024-06-04",
+      img: "/logo192.png",
+    },
+    {
+      pk: 6,
+      title: [4],
+      gardning: [1],
+      text: "내용4",
+      day: "2024-06-29",
+      img: "/logo192.png",
+    },
+  ];
+  const [todoApiData, setTodoApiData] = useState(todoApi);
+
   useEffect(() => {
-    console.log(isClicked);
-  }, [isClicked]);
+    setTodoApiData(todoApi);
+    console.log(todoApiData);
+  }, [todoApi]);
 
   return (
-    <DetailDivStyle>
-      <DetailDivInnerStyle>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-          }}
-        >
-          {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
-          <div>
-            <label>식물명</label>
-            <input type="checkbox" />
-            <input />
-            {isClicked ? (
-              <PlantPublicDataList setIsClicked={setIsClicked} />
-            ) : null}
-            <button
-              onClick={() =>
-                // 공공데이터 해당화면 만들어야함.
-                // getPlantsData();
-                setIsClicked(true)
-              }
-            >
-              식물불러오기
-            </button>
-          </div>
-          <div>
-            <label>식물 애칭(별명)</label>
-            <input />
-          </div>
-
-          <div className="text-area-div">
-            <label htmlFor="text">기타사항</label>
-            <div className="text-area-style">
-              <TextArea
-                valueDatas={textData}
-                setTextData={setTextData}
-              ></TextArea>
-            </div>
-          </div>
-          <div>
-            <button
-              onClick={() => {
-                postData();
-              }}
-            >
-              등록
-            </button>
-            <button onClick={() => {}}>뒤로가기</button>
-          </div>
-        </form>
-      </DetailDivInnerStyle>
-    </DetailDivStyle>
+    <ReactCalendarStyle>
+      <TitleDivStyle>관리 기록</TitleDivStyle>
+      <ReactCalendarListStyle>
+        <CalendarListUlStyle>
+          <li>
+            <span>이미지</span>
+            <span>애칭</span>
+            <span>가드닝활동</span>
+            <span>날짜</span>
+          </li>
+        </CalendarListUlStyle>
+        {todoApiData?.map(item => {
+          <PlantRegisterList key={item.pk} item={item} />;
+        })}
+        <button onClick={() => {}}>등록</button>
+      </ReactCalendarListStyle>
+    </ReactCalendarStyle>
   );
 };
 
