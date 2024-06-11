@@ -37,10 +37,6 @@ const PostWrite = ({ addPost, postIdRef }) => {
       <div className="post-add">
         <div className="post-add__top">
           <h2 className="title">글쓰기 페이지</h2>
-          <button className="btn" onClick={handleSubmit}>
-            등록
-          </button>
-
           {/* 구현 보류 */}
           <div className="form-group none">
             <label htmlFor="category">카테고리</label>
@@ -50,25 +46,27 @@ const PostWrite = ({ addPost, postIdRef }) => {
               <option value="질문답변">질문답변</option>
             </select>
           </div>
-
-          <form className="form-group">
-            <label htmlFor="title">제목</label>
-            <input
-              type="text"
-              name="title"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              placeholder="제목을 입력하세요"
-            />
-            <label htmlFor="content">내용</label>
-            <textarea
-              value={content}
-              name="content"
-              onChange={e => setContent(e.target.value)}
-              placeholder="내용을 입력하세요"
-            />
-          </form>
         </div>
+        <form className="form-group">
+          <label htmlFor="title">제목</label>
+          <input
+            type="text"
+            name="title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            placeholder="제목을 입력하세요"
+          />
+          <label htmlFor="content">내용</label>
+          <textarea
+            value={content}
+            name="content"
+            onChange={e => setContent(e.target.value)}
+            placeholder="내용을 입력하세요"
+          />
+          <button className="btn add-btn" onClick={handleSubmit}>
+            등록
+          </button>
+        </form>
       </div>
       {/* 모달 */}
       <StyledModal

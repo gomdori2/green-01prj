@@ -5,15 +5,22 @@
 
 .post-add {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   &__top {
     display: flex;
     flex-direction: column;
+    gap: 20px;
   }
 }
 
 .form-group {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
+
 .form-group label {
   display: block;
   margin-bottom: 5px;
@@ -33,4 +40,8 @@
 }
 .none {
   display: none;
+}
+
+.add-btn {
+  width: 100%;
 }
