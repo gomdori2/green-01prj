@@ -11,20 +11,17 @@ export const postUserLogin = async data => {
 export const getUserEmail = async data => {
   try {
     const response = await axios.get(data);
-    console.log(response)
+    console.log(response);
   } catch (error) {
     console.log(error);
   }
 };
 
-
 export const getUserSignUp = async data => {
   try {
-    const response = await axios.get(data)
-    console.log(response)
-    console.log(data)
+    const response = await axios.get(data);
+    console.log(response);
   } catch (error) {
-    console.log(error)
-    
+    console.log(error);
   }
-}
+};
