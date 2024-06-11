@@ -83,3 +83,12 @@
     border-radius: 5px;
   }
 }
+
+.view-Type {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background-color: transparent;
+  cursor: pointer;
+}
