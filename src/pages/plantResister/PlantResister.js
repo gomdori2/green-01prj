@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import PlantRegisterList from "../../components/plantresister/PlantRegisterList";
 import { useEffect, useState } from "react";
-
+// 클래스로 바꿔라 제발
 const ReactCalendarStyle = styled.div`
   display: flex;
   flex-direction: column;
@@ -120,23 +120,24 @@ const PlantResister = () => {
   useEffect(() => {
     setTodoApiData(todoApi);
     console.log(todoApiData);
-  }, [todoApi]);
+  }, []);
 
   return (
     <ReactCalendarStyle>
-      <TitleDivStyle>관리 기록</TitleDivStyle>
+      <TitleDivStyle>
+        등록 식물 리스트_ 기타사항늘리고 / 이미지 줄이기 height 높이기
+      </TitleDivStyle>
       <ReactCalendarListStyle>
         <CalendarListUlStyle>
           <li>
             <span>이미지</span>
             <span>애칭</span>
-            <span>가드닝활동</span>
-            <span>날짜</span>
+            <span>기타사항</span>
           </li>
         </CalendarListUlStyle>
-        {todoApiData?.map(item => {
-          <PlantRegisterList key={item.pk} item={item} />;
-        })}
+        {todoApiData?.map(item => (
+          <PlantRegisterList key={item.pk} item={item} />
+        ))}
         <button onClick={() => {}}>등록</button>
       </ReactCalendarListStyle>
     </ReactCalendarStyle>

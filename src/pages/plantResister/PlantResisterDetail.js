@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import PlantPublicDataList from "../../components/plantresister/PlantPublicDataList";
 import TextArea from "../../components/common/TextArea";
 
+// 클래스로 바꿔라 제발
 const DetailDivStyle = styled.div`
   width: 100%;
   height: 100%;
@@ -53,6 +54,9 @@ const PlantResisterDetail = () => {
   const [plantsName, setPlantsName] = useState("");
   const [plantsAlias, setPlantsAlias] = useState("");
   const [isClicked, setIsClicked] = useState(false);
+  // 팝업 데이터 받아와야함
+  const [publicPlantsData, setPublicPlantsData] = useState({});
+
   useEffect(() => {
     const datas = { plantsName, textData, plantsAlias };
     // post 할 데이터_상세페이지_수정, 삭제
@@ -85,8 +89,10 @@ const PlantResisterDetail = () => {
           {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
           <div>
             <label>식물명</label>
-            <input type="checkbox" />
-            <input />
+            <div>
+              <input type="checkbox" />
+              <input />
+            </div>
             {isClicked ? (
               <PlantPublicDataList setIsClicked={setIsClicked} />
             ) : null}
