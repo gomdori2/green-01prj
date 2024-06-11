@@ -94,7 +94,7 @@ function Notice({ posts = [] }) {
             <tr>
               <th>번호</th>
               <th>제목</th>
-              <th>작성자</th>
+              <th>글쓴이</th>
               <th>작성일</th>
               <th>조회</th>
               <th>좋아요</th>

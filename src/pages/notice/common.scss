@@ -1,4 +1,17 @@
-// 색상
+// 색상 변수 선언
+$primary-color: #4caf50;
+$secondary-color: #2ecc71;
+$font-color: #2c3e50;
+
+// 폰트 크기 변수 선언
+$font-size-small: 12px;
+$font-size-medium: 16px;
+$font-size-large: 20px;
+
+// 간격 변수 선언
+$spacing-small: 8px;
+$spacing-medium: 16px;
+$spacing-large: 24px;
 
 // 공통 CSS
 
@@ -14,7 +27,7 @@
 
 .btn {
   padding: 8px 12px;
-  background-color: #4caf50;
+  background-color: $primary-color;
   color: white;
   border-radius: 4px;
   align-self: center;
@@ -35,4 +48,10 @@ h2.title {
 .flex-gap-4 {
   display: flex;
   gap: 4px;
+}
+
+textarea {
+  min-height: 300px;
+  line-height: 1.5;
+  resize: none;
 }

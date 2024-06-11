@@ -67,17 +67,15 @@ const PostDetail = ({ posts, onDelete }) => {
         <div className="post__content">
           {post ? (
             <div>
-              <content__top>
-                <content__top__title>{post.title}</content__top__title>
-              </content__top>
+              <div className="content__top">
+                <h2 className="title">{post.title}</h2>
+              </div>
 
               <div className="content__top__info">
                 <div className="content__top__info__user">
-                  <div>
-                    <img src="" alt="" />
-                  </div>
+                  <div>{/* <img src="" alt="" /> */}</div>
                   <div className="content__top__info__profile">
-                    <div className="username">작성자: {post.author}</div>
+                    <div className="username">글쓴이: {post.author}</div>
                     <div className="content__top__info__meta">
                       <div className="time">작성일: {post.date}</div>
                       <div className="views">조회수: {post.views}</div>
@@ -85,17 +83,16 @@ const PostDetail = ({ posts, onDelete }) => {
                     </div>
                   </div>
                 </div>
-                <div className="btn">댓글</div>
               </div>
               <div className="content__center content">{post.content}</div>
 
               <div className="content__bottom">
-                <div className="content__bottom__user-info">
+                {/* <div className="content__bottom__user-info">
                   <img src="" alt="" />
                   <a href="#" className="user-posts">
                     죠르디님의 게시글 더보기
                   </a>
-                </div>
+                </div> */}
                 <div>
                   <a href="#" className="btn1">
                     좋아요 10

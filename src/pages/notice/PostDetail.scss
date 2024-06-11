@@ -13,12 +13,18 @@
     flex-direction: column;
     gap: 20px;
   }
+  &__header {
+    &__left {
+      display: flex;
+      gap: 4px;
+    }
+    &__right {
+      display: flex;
+      gap: 4px;
+    }
+  }
 
   .content__top {
-    &__title {
-      font-size: 32px;
-      font-weight: 700;
-    }
     &__info {
       display: flex;
       justify-content: space-between;
@@ -40,6 +46,7 @@
 
   .content__center {
     line-height: 1.5;
+    padding: 20px 0;
   }
 
   .content__bottom {

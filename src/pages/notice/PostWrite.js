@@ -12,12 +12,14 @@ const PostWrite = ({ addPost, postIdRef }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = event => {
+    event.preventDefault(); // 페이지 새로고침 방지
+
     const newPost = {
       postId: postIdRef.current, // props로 받은 postIdRef 사용
       title,
       content,
-      author: "작성자", // 작성자 정보 추가 (필요에 따라 수정)
+      author: "글쓴이", // 글쓴이 정보 추가 (필요에 따라 수정)
       date: new Date().toLocaleDateString(), // 현재 날짜
       views: 0,
       likes: 0,
@@ -47,7 +49,7 @@ const PostWrite = ({ addPost, postIdRef }) => {
             </select>
           </div>
         </div>
-        <form className="form-group">
+        <form className="form-group" onSubmit={handleSubmit}>
           <label htmlFor="title">제목</label>
           <input
             type="text"
@@ -63,7 +65,7 @@ const PostWrite = ({ addPost, postIdRef }) => {
             onChange={e => setContent(e.target.value)}
             placeholder="내용을 입력하세요"
           />
-          <button className="btn add-btn" onClick={handleSubmit}>
+          <button className="btn add-btn" type="submit">
             등록
           </button>
         </form>
