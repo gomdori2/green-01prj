@@ -45,13 +45,24 @@ const DetailDivInnerStyle = styled.div`
   label {
     font-weight: bold;
     font-size: 20px;
-    width: 14%;
+    width: 25%;
+  }
+  .text-area-div {
+    // 임시로 이래둠
+    label::after {
+      content: "" !important;
+    }
   }
 `;
 const IconStyle = styled.div`
   margin-left: 13px;
   display: flex;
   gap: 10px;
+`;
+const GardningIconStyle = styled.div`
+  display: flex;
+  gap: 13px !important;
+  margin-left: 25px;
 `;
 const CalendarDetail = () => {
   const location = useLocation();
@@ -92,7 +103,6 @@ const CalendarDetail = () => {
     3: <FaWind size="20" color="#fff" />,
     4: <FaTree size="20" style={{ color: "#fff" }} />,
   };
-  console.log(checkedValues);
   return (
     <DetailDivStyle>
       <DetailDivInnerStyle>
@@ -103,16 +113,15 @@ const CalendarDetail = () => {
         >
           {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
           <div>
-            <label>날짜</label>
+            <label>관리날짜</label>
             <input id="day" value={day} readOnly />
           </div>
           <div>
-            <label>순번</label>
-            <input value={pk} readOnly />
+            <label>등록식물</label>
+            <input id="day" value={day} readOnly />
           </div>
-
-          <div>
-            <label htmlFor="title">제목</label>
+          {/* <div>
+            <label htmlFor="title"></label>
             <input
               id="title"
               value={titleData}
@@ -120,13 +129,13 @@ const CalendarDetail = () => {
                 setTitilData(e.target.value);
               }}
             />
-          </div>
+          </div> */}
           <div>
             {/* 가드닝 이미지 왔다갔다 시키기 / 거기에 체크박스 none + label로 아이콘에 checkbox 사용해서 값 넘기기 */}
             <label htmlFor="title">가드닝</label>
             <IconStyle>
               <div>
-                <div style={{ display: "flex", gap: "10px" }}>
+                <GardningIconStyle>
                   <div
                     onClick={() => handleIconClick("1")}
                     style={{
@@ -195,7 +204,7 @@ const CalendarDetail = () => {
                   >
                     <FaTree style={{ color: "#fff" }} />
                   </div>
-                </div>
+                </GardningIconStyle>
               </div>
             </IconStyle>
           </div>
@@ -203,7 +212,7 @@ const CalendarDetail = () => {
             <strong>체크된 값 </strong> {checkedValues.join(", ")}
           </div>
           <div className="text-area-div">
-            <label htmlFor="text">특이사항</label>
+            <label htmlFor="text">기타사항</label>
             <div className="text-area-style">
               <TextArea
                 valueDatas={textData}

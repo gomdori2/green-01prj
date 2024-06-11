@@ -41,13 +41,24 @@ const ReactCalendarListStyle = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 5px;
+
+  ul {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    //justify-content: space-around;
+  }
+  span {
+    display: block;
+    width: 100%;
+  }
   li {
     padding-left: 10px;
     height: 30px;
+    width: 100%;
     border-bottom: 1px solid gray;
     display: flex;
-    gap: 30px;
     font-size: 18px !important;
     font-weight: 700;
     color: black;
@@ -58,6 +69,13 @@ const TitleDivStyle = styled.div`
   font-weight: bold;
   color: black;
   padding-left: 5px;
+`;
+const CalendarListUlStyle = styled.div`
+  display: flex;
+  text-align: center;
+  a {
+    display: block;
+  }
 `;
 const ReactCalendar = () => {
   const [calendarFilterData, setCalendarFilterData] = useState([]);
@@ -94,18 +112,26 @@ const ReactCalendar = () => {
     {
       // pk
       pk: 1,
-      // 가드닝
+
+      // 제목 _ 없음
       title: [1],
-      // 텍스트
-      text: "내용1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+
+      // 텍스트 > 상세페이지에 출력
+      text: "내용",
+
+      // 아이콘
+      gardning: [1, 2, 3, 4],
+
       // 날짜
       day: "2024-06-01",
+
       // 이미지는 공공데이터
-      img: "/logo192.png",
+      img: "./www/images/404Page.jpg",
     },
     {
       pk: 2,
       title: [1, 2, 3, 4],
+      gardning: [1, 3, 4],
       text: "내용8",
       day: "2024-05-31",
       img: "/logo192.png",
@@ -113,6 +139,7 @@ const ReactCalendar = () => {
     {
       pk: 3,
       title: [1, 2, 3, 4],
+      gardning: [1, 2, 3],
       text: "내용7",
       day: "2024-05-31",
       img: "/logo192.png",
@@ -120,6 +147,7 @@ const ReactCalendar = () => {
     {
       pk: 4,
       title: [1, 2, 3, 4],
+      gardning: [2, 3, 4],
       text: "내용6",
       day: "2024-05-31",
       img: "/logo192.png",
@@ -129,12 +157,14 @@ const ReactCalendar = () => {
       pk: 5,
       title: [3],
       text: "내용3",
+      gardning: [1, 4],
       day: "2024-06-04",
       img: "/logo192.png",
     },
     {
       pk: 6,
       title: [4],
+      gardning: [1],
       text: "내용4",
       day: "2024-06-29",
       img: "/logo192.png",
@@ -237,6 +267,14 @@ const ReactCalendar = () => {
       {/* <ToastContainer /> */}
       <TitleDivStyle>관리 기록</TitleDivStyle>
       <ReactCalendarListStyle>
+        <CalendarListUlStyle>
+          <li>
+            <span>이미지</span>
+            <span>애칭</span>
+            <span>가드닝활동</span>
+            <span>날짜</span>
+          </li>
+        </CalendarListUlStyle>
         {calendarFilterData?.map((item, index) => (
           <CalendarList key={item.pk} item={item}></CalendarList>
         ))}
