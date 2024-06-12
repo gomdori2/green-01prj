@@ -15,13 +15,13 @@ const PostDetail = ({ onDelete }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log(writerSeq);
     const fetchData = async () => {
       try {
         setLoading(true);
         const res = await axios.get(
           `/api/community/detail?boardSeq=${writerSeq}`,
         );
+        console.log("cc", res.data.data);
         setPost(res.data);
       } catch (error) {
         setError(error);
@@ -110,7 +110,7 @@ const PostDetail = ({ onDelete }) => {
                     <div className="content__top__info__meta">
                       <div className="time">작성일: {post.data.inputDt}</div>
                       <div className="views">조회수: {post.data.hit}</div>
-                      <div className="like">좋아요: {post.data.fav}</div>
+                      <div className="like">추천수: {post.data.fav}</div>
                     </div>
                   </div>
                 </div>
@@ -125,10 +125,8 @@ const PostDetail = ({ onDelete }) => {
                   </a>
                 </div> */}
                 <div>
-                  <a href="#" className="btn1">
-                    좋아요 10
-                  </a>
-                  <span>댓글수 5</span>
+                  <span>추천수: {post.data.hit}</span>
+                  <span>댓글수: </span>
                 </div>
               </div>
               <StyledModal
