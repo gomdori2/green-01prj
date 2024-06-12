@@ -12,6 +12,8 @@
     display: flex;
     justify-content: center;
     justify-content: space-between;
+    height: 40px;
+    background-color: #fff;
     &__icon {
       display: flex;
       align-items: center;
@@ -54,9 +56,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: 6px;
   background-color: transparent;
   cursor: pointer;
+  border: 1px solid #333;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
 }
 
 .select-box {
