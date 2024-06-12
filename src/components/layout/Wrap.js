@@ -1,19 +1,15 @@
 import styled from "@emotion/styled";
 
 const WrapStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   max-width: 768px;
   margin: 0 auto;
-  .dd {
-    width: 100%;
-  }
 `;
 
 const Wrap = ({ children }) => {
-  return (
-    <WrapStyle>
-      <div className="dd">{children}</div>
-    </WrapStyle>
-  );
+  return <WrapStyle>{children}</WrapStyle>;
 };
 
 export default Wrap;
