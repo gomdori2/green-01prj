@@ -1,0 +1,25 @@
+.search-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  select {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    padding: 4px 8px;
+  }
+  input[type="text"] {
+    padding: 8px;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    align-self: center;
+  }
+}

@@ -12,12 +12,14 @@ const PostWrite = ({ addPost, postIdRef }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = event => {
+    event.preventDefault(); // 페이지 새로고침 방지
+
     const newPost = {
       postId: postIdRef.current, // props로 받은 postIdRef 사용
       title,
       content,
-      author: "작성자", // 작성자 정보 추가 (필요에 따라 수정)
+      author: "글쓴이", // 글쓴이 정보 추가 (필요에 따라 수정)
       date: new Date().toLocaleDateString(), // 현재 날짜
       views: 0,
       likes: 0,
@@ -36,11 +38,7 @@ const PostWrite = ({ addPost, postIdRef }) => {
     <div className="inner">
       <div className="post-add">
         <div className="post-add__top">
-          <h2>글쓰기</h2>
-          <button className="btn" onClick={handleSubmit}>
-            등록
-          </button>
-
+          <h2 className="title">글쓰기 페이지</h2>
           {/* 구현 보류 */}
           <div className="form-group none">
             <label htmlFor="category">카테고리</label>
@@ -50,25 +48,27 @@ const PostWrite = ({ addPost, postIdRef }) => {
               <option value="질문답변">질문답변</option>
             </select>
           </div>
-
-          <form className="form-group">
-            <label htmlFor="title">제목</label>
-            <input
-              type="text"
-              name="title"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              placeholder="제목을 입력하세요"
-            />
-            <label htmlFor="content">내용</label>
-            <textarea
-              value={content}
-              name="content"
-              onChange={e => setContent(e.target.value)}
-              placeholder="내용을 입력하세요"
-            />
-          </form>
         </div>
+        <form className="form-group" onSubmit={handleSubmit}>
+          <label htmlFor="title">제목</label>
+          <input
+            type="text"
+            name="title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            placeholder="제목을 입력하세요"
+          />
+          <label htmlFor="content">내용</label>
+          <textarea
+            value={content}
+            name="content"
+            onChange={e => setContent(e.target.value)}
+            placeholder="내용을 입력하세요"
+          />
+          <button className="btn add-btn" type="submit">
+            등록
+          </button>
+        </form>
       </div>
       {/* 모달 */}
       <StyledModal

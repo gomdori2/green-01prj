@@ -44,7 +44,7 @@ const PostEdit = ({ posts, onUpdate }) => {
     <div className="inner">
       <div className="post-add">
         <div className="post-add__top">
-          <h2>글쓰기</h2>
+          <h2 className="title">글 수정 페이지</h2>
           <button className="btn" onClick={handleUpdate}>
             수정
           </button>
