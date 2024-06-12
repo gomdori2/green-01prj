@@ -49,10 +49,7 @@ function App() {
               path="/notice/post/:writerSeq"
               element={<PostDetail posts={posts} onDelete={handleDelete} />}
             />
-            <Route
-              path="/notice/edit/:writerSeq"
-              element={<PostEdit posts={posts} onUpdate={handleUpdate} />}
-            />
+            <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
             <Route path="/register" element={<Register />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/set-nickname" element={<SetNickName />}></Route>
