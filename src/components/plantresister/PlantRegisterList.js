@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+// 클래스로 바꿔라 제발
 const PlantRegListUlStyle = styled.div`
   display: flex;
   width: 100%;
@@ -36,7 +37,6 @@ const PlantRegisterList = ({ item }) => {
           <span></span>
           <span>{text}</span>
           <span>{text}</span>
-          <span>{day}</span>
         </li>
       </Link>
     </PlantRegListUlStyle>

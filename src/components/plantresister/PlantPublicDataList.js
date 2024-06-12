@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import { useState } from "react";
+// 클래스로 바꿔라 제발
 const FixedArea = styled.div`
   position: fixed;
   top: 0;
@@ -10,9 +12,10 @@ const FixedArea = styled.div`
   display: none;
 `;
 const PlantPublicDataListStyle = styled.div`
+  padding: 20px;
   position: absolute;
-  top: 20%;
-  left: 50%;
+  top: 15%;
+  left: 38%;
   display: none;
   flex-direction: column;
   margin: 0 auto;
@@ -20,9 +23,26 @@ const PlantPublicDataListStyle = styled.div`
   background-color: #fff;
   max-width: 500px;
   height: 600px;
+  border-radius: 10px;
+  box-shadow: 4px gray;
+  @media screen and (max-width: 1024px) {
+    transition: left 0.3s;
+    left: 23%;
+  }
+  @media screen and (max-width: 700px) {
+    transition: left 0.3s;
+    left: 10%;
+  }
+  label {
+    display: block;
+    width: 100%;
+  }
   li {
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    text-align: center;
   }
   a {
     display: block;
@@ -30,6 +50,9 @@ const PlantPublicDataListStyle = styled.div`
 `;
 
 const PlantPublicDataList = ({ setIsClicked }) => {
+  // 팝업에서 데이터 빼서 앞에 input에 넘기기
+  // 앞에 있는 곳에서 set 만 넘겨서 담아서 올릴 것
+
   return (
     <>
       <FixedArea
@@ -44,16 +67,36 @@ const PlantPublicDataList = ({ setIsClicked }) => {
       {/* 팝업이랑 구분해놓음 */}
       {/* 체크박스 click 시 직접 등록 / 아니면 식물 불러오기 버튼으로 ... */}
       <PlantPublicDataListStyle id="popupInner">
-        <div>공공데이터</div>
+        <div>식물이름찾기</div>
+        <li>
+          <div>
+            <div className="search-Box-Inner">
+              <label style={{ width: "100px" }}>식물명</label>
+              <div>
+                <input />
+                <button>검색</button>
+              </div>
+            </div>
+          </div>
+        </li>
         <li>
           <div>
             <label>이미지</label>
-            <img src=""></img>
           </div>
           <div>
             <label>식물명</label>
           </div>
         </li>
+        {
+          <li>
+            <div>
+              <img src=""></img>
+            </div>
+            <div>
+              <span>111</span>
+            </div>
+          </li>
+        }
       </PlantPublicDataListStyle>
     </>
   );
