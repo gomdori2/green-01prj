@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Notice.scss";
 import { BsViewStacked, BsCardText } from "react-icons/bs";
 import SearchContainer from "../../components/notice/SearchContainer";
+import axios from "axios";
 
 function Notice({ posts = [] }) {
   const navigate = useNavigate();
@@ -57,6 +58,30 @@ function Notice({ posts = [] }) {
     setCurrentPage(1);
   };
 
+  // 게시물 데이터 불러오기 작업
+
+  const [getData, setGetData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 데이터 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("api/community/list");
+        setGetData(res.data.data.list);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
     <div className="inner">
       <article className="notice">
@@ -96,19 +121,22 @@ function Notice({ posts = [] }) {
               <th>제목</th>
               <th>글쓴이</th>
               <th>작성일</th>
+              <th>추천</th>
               <th>조회</th>
-              <th>좋아요</th>
             </tr>
           </thead>
           <tbody>
-            {currentPosts.map(post => (
-              <tr key={post.postId} onClick={() => handleRowClick(post.postId)}>
-                <td>{post.postId}</td>
+            {getData.map(post => (
+              <tr
+                key={post.boardSeq}
+                onClick={() => handleRowClick(post.postId)}
+              >
+                <td>{post.boardSeq}</td>
                 <td>{post.title}</td>
-                <td>{post.author}</td>
-                <td>{post.date}</td>
-                <td>{post.views}</td>
-                <td>{post.likes}</td>
+                <td>{post.writerName}</td>
+                <td>{post.inputDt}</td>
+                <td>{post.fav}</td>
+                <td>{post.hit}</td>
               </tr>
             ))}
           </tbody>
