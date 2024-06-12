@@ -25,7 +25,7 @@ import "./css/calendar.css";
 
 function App() {
   const [isLogin, setIsLogin] = useState(true);
-  const { posts, addPost, handleDelete, handleUpdate, postIdRef } = usePosts();
+  const { posts, addPost, handleDelete, handleUpdate } = usePosts();
   return (
     <BrowserRouter>
       <Wrap>
@@ -43,14 +43,14 @@ function App() {
             <Route path="/notice" element={<Notice posts={posts} />} />
             <Route
               path="/notice/write"
-              element={<PostWrite addPost={addPost} postIdRef={postIdRef} />}
+              element={<PostWrite addPost={addPost} />}
             />
             <Route
-              path="/notice/post/:postId"
+              path="/notice/post/:writerSeq"
               element={<PostDetail posts={posts} onDelete={handleDelete} />}
             />
             <Route
-              path="/notice/edit/:postId"
+              path="/notice/edit/:writerSeq"
               element={<PostEdit posts={posts} onUpdate={handleUpdate} />}
             />
             <Route path="/register" element={<Register />}></Route>

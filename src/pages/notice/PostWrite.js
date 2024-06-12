@@ -7,40 +7,15 @@ import axios from "axios";
 
 Modal.setAppElement("#root"); // 모달 앱 엘리먼트 설정
 
-const PostWrite = ({ addPost, postIdRef }) => {
+const PostWrite = () => {
   const [showModal, setShowModal] = useState(false); // 모달 상태
+  const [newPostId, setNewPostId] = useState(null); // 새로 생성된 게시글 id 상태
   const navigate = useNavigate(); // useNavigate 훅 사용
-  // const [title, setTitle] = useState("");
-  // const [content, setContent] = useState("");
-
-  // const handleSubmit = event => {
-  //   event.preventDefault(); // 페이지 새로고침 방지
-
-  //   const newPost = {
-  //     postId: postIdRef.current, // props로 받은 postIdRef 사용
-  //     title,
-  //     content,
-  //     author: "글쓴이", // 글쓴이 정보 추가 (필요에 따라 수정)
-  //     date: new Date().toLocaleDateString(), // 현재 날짜
-  //     views: 0,
-  //     likes: 0,
-  //   };
-  //   addPost(newPost); // App 컴포넌트의 addPost 함수 호출
-  //   // 모달 열기
-  //   setShowModal(true);
-  // };
-
-  const handleCloseModal = destination => {
-    setShowModal(false);
-    navigate(destination); // 선택한 페이지로 이동
-  };
-
-  // 글쓰고 데이터 전송
 
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    writerSeq: "1",
+    writerSeq: "1", // UID에 해당
   });
 
   const handleChange = e => {
@@ -56,9 +31,23 @@ const PostWrite = ({ addPost, postIdRef }) => {
     try {
       const response = await axios.post("/api/community/", formData);
       console.log("서버 응답:", response.data);
+      setNewPostId(response.data.data); // 서버로부터 받아온 id 저장
+      setShowModal(true); // 데이터 전송 후 모달 열기
+      // 폼 초기화
+      setFormData({
+        title: "",
+        content: "",
+        writerSeq: "1",
+      });
     } catch (error) {
       console.error("서버 요청 중 오류 발생:", error);
+      alert("서버 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
+  };
+
+  const handleCloseModal = destination => {
+    setShowModal(false);
+    navigate(destination); // 선택한 페이지로 이동
   };
 
   return (
@@ -115,11 +104,7 @@ const PostWrite = ({ addPost, postIdRef }) => {
           <button onClick={() => handleCloseModal("/notice")}>
             게시판 목록
           </button>
-          <button
-            onClick={() =>
-              handleCloseModal(`/notice/post/${postIdRef.current - 1}`)
-            }
-          >
+          <button onClick={() => handleCloseModal(`/notice/post/${newPostId}`)}>
             게시글 상세
           </button>
         </div>
@@ -127,6 +112,7 @@ const PostWrite = ({ addPost, postIdRef }) => {
     </div>
   );
 };
+
 export default PostWrite;
 
 const StyledModal = styled(Modal)`
@@ -145,7 +131,7 @@ const StyledModal = styled(Modal)`
   gap: 40px;
 
   p {
-    margin: 0;
+    margin: 10px 0;
   }
 
   button {
