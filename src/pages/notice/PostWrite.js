@@ -1,37 +1,64 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal"; // react-modal 라이브러리 사용
 import "./PostWrite.scss";
+import axios from "axios";
 
 Modal.setAppElement("#root"); // 모달 앱 엘리먼트 설정
 
 const PostWrite = ({ addPost, postIdRef }) => {
   const [showModal, setShowModal] = useState(false); // 모달 상태
   const navigate = useNavigate(); // useNavigate 훅 사용
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  // const [title, setTitle] = useState("");
+  // const [content, setContent] = useState("");
 
-  const handleSubmit = event => {
-    event.preventDefault(); // 페이지 새로고침 방지
+  // const handleSubmit = event => {
+  //   event.preventDefault(); // 페이지 새로고침 방지
 
-    const newPost = {
-      postId: postIdRef.current, // props로 받은 postIdRef 사용
-      title,
-      content,
-      author: "글쓴이", // 글쓴이 정보 추가 (필요에 따라 수정)
-      date: new Date().toLocaleDateString(), // 현재 날짜
-      views: 0,
-      likes: 0,
-    };
-    addPost(newPost); // App 컴포넌트의 addPost 함수 호출
-    // 모달 열기
-    setShowModal(true);
-  };
+  //   const newPost = {
+  //     postId: postIdRef.current, // props로 받은 postIdRef 사용
+  //     title,
+  //     content,
+  //     author: "글쓴이", // 글쓴이 정보 추가 (필요에 따라 수정)
+  //     date: new Date().toLocaleDateString(), // 현재 날짜
+  //     views: 0,
+  //     likes: 0,
+  //   };
+  //   addPost(newPost); // App 컴포넌트의 addPost 함수 호출
+  //   // 모달 열기
+  //   setShowModal(true);
+  // };
 
   const handleCloseModal = destination => {
     setShowModal(false);
     navigate(destination); // 선택한 페이지로 이동
+  };
+
+  // 글쓰고 데이터 전송
+
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    writerSeq: "1",
+  });
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/community/", formData);
+      console.log("서버 응답:", response.data);
+    } catch (error) {
+      console.error("서버 요청 중 오류 발생:", error);
+    }
   };
 
   return (
@@ -56,8 +83,8 @@ const PostWrite = ({ addPost, postIdRef }) => {
           <input
             type="text"
             name="title"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
+            value={formData.title}
+            onChange={handleChange}
             placeholder="제목을 입력하세요"
             required
           />
@@ -65,9 +92,9 @@ const PostWrite = ({ addPost, postIdRef }) => {
             내용
           </label>
           <textarea
-            value={content}
             name="content"
-            onChange={e => setContent(e.target.value)}
+            value={formData.content}
+            onChange={handleChange}
             placeholder="내용을 입력하세요"
             required
           />
