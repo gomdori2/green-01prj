@@ -13,6 +13,7 @@ const Register = () => {
   const mailSubmit = async event => {
     event.preventDefault();
 
+
     // 이메일 형식 유효성 검사
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(userEmail)) {
@@ -20,13 +21,18 @@ const Register = () => {
       return;
     }
 
+
     // 백엔드로 전달한 이메일주소
     const reqData = `/api/user/auth/email?email=${userEmail}`;
     const result = await getUserEmail(reqData);
+    console.log(result);
 
-    // 메일 전송 완료 알림
-    alert("메일이 전송되었습니다. 메일에서 인증코드를 확인해주세요");
-    setEmailSend(true);
+    if (result.data.code === 1) {
+      //메일 전송 완료 알림
+      alert("메일이 전송되었습니다. 메일에서 인증코드를 확인해주세요");
+      setEmailSend(true);
+      // 인증 코드를 작성하는 곳을 작업시작
+    }
   };
 
   // 인증 코드 확인 시 처리할 함수

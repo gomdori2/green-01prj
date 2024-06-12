@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import "../login/login.css";
 import { postUserLogin } from "../../apis/user/userapi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  // const [loginId, setLoginId] = useState("jowonyoung1");
+  // const [loginPw, setLoginPw] = useState("asdf@1234");
   const [loginId, setLoginId] = useState("");
   const [loginPw, setLoginPw] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   // 로그인시 처리할 함수
   const handleSubmit = async event => {
@@ -22,8 +25,13 @@ const Login = () => {
     // console.log("백엔드로 전달할 로그인비번", loginPw);
     const reqData = `/api/user/login?id=${loginId}&pwd=${loginPw}`;
     const result = await postUserLogin(reqData);
-    setErrorMessage(result.message);
-    console.log(result);
+    if (result.code === 1) {
+      // 로그인이 성공했을 때만 처리
+      alert("로그인되었습니다!");
+      navigate("/notice");
+    } else {
+      setErrorMessage(result.message); // 로그인 실패 메시지 출력
+    }
   };
 
   useEffect(() => {
@@ -36,7 +44,11 @@ const Login = () => {
         <header>식물 일정 관리</header>
         <h1>소제목</h1>
         <div className="loginform-group">
-          <form>
+          <form
+            onSubmit={e => {
+              handleSubmit(e);
+            }}
+          >
             <input
               type="text"
               value={loginId}
@@ -60,13 +72,7 @@ const Login = () => {
               }}
             />
             <p className="error-message">{errorMessage}</p>
-            <button
-              type="submit"
-              className="login-btn"
-              onClick={event => {
-                handleSubmit(event);
-              }}
-            >
+            <button type="submit" className="login-btn">
               로그인
             </button>
           </form>
