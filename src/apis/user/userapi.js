@@ -25,3 +25,14 @@ export const getUserSignUp = async data => {
     console.log(error);
   }
 };
+
+export const getUserEmailToken = async data => {
+  try {
+    const response = await axios.get(data);
+    console.log(response);
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.log(error);
+    return { success: false.error };
+  }
+};
