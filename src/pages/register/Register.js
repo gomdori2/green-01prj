@@ -14,13 +14,24 @@ const Register = () => {
     // 웹브라우저 새로고침 방지 코드(기본기능 막기)
     event.preventDefault();
 
+    // 이메일 유효성 검사
+    // userEmail 을 유효성 검사를 한다.
+    // if (안맞다) {
+    //   alert("이메일을 다시 확인해 주세요.");
+    //   return;
+    // }
+
     // 백엔드로 전달한 이메일주소
     const reqData = `/api/user/auth/email?email=${userEmail}`;
     const result = await getUserEmail(reqData);
+    console.log(result);
 
-    // 메일 전송 완료 알림
-    alert("메일이 전송되었습니다. 메일에서 인증코드를 확인해주세요");
-    setEmailSend(true);
+    if (result.data.code === 1) {
+      //메일 전송 완료 알림
+      alert("메일이 전송되었습니다. 메일에서 인증코드를 확인해주세요");
+      setEmailSend(true);
+      // 인증 코드를 작성하는 곳을 작업시작
+    }
   };
   // 인증 코드 확인 시 처리할 함수
 
