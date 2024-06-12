@@ -28,6 +28,8 @@ import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import Loading from "../../components/common/Loading";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { getMonthCalendar } from "../../axios/calendar/calendar";
 // ***************************************** 형태(가지치기) 아이콘  ********************************************* //
 
 const ReactCalendarStyle = styled.div`
@@ -108,78 +110,23 @@ const ReactCalendar = () => {
   // axios.get("todos") 리턴결과
   // 이건 api 만들어지면 해당 데이터 아이디 매칭해야됨
   // 데이터도 가라임
-  const todoApi = [
-    {
-      // pk
-      pk: 1,
-
-      // 제목 _ 없음
-      title: [1],
-
-      // 텍스트 > 상세페이지에 출력
-      text: "내용",
-
-      // 아이콘
-      gardning: [1, 2, 3, 4],
-
-      // 날짜
-      day: "2024-06-01",
-
-      // 이미지는 공공데이터
-      img: "./www/images/404Page.jpg",
-    },
-    {
-      pk: 2,
-      title: [1, 2, 3, 4],
-      gardning: [1, 3, 4],
-      text: "내용8",
-      day: "2024-05-31",
-      img: "/logo192.png",
-    },
-    {
-      pk: 3,
-      title: [1, 2, 3, 4],
-      gardning: [1, 2, 3],
-      text: "내용7",
-      day: "2024-05-31",
-      img: "/logo192.png",
-    },
-    {
-      pk: 4,
-      title: [1, 2, 3, 4],
-      gardning: [2, 3, 4],
-      text: "내용6",
-      day: "2024-05-31",
-      img: "/logo192.png",
-    },
-
-    {
-      pk: 5,
-      title: [3],
-      text: "내용3",
-      gardning: [1, 4],
-      day: "2024-06-04",
-      img: "/logo192.png",
-    },
-    {
-      pk: 6,
-      title: [4],
-      gardning: [1],
-      text: "내용4",
-      day: "2024-06-29",
-      img: "/logo192.png",
-    },
-  ];
+  // todoApi
   const [allData, setAllData] = useState([]);
+  // 조회
+  const getMonthCalendars = async () => {
+    const result = await getMonthCalendar();
+    console.log(result);
+    return result;
+  };
   useEffect(() => {
-    setAllData(todoApi);
+    getMonthCalendars();
     return () => {};
   }, []);
+
   // 내용 출력하기
   const tileContent = ({ date }) => {
     // MM : 2자리 월
     // DD : 2자리 일
-
     const checkDay = moment(date).format("yyyy-MM-DD");
     // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
     const dayResult = allData.find(item => checkDay === item.day);
@@ -203,6 +150,7 @@ const ReactCalendar = () => {
       );
     }
   };
+
   // 날짜 css 꾸미기
   const tileClassName = ({ date }) => {
     // MM : 2자리 월
@@ -219,6 +167,7 @@ const ReactCalendar = () => {
   // 오늘날짜 리스트에서 보여주기
   const [clickDay, setClickDay] = useState(moment().format("YYYY-MM-DD"));
   const [clickInfo, setClickInfo] = useState(null);
+
   useEffect(() => {
     // 죄송합니다. 강제로 onClickDay 함수를
     // 실행하면서 날짜를 전달하였습니다.
@@ -230,6 +179,7 @@ const ReactCalendar = () => {
   const onClickDay = (value, event) => {
     const checkDay = moment(value).format("yyyy-MM-DD");
     setClickDay(checkDay);
+
     // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
     const dayResult = allData.find(item => checkDay === item.day);
     if (dayResult) {

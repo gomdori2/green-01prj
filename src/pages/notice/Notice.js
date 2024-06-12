@@ -68,10 +68,10 @@ function Notice({ posts = [] }) {
           </div>
           <div className="notice__top__icon">
             <button className="view-Type">
-              <BsCardText size={23} />
+              <BsCardText size={15} />
             </button>
             <button className="view-Type">
-              <BsViewStacked size={21} />
+              <BsViewStacked size={15} />
             </button>
             <select
               className="select-box"

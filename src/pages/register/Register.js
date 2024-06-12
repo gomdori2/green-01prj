@@ -11,15 +11,16 @@ const Register = () => {
 
   // 메일 인증 시 처리할 함수
   const mailSubmit = async event => {
-    // 웹브라우저 새로고침 방지 코드(기본기능 막기)
     event.preventDefault();
 
-    // 이메일 유효성 검사
-    // userEmail 을 유효성 검사를 한다.
-    // if (안맞다) {
-    //   alert("이메일을 다시 확인해 주세요.");
-    //   return;
-    // }
+
+    // 이메일 형식 유효성 검사
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(userEmail)) {
+      alert("유효한 이메일 주소를 입력해주세요.");
+      return;
+    }
+
 
     // 백엔드로 전달한 이메일주소
     const reqData = `/api/user/auth/email?email=${userEmail}`;
@@ -33,24 +34,18 @@ const Register = () => {
       // 인증 코드를 작성하는 곳을 작업시작
     }
   };
-  // 인증 코드 확인 시 처리할 함수
 
-  // 토큰 인증시 처리할 함수
+  // 인증 코드 확인 시 처리할 함수
   const verifyCode = async event => {
-    // 웹브라우저 새로고침 방지코드(기본기능 막기)
     event.preventDefault();
-    // 이메일이 전송되었는지 확인
 
     // 토큰 인증 처리
     const tokenData = `/api/user/auth/email/token?token=${authCode}`;
     const result = await getUserEmailToken(tokenData);
 
     if (result.success) {
-      // 토큰정보가 일치하지 않아도 메세지가 띄여져서 수정해야 함
       alert("인증이 성공했습니다!");
       navigate("/signup", { state: { email: userEmail } });
-      // 인증이 성공하면 회원가입 페이지 이동 해야함
-      // 인증코드를 받은 이메일 주소를 signup페이지에 불러옴
     } else {
       alert("인증에 실패했습니다. 다시 시도해주세요.");
     }
@@ -70,11 +65,7 @@ const Register = () => {
           <h2>회원가입</h2>
           <hr />
         </header>
-        <form
-          onSubmit={event => {
-            mailSubmit(event);
-          }}
-        >
+        <form onSubmit={mailSubmit}>
           <label htmlFor="useremail">이메일</label>
           <div className="registerform-group">
             <input
@@ -91,42 +82,15 @@ const Register = () => {
           </div>
         </form>
 
-        {/* <form
-          onSubmit={event => {
-            verifyCode(event);
-          }}
-        >
-          <div className="registerform-group">
-            <input
-              type="text"
-              className="register-id"
-              required
-              placeholder="인증코드를 입력해주세요"
-              onChange={event => {
-                setAuthCode(event.target.value);
-              }}
-            />
-            <button type="submit" className="send-button">
-              인증확인
-            </button>
-          </div>
-        </form> */}
-
-        {/* 이메일이 전송된 경우에만 아래 폼 렌더링 */}
         {emailSend && (
-          <form
-            onSubmit={event => {
-              verifyCode(event);
-            }}
-          >
+          <form onSubmit={verifyCode}>
             <div className="registerform-group">
               <input
                 type="text"
                 className="register-id"
                 required
-                onChange={event => {
-                  setAuthCode(event.target.value);
-                }}
+                placeholder="인증코드를 입력해주세요"
+                onChange={event => setAuthCode(event.target.value)}
               />
               <button type="submit" className="send-button">
                 인증확인

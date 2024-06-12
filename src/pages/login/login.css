@@ -1,7 +1,6 @@
 body {
-  display: flex;
-  justify-content: center;
-  background-color: beige;
+  /* display: flex; */
+  /* justify-content: center; */
 }
 
 .login-wrap {

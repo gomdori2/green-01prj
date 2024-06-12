@@ -50,20 +50,26 @@ const PostWrite = ({ addPost, postIdRef }) => {
           </div>
         </div>
         <form className="form-group" onSubmit={handleSubmit}>
-          <label htmlFor="title">제목</label>
+          <label htmlFor="title" className="post-label">
+            제목
+          </label>
           <input
             type="text"
             name="title"
             value={title}
             onChange={e => setTitle(e.target.value)}
             placeholder="제목을 입력하세요"
+            required
           />
-          <label htmlFor="content">내용</label>
+          <label htmlFor="content" className="post-label">
+            내용
+          </label>
           <textarea
             value={content}
             name="content"
             onChange={e => setContent(e.target.value)}
             placeholder="내용을 입력하세요"
+            required
           />
           <button className="btn add-btn" type="submit">
             등록

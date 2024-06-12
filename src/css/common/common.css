@@ -1,12 +1,14 @@
-* {
-  margin: 0;
-  padding: 0;
-  outline-style: none;
-  box-sizing: border-box;
-  list-style: none;
-  text-decoration: none;
-  /* 색상 변경이 안되서 막아뒀어요. */
-  /* color: black; */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap");
+
+/* Typography */
+:root {
+  font-size: 16px;
+}
+
+/* color */
+:root {
+  --primary-100: #20c997;
+  --primary-200: #a6e9d5;
 }
 
 html {
@@ -14,23 +16,14 @@ html {
 }
 
 body {
-  display: block !important;
-  max-width: 768px;
-  margin: 0 auto !important;
-  font-family: "Inter", "Noto Sans KR", sans-serif;
-  font-style: normal;
+  font-family: "Noto Sans KR";
+  font-size: 1rem;
   font-weight: 400;
-  font-optical-sizing: auto;
-  /* 스크롤 없애고 스크롤 기능만 살려둠 */
-  -ms-overflow-style: none;
 }
-/* 스크롤 없애고 스크롤 기능만 살려둠 */
+
+/* 브라우저 스크롤 스타일 제거 */
 ::-webkit-scrollbar {
   display: none;
-}
-.header {
-  height: 100px;
-  width: 100%;
 }
 
 .inner {
@@ -39,9 +32,4 @@ body {
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-}
-
-.footer {
-  width: 100%;
-  height: 50px;
 }
