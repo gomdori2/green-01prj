@@ -1,84 +1,157 @@
 import styled from "@emotion/styled";
-import PlantRegisterList from "../../components/plantresister/PlantRegisterList";
+import axios from "axios";
 import { useEffect, useState } from "react";
+import PlantPublicDataList from "../../components/plantresister/PlantPublicDataList";
+import TextArea from "../../components/common/TextArea";
+import { getOpenData, postData } from "../../axios/plantresister/plantresister";
+
 // 클래스로 바꿔라 제발
-const ReactCalendarStyle = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+const DetailDivStyle = styled.div`
   width: 100%;
-`;
-const ReactCalendarListStyle = styled.div`
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 2px 2px 2px gray;
+  border-radius: 4px 4px 4px 4px;
   border: 1px solid gray;
-  width: 100%;
-  border-radius: 4px;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  ul {
+`;
+const DetailDivInnerStyle = styled.div`
+  form {
     display: flex;
-    width: 100%;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 20px;
+    max-width: 600px;
+  }
+
+  div {
+    display: flex;
     align-items: center;
-    //justify-content: space-around;
-  }
-  span {
-    display: block;
     width: 100%;
+    gap: 60px;
   }
-  li {
-    padding-left: 10px;
+  input {
+    padding: 10px;
     height: 30px;
-    width: 100%;
-    border-bottom: 1px solid gray;
-    display: flex;
-    font-size: 18px !important;
-    font-weight: 700;
-    color: black;
+    border: 1px solid gray !important;
+    font-size: 14px;
+    border-radius: 4px 4px 4px 4px !important;
   }
-`;
-const TitleDivStyle = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  color: black;
-  padding-left: 5px;
-`;
-const CalendarListUlStyle = styled.div`
-  display: flex;
-  text-align: center;
-  a {
+  .text-area-div {
     display: block;
   }
+  .text-area-style {
+    margin-top: 15px;
+  }
+  label {
+    font-weight: bold;
+    font-size: 20px;
+    width: 30%;
+  }
 `;
-
 const PlantResister = () => {
-  const [todoApiData, setTodoApiData] = useState(["todoApi"]);
+  // 팝업 클릭용
+  const [isClicked, setIsClicked] = useState(false);
+
+  // text area 때문에 만들어 놓음
+  // plantName 은 따로 안만듬 뒤에서 seq 받아서
+  // 그거로 조회해서 내린다함.
+  // const [plantsName, setPlantsName] = useState("");
+  // 팝업에서 받아야함 넘겨야함.
+  const [plantsAlias, setPlantsAlias] = useState("");
+  const [etcData, setEtcData] = useState("");
+  const [odataSeq, setOdataSeq] = useState(9007199254740991);
+  const [userSeq, setUserSeq] = useState(9007199254740991);
+
+  // 팝업 데이터 받아와야함
+  // 필요없어짐. seq만 넘기면된다함 {} X seq
 
   useEffect(() => {
-    setTodoApiData(["todoApi"]);
-    console.log(todoApiData);
-  }, []);
+    const datas = { userSeq, odataSeq, etcData, plantsAlias };
+
+    // post 할 데이터_상세페이지_수정, 삭제
+    // 아직 안됨. - 공공데이터
+
+    // postData({ userSeq, plantsName, etcData, plantsAlias });
+    console.log(datas);
+  }, [plantsAlias, etcData]);
+  // 일단 default로 보냄.
+  // 해당 되는 컴포넌트 하나 필요
+  const getPlantsData = async () => {
+    // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
+    await axios.get("/api/getPlants");
+  };
+
+  useEffect(() => {
+    console.log(isClicked);
+  }, [isClicked]);
 
   return (
-    <ReactCalendarStyle>
-      <TitleDivStyle>
-        등록 식물 리스트_ 기타사항늘리고 / 이미지 줄이기 height 높이기
-      </TitleDivStyle>
-      <ReactCalendarListStyle>
-        <CalendarListUlStyle>
-          <li>
-            <span>이미지</span>
-            <span>애칭</span>
-            <span>기타사항</span>
-          </li>
-        </CalendarListUlStyle>
-        {todoApiData?.map(item =>
-          item ? <PlantRegisterList key={item.pk} item={item} /> : null,
-        )}
-        <button onClick={() => {}}>등록</button>
-      </ReactCalendarListStyle>
-    </ReactCalendarStyle>
+    <DetailDivStyle>
+      <DetailDivInnerStyle>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+          }}
+        >
+          {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
+          <div>
+            <label>식물명</label>
+            <div>
+              <input readOnly />
+            </div>
+            {isClicked ? (
+              <PlantPublicDataList
+                // setPlantSeq={setOdataSeq}
+                setIsClicked={setIsClicked}
+              />
+            ) : null}
+            <button
+              onClick={() =>
+                // 공공데이터 해당화면 만들어야함.
+                // getPlantsData();
+                setIsClicked(true)
+              }
+            >
+              식물불러오기
+            </button>
+          </div>
+          <div>
+            <label>식물 애칭(별명)</label>
+            <input
+              value={plantsAlias}
+              onChange={e => {
+                setPlantsAlias(e.target.value);
+                console.log(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className="text-area-div">
+            <label htmlFor="text">기타사항</label>
+            <div className="text-area-style">
+              <TextArea
+                valueDatas={etcData}
+                setTextData={setEtcData}
+              ></TextArea>
+            </div>
+          </div>
+          <div>
+            <button
+              onClick={() => {
+                alert("aaa");
+                const a = { userSeq, odataSeq, plantsAlias, etcData };
+                console.log(a);
+                postData({ userSeq, odataSeq, plantsAlias, etcData });
+              }}
+            >
+              등록
+            </button>
+            <button onClick={() => {}}>뒤로가기</button>
+          </div>
+        </form>
+      </DetailDivInnerStyle>
+    </DetailDivStyle>
   );
 };
 

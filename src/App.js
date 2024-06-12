@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import CalendarDetail from "./components/calendar/CalendarDetail";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
-import { useState } from "react";
-import CalendarDetail from "./components/calendar/CalendarDetail";
 import Main from "./components/layout/Main";
+import Wrap from "./components/layout/Wrap";
 import usePosts from "./hooks/usePosts"; // Custom hook import
 import NotFound from "./pages/NotFound";
 import ReactCalendar from "./pages/calendar/ReactCalendar";
@@ -12,16 +13,16 @@ import Notice from "./pages/notice/Notice";
 import PostDetail from "./pages/notice/PostDetail";
 import PostEdit from "./pages/notice/PostEdit";
 import PostWrite from "./pages/notice/PostWrite";
-import PlantResister from "./pages/plantResister/PlantResister";
 import PlantResisterDetail from "./pages/plantResister/PlantResisterDetail";
 import Register from "./pages/register/Register";
 import SetNickName from "./pages/register/SetNickName";
 import SignUp from "./pages/register/SignUp";
-import Wrap from "./components/layout/Wrap";
 
-import "./css/common/reset.css";
-import "./css/common/common.css";
 import "./css/calendar.css";
+import "./css/common/common.css";
+import "./css/common/reset.css";
+import PlantResisterList from "./pages/plantResister/PlantResisterList";
+import PlantResister from "./pages/plantResister/PlantResister";
 
 function App() {
   const [isLogin, setIsLogin] = useState(true);
@@ -62,12 +63,15 @@ function App() {
               path="/reactCalendar/:pk"
               element={<CalendarDetail />}
             ></Route>
-            <Route path="/plantResister" element={<PlantResister />}></Route>
+            <Route
+              path="/plantResisterList"
+              element={<PlantResisterList />}
+            ></Route>
             <Route
               path="/plantResisterDetail/:pk"
               element={<PlantResisterDetail />}
             ></Route>
-
+            <Route path="/plantResister" element={<PlantResister />}></Route>
             {/* 잘못된 경로 */}
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
