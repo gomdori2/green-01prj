@@ -53,72 +53,10 @@ const CalendarListUlStyle = styled.div`
 `;
 
 const PlantResister = () => {
-  const todoApi = [
-    {
-      // pk
-      pk: 1,
-
-      // 제목 _ 없음
-      title: [1],
-
-      // 텍스트 > 상세페이지에 출력
-      text: "내용",
-
-      // 아이콘
-      gardning: [1, 2, 3, 4],
-
-      // 날짜
-      day: "2024-06-01",
-
-      // 이미지는 공공데이터
-      img: "./www/images/404Page.jpg",
-    },
-    {
-      pk: 2,
-      title: [1, 2, 3, 4],
-      gardning: [1, 3, 4],
-      text: "내용8",
-      day: "2024-05-31",
-      img: "/logo192.png",
-    },
-    {
-      pk: 3,
-      title: [1, 2, 3, 4],
-      gardning: [1, 2, 3],
-      text: "내용7",
-      day: "2024-05-31",
-      img: "/logo192.png",
-    },
-    {
-      pk: 4,
-      title: [1, 2, 3, 4],
-      gardning: [2, 3, 4],
-      text: "내용6",
-      day: "2024-05-31",
-      img: "/logo192.png",
-    },
-
-    {
-      pk: 5,
-      title: [3],
-      text: "내용3",
-      gardning: [1, 4],
-      day: "2024-06-04",
-      img: "/logo192.png",
-    },
-    {
-      pk: 6,
-      title: [4],
-      gardning: [1],
-      text: "내용4",
-      day: "2024-06-29",
-      img: "/logo192.png",
-    },
-  ];
-  const [todoApiData, setTodoApiData] = useState(todoApi);
+  const [todoApiData, setTodoApiData] = useState(["todoApi"]);
 
   useEffect(() => {
-    setTodoApiData(todoApi);
+    setTodoApiData(["todoApi"]);
     console.log(todoApiData);
   }, []);
 
@@ -135,9 +73,9 @@ const PlantResister = () => {
             <span>기타사항</span>
           </li>
         </CalendarListUlStyle>
-        {todoApiData?.map(item => (
-          <PlantRegisterList key={item.pk} item={item} />
-        ))}
+        {todoApiData?.map(item =>
+          item ? <PlantRegisterList key={item.pk} item={item} /> : null,
+        )}
         <button onClick={() => {}}>등록</button>
       </ReactCalendarListStyle>
     </ReactCalendarStyle>
