@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../register/signup.css";
 import { useState } from "react";
 import { getUserSignUp } from "../../apis/user/userapi";
 
 const SignUp = () => {
-  const [userEmail, setUserEmail] = useState("");
+  const location = useLocation(); // useLocation 훅 사용
+  const { email } = location.state || {}; // 이메일 값 추출
+  const [userEmail, setUserEmail] = useState(email || ""); // 이메일 초기값 설정
   const [userId, setUserId] = useState("");
   const [idCheckMessage, setIdCheckMessage] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +26,7 @@ const SignUp = () => {
     <main>
       <div className="signup-wrap">
         <header>
-          <Link to={"/register"} className="back-btn">
+          <Link to="/register" className="back-btn">
             <span>&lt;</span>
           </Link>
           <h2>회원가입</h2>
@@ -44,7 +46,6 @@ const SignUp = () => {
                 id="useremail"
                 name="email"
                 readOnly
-                disabled
                 value={userEmail}
               />
               <label htmlFor="userid">아이디</label>
@@ -76,6 +77,9 @@ const SignUp = () => {
                 name="password"
                 required
                 placeholder="비밀번호를 입력해주세요"
+                onChange={event => {
+                  setPassword(event.target.value);
+                }}
               />
               <label htmlFor="confirm-password">비밀번호 확인</label>
               <input
@@ -84,8 +88,13 @@ const SignUp = () => {
                 name="confirm-password"
                 required
                 placeholder="비밀번호를 한번 더 입력해주세요"
+                onChange={event => {
+                  setCheckPassword(event.target.value);
+                }}
               />
-              <p className="pw-error-message">비밀번호가 일치하지 않습니다.</p>
+              <p className="pw-error-message">
+                {password !== checkPassword && "비밀번호가 일치하지 않습니다."}
+              </p>
               <label htmlFor="name">이름</label>
               <input
                 type="text"
@@ -93,13 +102,16 @@ const SignUp = () => {
                 name="name"
                 required
                 placeholder="고객님의 이름을 입력해주세요"
+                onChange={event => {
+                  setUserName(event.target.value);
+                }}
               />
               <input
                 type="submit"
                 value="다음페이지"
                 className="next-btn"
                 id="submitBtn"
-                disabled
+                disabled={password !== checkPassword}
               />
             </form>
           </div>

@@ -67,6 +67,13 @@ label:after {
   border-radius: 5px;
 }
 
+.signup input[type="email"] {
+  pointer-events: none;
+  /* 이메일폼이 드래그 되지 않도록 설정 */
+  background-color: rgba(0, 0, 0, 0.1); /* 배경색을 약간 어둡게 설정 */
+  color: gray;
+}
+
 .id-input-wrap {
   display: flex;
   gap: 10px;
