@@ -115,9 +115,7 @@ const PostDetail = ({ onDelete }) => {
                   </div>
                 </div>
               </div>
-              <div className="content__center content">
-                {post.data.contents}
-              </div>
+              <div className="content__center content">{post.data.content}</div>
 
               <div className="content__bottom">
                 {/* <div className="content__bottom__user-info">
