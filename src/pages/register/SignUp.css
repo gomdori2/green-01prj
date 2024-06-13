@@ -128,3 +128,7 @@ label:after {
 .next-btn:hover {
   background-color: #45a049;
 }
+
+.token-hidden{
+  display: none;
+}

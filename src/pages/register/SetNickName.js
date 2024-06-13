@@ -1,7 +1,26 @@
 import { Link } from "react-router-dom";
 import "../register/setnickname.css";
+import { useEffect, useState } from "react";
+import { getUserNickName } from "../../apis/user/userapi";
 
 const SetNickName = () => {
+
+  const [nickName, setNickName] = useState("")
+
+  useEffect(()=>{
+    return()=>{}
+  },[])
+
+
+  const nickNameSubmit = async(event) => {
+    event.preventDefault()
+    console.log("닉네임확인")
+  }
+  // 닉네임형식 유효성 검사
+
+  // 백엔드에 전달할 닉네임
+  const reqData = `/api/user/duplicated?str=${nickName}&type=2`;
+  const result = getUserNickName(reqData)
   return (
     <main>
       <div className="set-nickname-wrap">
@@ -12,9 +31,10 @@ const SetNickName = () => {
           <h2>회원가입</h2>
           <hr />
         </header>
+
         <div className="signup-nickname">
           <div className="signup-nickname-wrap">
-            <form>
+            <form onSubmit={(event)=>{nickNameSubmit(event)}}>
               <label htmlFor="nickname" className="nickname-txt">
                 닉네임을 설정해주세요
               </label>
@@ -22,8 +42,10 @@ const SetNickName = () => {
                 type="text"
                 id="nickname"
                 name="nickname"
+                value={nickName}
                 required
                 placeholder="닉네임을 설정해주세요"
+                onChange={(event)=>{setNickName(event.target.value)}}
               />
 
               <div className="terms">
