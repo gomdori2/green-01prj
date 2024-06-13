@@ -4,7 +4,8 @@ import { getUserEmail, getUserEmailToken } from "../../apis/user/userapi";
 import "../register/register.css";
 
 const Register = () => {
-  const [userEmail, setUserEmail] = useState("");
+  // const [userEmail, setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState("jwy7254@gmail.com");
   const [authCode, setAuthCode] = useState("");
   const [emailSend, setEmailSend] = useState(false);
   const navigate = useNavigate();
@@ -13,25 +14,30 @@ const Register = () => {
   const mailSubmit = async event => {
     event.preventDefault();
 
-
     // 이메일 형식 유효성 검사
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(userEmail)) {
-      alert("유효한 이메일 주소를 입력해주세요.");
+      alert("이메일을 다시 확인해주세요.");
       return;
     }
 
+    try {
+      // 백엔드로 전달할 메일주소
+      const reqData = `/api/user/auth/email?email=${userEmail}`;
+      const result = await getUserEmail(reqData);
+      console.log(result);
 
-    // 백엔드로 전달한 이메일주소
-    const reqData = `/api/user/auth/email?email=${userEmail}`;
-    const result = await getUserEmail(reqData);
-    console.log(result);
-
-    if (result.data.code === 1) {
-      //메일 전송 완료 알림
-      alert("메일이 전송되었습니다. 메일에서 인증코드를 확인해주세요");
-      setEmailSend(true);
-      // 인증 코드를 작성하는 곳을 작업시작
+      if (result.data.code === 1) {
+        //메일 전송 완료 알림
+        alert("메일이 전송되었습니다. 메일에서 인증코드를 확인해주세요");
+        setEmailSend(true);
+        // 인증 코드를 작성하는 곳을 작업시작
+      } else {
+        alert("메일 전송에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      alert("메일 전송 중 오류가 발생했습니다. 다시 시도해주세요");
+      console.log("메일 전송 오류:", error);
     }
   };
 
@@ -39,13 +45,15 @@ const Register = () => {
   const verifyCode = async event => {
     event.preventDefault();
 
+    console.log("Auth Code:", authCode);  // 인증 코드 확인을 위해 콘솔에 출력
+    
     // 토큰 인증 처리
     const tokenData = `/api/user/auth/email/token?token=${authCode}`;
     const result = await getUserEmailToken(tokenData);
 
-    if (result.success) {
+    if (result.data.code === 1) {
       alert("인증이 성공했습니다!");
-      navigate("/signup", { state: { email: userEmail } });
+      navigate("/signup", { state: { email: userEmail, token: authCode } });
     } else {
       alert("인증에 실패했습니다. 다시 시도해주세요.");
     }
@@ -87,7 +95,8 @@ const Register = () => {
             <div className="registerform-group">
               <input
                 type="text"
-                className="register-id"
+                className="auth-code"
+                value={authCode}
                 required
                 placeholder="인증코드를 입력해주세요"
                 onChange={event => setAuthCode(event.target.value)}
