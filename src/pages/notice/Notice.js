@@ -17,24 +17,20 @@ function Notice() {
   const [error, setError] = useState(null);
   const [totalPost, setTotalPost] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0); // 0부터 시작
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [order, setOrder] = useState(1); // 초기 정렬 순서
-
-  const offset = currentPage * itemsPerPage;
-  const getDataView = getData.slice(offset, offset + itemsPerPage);
-  const pageCount = totalPages;
+  const [order, setOrder] = useState(0); // 초기 정렬 순서
 
   // 데이터 불러오기 함수
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get(
-        `/api/community/list?page=${currentPage}&size=${itemsPerPage}&order=${order}`,
+        `/api/community/list?page=${currentPage + 1}&size=${itemsPerPage}&order=${order}`, // currentPage + 1
       );
-      setGetData(res.data.data.list);
-      setTotalPost(res.data.data.totalElements);
-      setTotalPages(res.data.data.totalPage);
+      setGetData(res.data.data.list); // 실제 데이터 리스트 설정
+      setTotalPost(res.data.data.totalElements); // 게시물 수
+      setTotalPages(res.data.data.totalPage); // 페이지 수
       console.log("게시물 조회", res.data.data.list);
     } catch (error) {
       setError(error);
@@ -46,6 +42,10 @@ function Notice() {
   useEffect(() => {
     fetchData();
   }, [currentPage, itemsPerPage, order]);
+
+  const handlePageClick = event => {
+    setCurrentPage(event.selected); // 페이지 번호 업데이트
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -60,7 +60,7 @@ function Notice() {
     setCurrentPage(0); // 페이지를 처음으로 리셋
   };
 
-  const handlePageClick = () => {};
+  const pageCount = totalPages;
 
   return (
     <div className="inner">
@@ -108,7 +108,7 @@ function Notice() {
             </tr>
           </thead>
           <tbody>
-            {getDataView.map(post => (
+            {getData.map(post => (
               <tr
                 key={post.boardSeq}
                 onClick={() => handleRowClick(post.boardSeq)}
@@ -128,10 +128,9 @@ function Notice() {
             글쓰기
           </Link>
         </div>
-        <div className="notice__pagination">페이지네이션 부분</div>
         <ReactPaginate
-          previousLabel={"previous"}
-          nextLabel={"next"}
+          previousLabel={"<"}
+          nextLabel={">"}
           breakLabel={"..."}
           breakClassName={"break-me"}
           pageCount={pageCount}
