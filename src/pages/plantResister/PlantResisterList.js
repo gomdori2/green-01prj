@@ -2,6 +2,10 @@ import styled from "@emotion/styled";
 import PlantRegisterList from "../../components/plantresister/PlantRegisterList";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getData } from "../../axios/plantresister/plantresister";
+import PageNation from "../../components/common/PageNation";
+import { toast } from "react-toastify";
+import Loading from "../../components/common/Loading";
 // 클래스로 바꿔라 제발
 const ReactCalendarStyle = styled.div`
   display: flex;
@@ -55,14 +59,39 @@ const CalendarListUlStyle = styled.div`
 
 const PlantResisterList = () => {
   const [todoApiData, setTodoApiData] = useState(["todoApi"]);
-  const [seq, setSeq] = useState(1);
+  const [list, setList] = useState([]);
+  const [userSeq, setUserSeq] = useState(3);
+  const [size, setSize] = useState(10);
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState();
+  const getDataList = async ({ userSeq, size, page }) => {
+    // setIsLoading(true);
+
+    const result = await getData({ userSeq, size, page });
+    const stauts = result.status.toString().charAt(0);
+    if (stauts === "2") {
+      setList(result?.data.data.list);
+      setPageCount(result?.data.data.totalPage);
+      console.log(result);
+    }
+    setIsLoading(false);
+  };
 
   const navigate = useNavigate();
   useEffect(() => {
-    setTodoApiData(["todoApi"]);
-    console.log(todoApiData);
-  }, []);
+    getDataList({ userSeq, size, page });
+  }, [page]);
+  // handlePageChange 페이지 네이션 클릭 시 마다 이벤트
+  const handlePageChange = data => {
+    setPage(data.selected + 1);
+    // getDataList({ userSeq: userSeq, size: size, page: page });
+  };
 
+  // if (isLoading) {
+  //   return <Loading></Loading>;
+  // }
   return (
     <ReactCalendarStyle>
       <TitleDivStyle>
@@ -76,9 +105,13 @@ const PlantResisterList = () => {
             <span>기타사항</span>
           </li>
         </CalendarListUlStyle>
-        {todoApiData?.map(item =>
-          item ? <PlantRegisterList key={item.pk} item={item} /> : null,
+        {/* 인덱스로 받는거 pk로 바꿔야함. */}
+        {list?.map((item, index) =>
+          item ? (
+            <PlantRegisterList key={item.pk} index={index} item={item} />
+          ) : null,
         )}
+
         <button
           onClick={() => {
             navigate(`/PlantResister`);
@@ -87,6 +120,13 @@ const PlantResisterList = () => {
           등록
         </button>
       </ReactCalendarListStyle>
+      {pageCount > 0 && (
+        <PageNation
+          pageCount={10} // 총 페이지 수 예시
+          onPageChange={handlePageChange}
+          currentPage={currentPage}
+        />
+      )}
     </ReactCalendarStyle>
   );
 };
