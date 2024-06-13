@@ -38,8 +38,9 @@ const PostDetail = () => {
     const checkNextPost = async () => {
       let currentWriterSeq = parseInt(writerSeq, 10);
       let nextWriterSeq = currentWriterSeq + 1;
+      let maxAttempts = 5;
 
-      for (let i = 0; i < 10; i++) {
+      while (maxAttempts > 0) {
         try {
           const res = await axios.get(
             `/api/community/detail?boardSeq=${nextWriterSeq}`,
@@ -53,11 +54,13 @@ const PostDetail = () => {
         } catch (error) {
           console.log(error);
           nextWriterSeq++;
+        } finally {
+          maxAttempts--;
         }
       }
 
       setNextPostExists(false);
-      console.log("다음 글을 찾을 수 없습니다.");
+      alert("다음 글을 찾을 수 없습니다.");
     };
 
     if (post && post.data) {
@@ -89,8 +92,9 @@ const PostDetail = () => {
   const navigateToNextPost = async () => {
     let currentWriterSeq = parseInt(writerSeq, 10);
     let nextWriterSeq = currentWriterSeq + 1;
+    let maxAttempts = 5;
 
-    for (let i = 0; i < 10; i++) {
+    while (maxAttempts > 0) {
       try {
         const res = await axios.get(
           `/api/community/detail?boardSeq=${nextWriterSeq}`,
@@ -104,6 +108,8 @@ const PostDetail = () => {
       } catch (error) {
         console.log(error);
         nextWriterSeq++;
+      } finally {
+        maxAttempts--;
       }
     }
 
@@ -113,8 +119,9 @@ const PostDetail = () => {
   const navigateToPreviousPost = async () => {
     let currentWriterSeq = parseInt(writerSeq, 10);
     let previousWriterSeq = currentWriterSeq - 1;
+    let maxAttempts = 5;
 
-    for (let i = 0; i < 10; i++) {
+    while (maxAttempts > 0) {
       try {
         const res = await axios.get(
           `/api/community/detail?boardSeq=${previousWriterSeq}`,
@@ -128,10 +135,12 @@ const PostDetail = () => {
       } catch (error) {
         console.log(error);
         previousWriterSeq--;
+      } finally {
+        maxAttempts--;
       }
     }
 
-    console.log("이전 글을 찾을 수 없습니다.");
+    alert("이전 글을 찾을 수 없습니다.");
   };
 
   if (loading) {
