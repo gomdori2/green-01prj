@@ -1,7 +1,11 @@
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import "../register/signup.css";
 import { useEffect, useState } from "react";
-import { getUserId, getUserSignUp, postUserSignUp } from "../../apis/user/userapi";
+import {
+  getUserId,
+  getUserSignUp,
+  postUserSignUp,
+} from "../../apis/user/userapi";
 
 const SignUp = () => {
   // 사용자가 아이디 중복확인을 했는지 체크 변수
@@ -82,15 +86,15 @@ const SignUp = () => {
       return;
     }
 
-     // 이름 유효성 검사 함수
-     const checkUserNamePattern = () => {
+    // 이름 유효성 검사 함수
+    const checkUserNamePattern = () => {
       if (typeof userName !== "string" || userName.trim() === "") {
         alert("이름을 입력해주세요.");
         return false; // 유효하지 않은 경우 false 반환
       }
       return true; // 유효한 경우 true 반환
     };
-    
+
     // 백엔드로 전달하는 회원가입 정보
     const signUpReqData = {
       id: userId,
@@ -104,14 +108,12 @@ const SignUp = () => {
     const signUpResult = await postUserSignUp(signUpReqData);
     console.log(signUpResult);
 
-   if(signUpResult.data.code ===1){
-    alert("인증이 완료되었습니다.")
-    navigate("/set-nickname")
-   }else{
-    alert("회원가입에 실패했습니다. 다시 확인해주세요.")
-   }
-  
-  
+    if (signUpResult.data.code === 1) {
+      alert("인증이 완료되었습니다.");
+      navigate("/set-nickname");
+    } else {
+      alert("회원가입에 실패했습니다. 다시 확인해주세요.");
+    }
   };
 
   return (
@@ -200,7 +202,7 @@ const SignUp = () => {
                   setUserName(event.target.value);
                 }}
               />
-             
+
               <input
                 type="submit"
                 value="다음페이지"

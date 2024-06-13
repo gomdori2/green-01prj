@@ -3,11 +3,11 @@ import "../login/login.css";
 import { postUserLogin } from "../../apis/user/userapi";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setUserInfo }) => {
   // const [loginId, setLoginId] = useState("jowonyoung1");
   // const [loginPw, setLoginPw] = useState("asdf@1234");
-  const [loginId, setLoginId] = useState("");
-  const [loginPw, setLoginPw] = useState("");
+  const [loginId, setLoginId] = useState("jowonyoung2");
+  const [loginPw, setLoginPw] = useState("asdf@1234");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
@@ -25,12 +25,26 @@ const Login = () => {
     // console.log("백엔드로 전달할 로그인비번", loginPw);
     const reqData = `/api/user/login?id=${loginId}&pwd=${loginPw}`;
     const result = await postUserLogin(reqData);
-    if (result.code === 1) {
-      // 로그인이 성공했을 때만 처리
+    console.log(result.data);
+
+    if (result.data.code === 1) {
+      // 로그인 성공시 sessionStorage에  사용자정보 저장
+      // sessionStorage.setItem(key, value)
+      const userInfo = {
+        userId: result.data.data.userId,
+        userName: result.data.data.userName,
+        userSeq: result.data.data.userSeq,
+      };
+      setUserInfo(userInfo);
+      // console.log("userInfo : ", userInfo);
+      sessionStorage.setItem("user", JSON.stringify(userInfo));
+      // JSON.stringify(response.data)는 JavaScript 객체를
+      // JSON 문자열로 변환하는 함수
+      // ('{"userSeq":4,"userId":userId,"userName":userName,"loginType":"email"}');
       alert("로그인되었습니다!");
       navigate("/notice");
     } else {
-      setErrorMessage(result.message); // 로그인 실패 메시지 출력
+      setErrorMessage("아이디와 비밀번호를 다시 확인해주세요."); // 로그인 실패 메시지 출력
     }
   };
 
