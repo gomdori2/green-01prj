@@ -54,7 +54,7 @@ const PostEdit = () => {
 
       const res = await axios.patch(`/api/community/`, updatedPost);
       console.log("서버 응답:", res.data); // 서버 응답을 확인하기 위해 로그를 추가합니다.
-      if (res.data.success) {
+      if (res.data.code === 1) {
         navigate(`/notice/post/${writerSeq}`);
       } else {
         alert("게시물 수정에 실패했습니다.");
