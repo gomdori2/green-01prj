@@ -15,8 +15,8 @@ function Notice() {
   const [getData, setGetData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState("");
-  const [totalPages, setTotalPages] = useState("");
+  const [currentPage, setCurrentPage] = useState(""); // 전체 페이지
+  const [totalPages, setTotalPages] = useState(""); // 전체 게시물 수
 
   // 데이터 불러오기
   useEffect(() => {
@@ -89,6 +89,7 @@ function Notice() {
           </Link>
         </div>
         <div className="notice__pagination">페이지네이션 부분</div>
+
         <div>검색창 부분</div>
       </article>
     </div>
