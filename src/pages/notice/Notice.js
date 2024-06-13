@@ -12,63 +12,55 @@ function Notice() {
     navigate(`/notice/post/${boardSeq}`);
   };
 
-  // 게시물 데이터 불러오기 작업
   const [getData, setGetData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const [totalPost, setTotalPost] = useState(0); // 전제 게시물 수
-  const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
-
-  /**
-   *
-   */
-
-  // 상태 변수 currentPage를 0으로 초기화합니다. (useState Hook 사용)
+  const [totalPost, setTotalPost] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [order, setOrder] = useState(1); // 초기 정렬 순서
 
-  // 페이지 클릭 이벤트 핸들러 함수입니다.
-  const handlePageClick = data => {
-    // 선택된 페이지 번호로 currentPage 상태를 업데이트합니다.
-    setCurrentPage(data.selected);
-  };
-
-  const [itemsPerPage, setItemsPerPage] = useState(10); // 페이지당 보여줄 게시글 수 상태로 관리
-
-  // 현재 페이지에 표시할 아이템의 시작 인덱스를 계산합니다.
   const offset = currentPage * itemsPerPage;
-
-  // 현재 페이지에 표시할 아이템을 추출합니다. (slice 메서드 사용)
   const getDataView = getData.slice(offset, offset + itemsPerPage);
-
-  // 총 페이지 수를 계산합니다. (Math.ceil 함수 사용)
   const pageCount = totalPages;
 
-  // 데이터 불러오기
+  // 데이터 불러오기 함수
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const res = await axios.get(
+        `/api/community/list?page=${currentPage}&size=${itemsPerPage}&order=${order}`,
+      );
+      setGetData(res.data.data.list);
+      setTotalPost(res.data.data.totalElements);
+      setTotalPages(res.data.data.totalPage);
+      console.log("게시물 조회", res.data.data.list);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get("/api/community/list");
-        setGetData(res.data.data.list);
-        setTotalPost(res.data.data.totalElements); // 전체 게시물 수
-        setTotalPages(res.data.data.totalPage); // 전체 페이지
-        console.log("게시물 조회", res.data.data.list);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchData();
-  }, []);
+  }, [currentPage, itemsPerPage, order]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const handleItemsPerPageChange = event => {
     setItemsPerPage(Number(event.target.value));
-    setCurrentPage(1);
+    setCurrentPage(0); // 페이지를 처음으로 리셋
   };
+
+  const orderClick = () => {
+    setOrder(prevOrder => (prevOrder === 1 ? 0 : 1)); // order 값을 토글
+    setCurrentPage(0); // 페이지를 처음으로 리셋
+  };
+
+  const handlePageClick = () => {};
 
   return (
     <div className="inner">
@@ -78,6 +70,9 @@ function Notice() {
           <div className="flex-gap-4">
             <button className="post-all btn">전체글</button>
             <button className="post-best btn">추천글</button>
+            <button className="post-best btn" onClick={orderClick}>
+              ↕
+            </button>
           </div>
           <div className="notice__top__icon">
             <button className="view-Type">
@@ -134,21 +129,19 @@ function Notice() {
           </Link>
         </div>
         <div className="notice__pagination">페이지네이션 부분</div>
-        {/* ReactPaginate 컴포넌트를 사용하여 페이지네이션 UI 생성 */}
         <ReactPaginate
-          previousLabel={"previous"} // 이전 버튼 레이블
-          nextLabel={"next"} // 다음 버튼 레이블
-          breakLabel={"..."} // 페이지 번호 대신 "..."으로 표시되는 부분의 레이블
-          breakClassName={"break-me"} // "..." 레이블에 적용될 CSS 클래스 이름
-          pageCount={pageCount} // 총 페이지 수
-          marginPagesDisplayed={2} // 현재 페이지 양쪽에 표시될 페이지 수
-          pageRangeDisplayed={5} // 페이지 번호가 연속적으로 표시될 페이지 수
-          onPageChange={handlePageClick} // 페이지 클릭 이벤트 핸들러
-          containerClassName={"pagination"} // 페이지네이션 컨테이너에 적용될 CSS 클래스 이름
-          subContainerClassName={"pages pagination"} // 페이지 번호 컨테이너에 적용될 CSS 클래스 이름
-          activeClassName={"active"} // 현재 페이지에 적용될 CSS 클래스 이름
+          previousLabel={"previous"}
+          nextLabel={"next"}
+          breakLabel={"..."}
+          breakClassName={"break-me"}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          subContainerClassName={"pages pagination"}
+          activeClassName={"active"}
         />
-
         <div>검색창 부분</div>
       </article>
     </div>
