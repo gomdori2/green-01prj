@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import PlantRegisterList from "../../components/plantresister/PlantRegisterList";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getData } from "../../axios/plantresister/plantresister";
 import PageNation from "../../components/common/PageNation";
@@ -66,10 +66,10 @@ const PlantResisterList = () => {
   const [pageCount, setPageCount] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState();
-  const getDataList = async ({ userSeq, size, page }) => {
+  const getDataList = async ({ userSeq, page }) => {
     // setIsLoading(true);
 
-    const result = await getData({ userSeq, size, page });
+    const result = await getData({ userSeq, page });
     const stauts = result.status.toString().charAt(0);
     if (stauts === "2") {
       setList(result?.data.data.list);
@@ -81,7 +81,7 @@ const PlantResisterList = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    getDataList({ userSeq, size, page });
+    getDataList({ userSeq, page });
   }, [page]);
   // handlePageChange 페이지 네이션 클릭 시 마다 이벤트
   const handlePageChange = data => {
@@ -94,9 +94,7 @@ const PlantResisterList = () => {
   // }
   return (
     <ReactCalendarStyle>
-      <TitleDivStyle>
-        등록 식물 리스트_ 기타사항늘리고 / 이미지 줄이기 height 높이기
-      </TitleDivStyle>
+      <TitleDivStyle></TitleDivStyle>
       <ReactCalendarListStyle>
         <CalendarListUlStyle>
           <li>
@@ -122,7 +120,7 @@ const PlantResisterList = () => {
       </ReactCalendarListStyle>
       {pageCount > 0 && (
         <PageNation
-          pageCount={10} // 총 페이지 수 예시
+          pageCount={pageCount} // 총 페이지 수 예시
           onPageChange={handlePageChange}
           currentPage={currentPage}
         />

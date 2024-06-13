@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { getOpenData } from "../../axios/plantresister/plantresister";
 import PageNation from "../common/PageNation";
+import Loading from "../common/Loading";
 // 클래스로 바꿔라 제발
 const FixedArea = styled.div`
   position: fixed;
@@ -84,7 +85,7 @@ const PlantPublicDataListStyle = styled.div`
   }
 `;
 
-const PlantPublicDataList = ({ setIsClicked, setPlantSeq }) => {
+const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
   // 팝업에서 데이터 빼서 앞에 input에 넘기기
   // 앞에 있는 곳에서 set 만 넘겨서 담아서 올릴 것
 
@@ -97,14 +98,10 @@ const PlantPublicDataList = ({ setIsClicked, setPlantSeq }) => {
   const [pageCount, setPageCount] = useState(0);
   const [onPageChange, setOnPageChange] = useState();
   const [currentPage, setCurrentPage] = useState(0);
-  // setPlantSeq > click 했을 때 seq 담아야함
-  const clickData = () => {
-    // setPlantSeq > click 했을 때 seq 담아야함
-    // 이름 x seq만 넘겨달라함.
-    setPlantSeq("seq");
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  // setOdataSeq > click 했을 때 seq 담아야함
   const publicClick = async ({ searchKeyword, size, page }) => {
-    console.log(page);
+    setIsLoading(true);
     try {
       const result = await getOpenData({ searchKeyword, size, page });
       setOpenListData(result.data.data.list);
@@ -112,6 +109,7 @@ const PlantPublicDataList = ({ setIsClicked, setPlantSeq }) => {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -125,6 +123,14 @@ const PlantPublicDataList = ({ setIsClicked, setPlantSeq }) => {
     setPage(data.selected + 1); // 페이지 번호를 1부터 시작하도록 조정
     setCurrentPage(data.selected);
   };
+  // 페이징이랑 뭔가 안맞음
+  if (isLoading) {
+    return (
+      <PlantPublicDataListStyle id="popupInner">
+        <Loading></Loading>
+      </PlantPublicDataListStyle>
+    );
+  }
   return (
     <>
       <FixedArea
@@ -172,20 +178,25 @@ const PlantPublicDataList = ({ setIsClicked, setPlantSeq }) => {
             <label>식물명</label>
           </div>
         </li>
-        {openListData.map((item, index) =>
-          item ? (
-            <li key={item.plantPilbkNo}>
-              <div className="imgBox">
-                <img className="imgStyle" src={item.imgUrl}></img>
-              </div>
-              <div>
-                <span className="spanStyle">{item.plantGnrlNm}</span>
-              </div>
-            </li>
-          ) : (
-            <div key={1}>데이터가 없습니다.</div>
-          ),
-        )}
+        {openListData.map(item => (
+          <li
+            key={item.plantPilbkNo}
+            onClick={() => {
+              if (confirm("선택하시겠습니까?")) {
+                setOdataSeq(item.plantPilbkNo);
+                setPlantName(item.plantGnrlNm);
+                setIsClicked(false);
+              }
+            }}
+          >
+            <div className="imgBox">
+              <img className="imgStyle" src={item.imgUrl}></img>
+            </div>
+            <div>
+              <span className="spanStyle">{item.plantGnrlNm}</span>
+            </div>
+          </li>
+        ))}
         {/* 페이지 네이션 
           pageCount : 총페이지 갯수
           onPageChange : page 클릭 할 때 마다 이벤트 

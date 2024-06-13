@@ -25,6 +25,7 @@ import "./css/calendar.css";
 import PlantResisterList from "./pages/plantResister/PlantResisterList";
 import { Link } from "react-router-dom";
 import LogOut from "./components/login/LogOut";
+import UserInfoProvider from "./context/UserInfoProvider";
 
 function App() {
   // 사용자 로그인 정보
@@ -33,51 +34,53 @@ function App() {
   // const [isLogin, setIsLogin] = useState(true);
   const { posts, addPost, handleDelete, handleUpdate } = usePosts();
   return (
-    <BrowserRouter>
-      <Wrap>
-        <Header userInfo={userInfo}></Header>
-        <Main>
-          <Routes>
-            {/* 공통 레이아웃 적용 */}
-            <Route
-              path="/"
-              element={<Login setUserInfo={setUserInfo} />}
-            ></Route>
-            <Route path="/notice" element={<Notice posts={posts} />} />
-            <Route
-              path="/notice/write"
-              element={<PostWrite addPost={addPost} />}
-            />
-            <Route
-              path="/notice/post/:writerSeq"
-              element={<PostDetail posts={posts} onDelete={handleDelete} />}
-            />
-            <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
-            <Route path="/register" element={<Register />}></Route>
-            <Route path="/signup" element={<SignUp />}></Route>
-            <Route path="/set-nickname" element={<SetNickName />}></Route>
+    <UserInfoProvider>
+      <BrowserRouter>
+        <Wrap>
+          <Header userInfo={userInfo}></Header>
+          <Main>
+            <Routes>
+              {/* 공통 레이아웃 적용 */}
+              <Route
+                path="/"
+                element={<Login setUserInfo={setUserInfo} />}
+              ></Route>
+              <Route path="/notice" element={<Notice posts={posts} />} />
+              <Route
+                path="/notice/write"
+                element={<PostWrite addPost={addPost} />}
+              />
+              <Route
+                path="/notice/post/:writerSeq"
+                element={<PostDetail posts={posts} onDelete={handleDelete} />}
+              />
+              <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
+              <Route path="/register" element={<Register />}></Route>
+              <Route path="/signup" element={<SignUp />}></Route>
+              <Route path="/set-nickname" element={<SetNickName />}></Route>
 
-            <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
-            <Route
-              path="/reactCalendar/:pk"
-              element={<CalendarDetail />}
-            ></Route>
-            <Route path="/plantResister" element={<PlantResister />}></Route>
-            <Route
-              path="/plantResisterDetail/:pk"
-              element={<PlantResisterDetail />}
-            ></Route>
-            <Route
-              path="/plantResisterList"
-              element={<PlantResisterList />}
-            ></Route>
-            {/* 잘못된 경로 */}
-            <Route path="*" element={<NotFound />}></Route>
-          </Routes>
-        </Main>
-        <Footer />
-      </Wrap>
-    </BrowserRouter>
+              <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
+              <Route
+                path="/reactCalendar/:pk"
+                element={<CalendarDetail />}
+              ></Route>
+              <Route path="/plantResister" element={<PlantResister />}></Route>
+              <Route
+                path="/plantResisterDetail/:pk"
+                element={<PlantResisterDetail />}
+              ></Route>
+              <Route
+                path="/plantResisterList"
+                element={<PlantResisterList />}
+              ></Route>
+              {/* 잘못된 경로 */}
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
+          </Main>
+          <Footer />
+        </Wrap>
+      </BrowserRouter>
+    </UserInfoProvider>
   );
 }
 
