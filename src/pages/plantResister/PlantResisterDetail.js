@@ -63,7 +63,7 @@ const PlantResisterDetail = () => {
 
     console.log(datas);
   }, [plantsAlias, setPlantsAlias, textData]);
-  const postData = async () => {
+  const putData = async () => {
     // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
     console.log(
       await axios.post("/api/post", { plantsAlias, textData, plantsName }),
@@ -93,18 +93,6 @@ const PlantResisterDetail = () => {
               <input type="checkbox" />
               <input />
             </div>
-            {isClicked ? (
-              <PlantPublicDataList setIsClicked={setIsClicked} />
-            ) : null}
-            <button
-              onClick={() =>
-                // 공공데이터 해당화면 만들어야함.
-                // getPlantsData();
-                setIsClicked(true)
-              }
-            >
-              식물불러오기
-            </button>
           </div>
           <div>
             <label>식물 애칭(별명)</label>
@@ -123,12 +111,12 @@ const PlantResisterDetail = () => {
           <div>
             <button
               onClick={() => {
-                postData();
+                // putData();
               }}
             >
-              등록
+              수정
             </button>
-            <button onClick={() => {}}>뒤로가기</button>
+            <button onClick={() => {}}>삭제</button>
           </div>
         </form>
       </DetailDivInnerStyle>

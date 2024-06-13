@@ -22,6 +22,7 @@ const PlantRegListUlStyle = styled.div`
   }
 `;
 const PlantRegisterList = ({ item }) => {
+  // 현재 seq 없음
   const { pk, title, text, day, img, gardning } = item;
   useEffect(() => {
     console.log(item);

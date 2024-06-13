@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getOpenData } from "../../axios/plantresister/plantresister";
+import PageNation from "../common/PageNation";
 // 클래스로 바꿔라 제발
 const FixedArea = styled.div`
   position: fixed;
@@ -49,9 +51,46 @@ const PlantPublicDataListStyle = styled.div`
   }
 `;
 
-const PlantPublicDataList = ({ setIsClicked }) => {
+const PlantPublicDataList = ({ setIsClicked, setPlantSeq }) => {
   // 팝업에서 데이터 빼서 앞에 input에 넘기기
   // 앞에 있는 곳에서 set 만 넘겨서 담아서 올릴 것
+
+  // 검색
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  // 페이징 때문에....
+  const [size, setSize] = useState(10);
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
+  const [onPageChange, setOnPageChange] = useState();
+  const [currentPage, setCurrentPage] = useState();
+  // setPlantSeq > click 했을 때 seq 담아야함
+  const clickData = () => {
+    // setPlantSeq > click 했을 때 seq 담아야함
+    // 이름 x seq만 넘겨달라함.
+    setPlantSeq("seq");
+  };
+  const publicClick = async ({ searchKeyword, size, page }) => {
+    try {
+      const result = await getOpenData({ searchKeyword, size, page });
+      console.log(result);
+      setPageCount(result.data.data.totalPage);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // handlePageChange 페이지 네이션 클릭 시 마다 이벤트
+  const handlePageChange = data => {
+    publicClick({
+      searchKeyword: searchKeyword,
+      size: 10,
+      page: data.selected,
+    });
+    setCurrentPage(data.selected);
+    setPage(data.selected + 1); // 페이지 번호를 1부터 시작하도록 조정
+  };
+
+  useEffect(() => {}, [searchKeyword, currentPage]);
 
   return (
     <>
@@ -73,8 +112,18 @@ const PlantPublicDataList = ({ setIsClicked }) => {
             <div className="search-Box-Inner">
               <label style={{ width: "100px" }}>식물명</label>
               <div>
-                <input />
-                <button>검색</button>
+                <input
+                  onChange={e => {
+                    setSearchKeyword(e.target.value);
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    publicClick({ searchKeyword, size, page });
+                  }}
+                >
+                  검색
+                </button>
               </div>
             </div>
           </div>
@@ -97,6 +146,18 @@ const PlantPublicDataList = ({ setIsClicked }) => {
             </div>
           </li>
         }
+        {/* 페이지 네이션 
+          pageCount : 총페이지 갯수
+          onPageChange : page 클릭 할 때 마다 이벤트 
+          currentPage : 클릭한 값의 전 값.
+        */}
+        {pageCount > 0 && (
+          <PageNation
+            pageCount={pageCount} // 총 페이지 수 예시
+            onPageChange={handlePageChange}
+            currentPage={currentPage}
+          />
+        )}
       </PlantPublicDataListStyle>
     </>
   );

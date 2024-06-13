@@ -16,7 +16,7 @@ const Header = ({ children }) => {
         </h1>
         <ul className="menu">
           <li>
-            <Link className="menu__item" to="/plantResister">
+            <Link className="menu__item" to="/plantResisterList">
               식물등록
             </Link>
           </li>
