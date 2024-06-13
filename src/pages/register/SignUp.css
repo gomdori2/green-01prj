@@ -1,3 +1,4 @@
+/* 파일 올리려고 추가한겁니다. */
 .signup-wrap {
   min-width: 500px;
   height: 618px;
@@ -129,6 +130,6 @@ label:after {
   background-color: #45a049;
 }
 
-.token-hidden{
+.token-hidden {
   display: none;
 }

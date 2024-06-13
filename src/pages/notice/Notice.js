@@ -2,60 +2,41 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Notice.scss";
 import { BsViewStacked, BsCardText } from "react-icons/bs";
-import SearchContainer from "../../components/notice/SearchContainer";
+import axios from "axios";
 
-function Notice({ posts = [] }) {
+function Notice() {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(15); // 페이지당 보여줄 게시글 수 상태로 관리
-  const [filteredPosts, setFilteredPosts] = useState(posts);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchOption, setSearchOption] = useState("title");
 
-  const handleRowClick = postId => {
-    navigate(`/notice/post/${postId}`);
+  const handleRowClick = boardSeq => {
+    navigate(`/notice/post/${boardSeq}`);
   };
 
+  // 게시물 데이터 불러오기 작업
+  const [getData, setGetData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState("");
+  const [totalPages, setTotalPages] = useState("");
+
+  // 데이터 불러오기
   useEffect(() => {
-    setFilteredPosts(posts);
-  }, [posts]);
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/api/community/list");
+        setGetData(res.data.data.list);
+        setCurrentPage(res.data.data.totalPage); // 전체 페이지
+        setTotalPages(res.data.data.totalElements); // 전체 게시물 수
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
-  const indexOfLastPost = currentPage * itemsPerPage;
-  const indexOfFirstPost = indexOfLastPost - itemsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredPosts.length / itemsPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
-  const handleSearch = () => {
-    let filtered = posts;
-    if (searchTerm) {
-      filtered = posts.filter(post => {
-        const searchFields = {
-          title: post.title.toLowerCase(),
-          titleContent: `${post.title.toLowerCase()} ${post.content.toLowerCase()}`,
-          author: post.author.toLowerCase(),
-        };
-        return searchFields[searchOption].includes(searchTerm.toLowerCase());
-      });
-    }
-    setFilteredPosts(filtered);
-    setCurrentPage(1);
-  };
-
-  const handleSearchTermChange = event => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleSearchOptionChange = event => {
-    setSearchOption(event.target.value);
-  };
-
-  const handleItemsPerPageChange = event => {
-    setItemsPerPage(Number(event.target.value));
-    setCurrentPage(1);
-  };
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="inner">
@@ -73,20 +54,6 @@ function Notice({ posts = [] }) {
             <button className="view-Type">
               <BsViewStacked size={15} />
             </button>
-            <select
-              className="select-box"
-              name="itemsPerPage"
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-            >
-              <option value="5">5개씩</option>
-              <option value="10">10개씩</option>
-              <option value="15">15개씩</option>
-              <option value="20">20개씩</option>
-              <option value="30">30개씩</option>
-              <option value="40">40개씩</option>
-              <option value="50">50개씩</option>
-            </select>
           </div>
         </div>
         <table className="notice__center">
@@ -96,19 +63,22 @@ function Notice({ posts = [] }) {
               <th>제목</th>
               <th>글쓴이</th>
               <th>작성일</th>
+              <th>추천</th>
               <th>조회</th>
-              <th>좋아요</th>
             </tr>
           </thead>
           <tbody>
-            {currentPosts.map(post => (
-              <tr key={post.postId} onClick={() => handleRowClick(post.postId)}>
-                <td>{post.postId}</td>
+            {getData.map(post => (
+              <tr
+                key={post.boardSeq}
+                onClick={() => handleRowClick(post.boardSeq)}
+              >
+                <td>{post.boardSeq}</td>
                 <td>{post.title}</td>
-                <td>{post.author}</td>
-                <td>{post.date}</td>
-                <td>{post.views}</td>
-                <td>{post.likes}</td>
+                <td>{post.writerName}</td>
+                <td>{post.inputDt}</td>
+                <td>{post.fav}</td>
+                <td>{post.hit}</td>
               </tr>
             ))}
           </tbody>
@@ -118,20 +88,8 @@ function Notice({ posts = [] }) {
             글쓰기
           </Link>
         </div>
-        <div className="notice__pagination">
-          {pageNumbers.map(number => (
-            <button key={number} onClick={() => setCurrentPage(number)}>
-              {number}
-            </button>
-          ))}
-        </div>
-        <SearchContainer
-          searchOption={searchOption}
-          handleSearchOptionChange={handleSearchOptionChange}
-          searchTerm={searchTerm}
-          handleSearchTermChange={handleSearchTermChange}
-          handleSearch={handleSearch}
-        />
+        <div className="notice__pagination">페이지네이션 부분</div>
+        <div>검색창 부분</div>
       </article>
     </div>
   );

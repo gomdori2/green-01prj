@@ -1,19 +1,40 @@
-import React, { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import styled from "@emotion/styled";
 import CommentComponent from "../../components/notice/CommentContainer";
 import "./PostDetail.scss";
+import axios from "axios";
 
-const PostDetail = ({ posts, onDelete }) => {
-  const { postId } = useParams();
+const PostDetail = ({ onDelete }) => {
+  const { writerSeq } = useParams();
   const navigate = useNavigate();
+  const [post, setPost] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const post = posts.find(post => post.postId === parseInt(postId, 10));
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(
+          `/api/community/detail?boardSeq=${writerSeq}`,
+        );
+        console.log("cc", res.data.data);
+        setPost(res.data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [writerSeq]);
 
   const handleDelete = () => {
-    onDelete(post.postId);
+    onDelete(post.writerSeq);
     navigate("/notice");
   };
 
@@ -25,6 +46,14 @@ const PostDetail = ({ posts, onDelete }) => {
     setIsModalOpen(false);
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
     <div className="inner">
       <div className="post">
@@ -33,7 +62,7 @@ const PostDetail = ({ posts, onDelete }) => {
           <div className="post__header__left">
             <button
               className="btn"
-              onClick={() => navigate(`/notice/edit/${postId}`)}
+              onClick={() => navigate(`/notice/edit/${writerSeq}`)}
             >
               수정
             </button>
@@ -46,7 +75,7 @@ const PostDetail = ({ posts, onDelete }) => {
             <button
               className="btn"
               onClick={() =>
-                navigate(`/notice/post/${parseInt(postId, 10) - 1}`)
+                navigate(`/notice/post/${parseInt(writerSeq, 10) - 1}`)
               }
             >
               이전글
@@ -54,7 +83,7 @@ const PostDetail = ({ posts, onDelete }) => {
             <button
               className="btn"
               onClick={() =>
-                navigate(`/notice/post/${parseInt(postId, 10) + 1}`)
+                navigate(`/notice/post/${parseInt(writerSeq, 10) + 1}`)
               }
             >
               다음글
@@ -68,23 +97,25 @@ const PostDetail = ({ posts, onDelete }) => {
           {post ? (
             <div>
               <div className="content__top">
-                <h2 className="title">{post.title}</h2>
+                <h2 className="title">{post.data.title}</h2>
               </div>
 
               <div className="content__top__info">
                 <div className="content__top__info__user">
                   <div>{/* <img src="" alt="" /> */}</div>
                   <div className="content__top__info__profile">
-                    <div className="username">글쓴이: {post.author}</div>
+                    <div className="username">
+                      글쓴이: {post.data.writerName}
+                    </div>
                     <div className="content__top__info__meta">
-                      <div className="time">작성일: {post.date}</div>
-                      <div className="views">조회수: {post.views}</div>
-                      <div className="like">좋아요: {post.likes}</div>
+                      <div className="time">작성일: {post.data.inputDt}</div>
+                      <div className="views">조회수: {post.data.hit}</div>
+                      <div className="like">추천수: {post.data.fav}</div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="content__center content">{post.content}</div>
+              <div className="content__center content">{post.data.content}</div>
 
               <div className="content__bottom">
                 {/* <div className="content__bottom__user-info">
@@ -94,10 +125,8 @@ const PostDetail = ({ posts, onDelete }) => {
                   </a>
                 </div> */}
                 <div>
-                  <a href="#" className="btn1">
-                    좋아요 10
-                  </a>
-                  <span>댓글수 5</span>
+                  <span>추천수: {post.data.hit}</span>
+                  <span>댓글수: </span>
                 </div>
               </div>
               <StyledModal

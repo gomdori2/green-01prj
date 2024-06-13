@@ -1,44 +1,73 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import "./PostEdit.scss";
 
-const PostEdit = ({ posts, onUpdate }) => {
-  console.log("posts", posts);
-  const { postId } = useParams();
+const PostEdit = () => {
+  const { writerSeq } = useParams();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [post, setPost] = useState(null);
 
   useEffect(() => {
-    const postToEdit = posts.find(post => post.postId === parseInt(postId, 10));
+    const fetchPost = async () => {
+      try {
+        const res = await axios.get(
+          `/api/community/detail?boardSeq=${writerSeq}`,
+        );
+        const postData = res.data.data;
+        if (postData) {
+          setPost(postData);
+          setTitle(postData.title);
+          setContent(postData.content);
+        } else {
+          alert("게시물을 찾을 수 없습니다.");
+          navigate("/notice");
+        }
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (postToEdit) {
-      setTitle(postToEdit.title);
-      setContent(postToEdit.content);
-    } else {
-      alert("게시물을 찾을 수 없습니다.");
-      navigate("/");
-    }
-  }, [postId, posts]);
+    fetchPost();
+  }, [writerSeq, navigate]);
 
-  const handleUpdate = () => {
-    const postToEdit = posts.find(post => post.postId === parseInt(postId, 10));
-
-    if (!postToEdit) {
-      alert("게시물을 찾을 수 없습니다.");
+  const handleUpdate = async () => {
+    if (!post) {
+      alert("게시물을 불러오는 중 오류가 발생했습니다.");
       return;
     }
 
-    const updatedPost = {
-      ...postToEdit, // 기존 게시글 정보 복사
-      title: title, // 수정된 제목
-      content: content, // 수정된 내용
-      date: new Date().toLocaleDateString(), // 수정된 날짜
-    };
+    try {
+      const updatedPost = {
+        boardSeq: writerSeq,
+        writerSeq: 1,
+        // writerSeq: post.writerSeq, // post.writerSeq를 사용합니다.
+        title: title,
+        content: content,
+      };
 
-    onUpdate(updatedPost);
-    navigate(`/notice/post/${postId}`);
+      const res = await axios.patch(`/api/community/`, updatedPost);
+      console.log("서버 응답:", res.data); // 서버 응답을 확인하기 위해 로그를 추가합니다.
+      if (res.data.success) {
+        navigate(`/notice/post/${writerSeq}`);
+      } else {
+        alert("게시물 수정에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("에러 발생:", error); // 에러 로그를 추가합니다.
+      alert("게시물 수정 중 오류가 발생했습니다.");
+      setError(error);
+    }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="inner">
@@ -49,7 +78,6 @@ const PostEdit = ({ posts, onUpdate }) => {
             수정
           </button>
 
-          {/* 구현 보류 */}
           <div className="form-group none">
             <label htmlFor="category">카테고리</label>
             <select id="category" name="category">
