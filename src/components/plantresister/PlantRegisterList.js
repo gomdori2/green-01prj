@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
-import { useEffect } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getData } from "../../axios/plantresister/plantresister";
 // 클래스로 바꿔라 제발
 const PlantRegListUlStyle = styled.div`
   display: flex;
@@ -21,23 +23,27 @@ const PlantRegListUlStyle = styled.div`
     text-align: center;
   }
 `;
-const PlantRegisterList = ({ item }) => {
+const PlantRegisterList = ({ item, index }) => {
   // 현재 seq 없음
-  const { pk, title, text, day, img, gardning } = item;
+  const { pk } = item;
+
   useEffect(() => {
     console.log(item);
+    
   }, []);
 
   return (
-    <PlantRegListUlStyle key={pk}>
+    <PlantRegListUlStyle key={index}>
       <Link
-        to={`/PlantResisterDetail/${pk}`}
-        state={{ pk, title, text, day, img, gardning }}
+        to={`/PlantResisterDetail/${index}`}
+        // state 보류
+        // 이정보들을 다 넘기는게 아니라...해당 pk 만 받아서 넘길 것.
+        state={{ pk }}
       >
         <li>
-          <span></span>
-          <span>{text}</span>
-          <span>{text}</span>
+          <span>{item.plantNickName}</span>
+          <span>{item.plantPic}</span>
+          <span>{item.plantName}</span>
         </li>
       </Link>
     </PlantRegListUlStyle>

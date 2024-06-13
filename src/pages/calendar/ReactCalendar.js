@@ -199,6 +199,7 @@ const ReactCalendar = () => {
   return (
     <ReactCalendarStyle>
       <TitleDivStyle>일정 관리</TitleDivStyle>
+
       <div>
         {/* 굳이 밑에 리스트형식 및 아이콘으로 표현 해주는데 알려줄 필요가 있나? */}
         {/* <div>
@@ -225,6 +226,12 @@ const ReactCalendar = () => {
             <span>날짜</span>
           </li>
         </CalendarListUlStyle>
+        <div>
+          <FaSun size="20" style={{ color: "#000" }} />
+          <FaSeedling size="20" style={{ color: "#000" }} />
+          <FaWind size="20" color="#000" />
+          <FaTree size="20" style={{ color: "#000" }} />
+        </div>
         {calendarFilterData?.map((item, index) => (
           <CalendarList key={item.pk} item={item}></CalendarList>
         ))}

@@ -61,7 +61,7 @@ const PlantResister = () => {
   const [plantsAlias, setPlantsAlias] = useState("");
   const [etcData, setEtcData] = useState("");
   const [odataSeq, setOdataSeq] = useState(9007199254740991);
-  const [userSeq, setUserSeq] = useState(9007199254740991);
+  const [userSeq, setUserSeq] = useState(3);
 
   // 팝업 데이터 받아와야함
   // 필요없어짐. seq만 넘기면된다함 {} X seq
@@ -81,9 +81,11 @@ const PlantResister = () => {
     // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
     await axios.get("/api/getPlants");
   };
-
+  const isClickFunc = () => {
+    setIsClicked(true);
+  };
   useEffect(() => {
-    console.log(isClicked);
+    
   }, [isClicked]);
 
   return (
@@ -97,26 +99,18 @@ const PlantResister = () => {
           {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
           <div>
             <label>식물명</label>
-            <div>
-              <input readOnly />
-            </div>
+            <input readOnly />
             {isClicked ? (
               <PlantPublicDataList
                 // setPlantSeq={setOdataSeq}
                 setIsClicked={setIsClicked}
               />
             ) : null}
-            <button
-              onClick={() =>
-                // 공공데이터 해당화면 만들어야함.
-                // getPlantsData();
-                setIsClicked(true)
-              }
-            >
+            <button type="button" onClick={() => isClickFunc()}>
               식물불러오기
             </button>
           </div>
-          <div>
+          <div className="flex-box-div">
             <label>식물 애칭(별명)</label>
             <input
               value={plantsAlias}
@@ -127,7 +121,7 @@ const PlantResister = () => {
             />
           </div>
 
-          <div className="text-area-div">
+          <div className="flex-box-div text-area-div">
             <label htmlFor="text">기타사항</label>
             <div className="text-area-style">
               <TextArea
@@ -136,12 +130,10 @@ const PlantResister = () => {
               ></TextArea>
             </div>
           </div>
-          <div>
+          <div className="flex-box-div">
             <button
               onClick={() => {
-                alert("aaa");
                 const a = { userSeq, odataSeq, plantsAlias, etcData };
-                console.log(a);
                 postData({ userSeq, odataSeq, plantsAlias, etcData });
               }}
             >

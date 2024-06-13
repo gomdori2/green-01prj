@@ -4,10 +4,10 @@ import { toast } from "react-toastify";
 // 공공데이터 식물 검색 Parameters
 // /api/opendata/
 // /api/opendata/?keyword=%EA%BD%83%20%EC%9D%B4%EB%A6%84&page=1&size=10
-export const getOpenData = async ({ searchKeyword, size, page }) => {
+export const getOpenData = async ({ searchKeyword, page }) => {
   try {
     const data = await axios.get(
-      `/api/opendata/?plantGnrlNm=${searchKeyword}&size=${size}&page=${page}`,
+      `/api/opendata/?keyword=${searchKeyword}&page=${page}&size=10`,
     );
     return data;
   } catch (error) {
@@ -18,9 +18,11 @@ export const getOpenData = async ({ searchKeyword, size, page }) => {
 // 식물등록리스트 조회
 // /api/schedule/plant/list
 // /api/schedule/plant/list?userSeq=1&page=1&size=10
-export const getData = async () => {
+export const getData = async ({ userSeq, page }) => {
   try {
-    const data = await axios.get("/api/schedule/plant/list");
+    const data = await axios.get(
+      `/api/schedule/plant/list?userSeq=${userSeq}&page=${page}&size=10`,
+    );
     return data;
   } catch (error) {
     toast.warning(error);
