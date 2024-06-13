@@ -31,7 +31,7 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
 
   // const [isLogin, setIsLogin] = useState(true);
-  const { posts, addPost, handleDelete, handleUpdate } = usePosts();
+  const { posts, addPost, handleUpdate } = usePosts();
   return (
     <BrowserRouter>
       <Wrap>
@@ -48,10 +48,7 @@ function App() {
               path="/notice/write"
               element={<PostWrite addPost={addPost} />}
             />
-            <Route
-              path="/notice/post/:writerSeq"
-              element={<PostDetail posts={posts} onDelete={handleDelete} />}
-            />
+            <Route path="/notice/post/:writerSeq" element={<PostDetail />} />
             <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
             <Route path="/register" element={<Register />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>

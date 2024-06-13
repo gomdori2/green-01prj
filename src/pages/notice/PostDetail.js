@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Modal from "react-modal";
-import styled from "@emotion/styled";
 import CommentComponent from "../../components/notice/CommentContainer";
 import "./PostDetail.scss";
 import axios from "axios";
+import ConfirmModal from "../../components/common/ConfirmModal";
 
-const PostDetail = ({ onDelete }) => {
+const PostDetail = () => {
   const { writerSeq } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [previousPostExists, setPreviousPostExists] = useState(false);
+  const [nextPostExists, setNextPostExists] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,8 +22,8 @@ const PostDetail = ({ onDelete }) => {
         const res = await axios.get(
           `/api/community/detail?boardSeq=${writerSeq}`,
         );
-        console.log("cc", res.data.data);
         setPost(res.data);
+        setPreviousPostExists(parseInt(writerSeq, 10) > 1);
       } catch (error) {
         setError(error);
       } finally {
@@ -33,9 +34,48 @@ const PostDetail = ({ onDelete }) => {
     fetchData();
   }, [writerSeq]);
 
-  const handleDelete = () => {
-    onDelete(post.writerSeq);
-    navigate("/notice");
+  useEffect(() => {
+    const checkNextPost = async () => {
+      let currentWriterSeq = parseInt(writerSeq, 10);
+      let nextWriterSeq = currentWriterSeq + 1;
+
+      for (let i = 0; i < 10; i++) {
+        try {
+          const res = await axios.get(
+            `/api/community/detail?boardSeq=${nextWriterSeq}`,
+          );
+          if (res.data && res.data.data) {
+            setNextPostExists(true);
+            return;
+          } else {
+            nextWriterSeq++;
+          }
+        } catch (error) {
+          console.log(error);
+          nextWriterSeq++;
+        }
+      }
+
+      setNextPostExists(false);
+      console.log("다음 글을 찾을 수 없습니다.");
+    };
+
+    if (post && post.data) {
+      checkNextPost();
+    }
+  }, [writerSeq, post]);
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `/api/community/?boardSeq=${post.data.boardSeq}&writerSeq=1`,
+      );
+      navigate("/notice");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsModalOpen(false);
+    }
   };
 
   const handleDeleteClick = () => {
@@ -44,6 +84,54 @@ const PostDetail = ({ onDelete }) => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const navigateToNextPost = async () => {
+    let currentWriterSeq = parseInt(writerSeq, 10);
+    let nextWriterSeq = currentWriterSeq + 1;
+
+    for (let i = 0; i < 10; i++) {
+      try {
+        const res = await axios.get(
+          `/api/community/detail?boardSeq=${nextWriterSeq}`,
+        );
+        if (res.data && res.data.data) {
+          navigate(`/notice/post/${nextWriterSeq}`);
+          return;
+        } else {
+          nextWriterSeq++;
+        }
+      } catch (error) {
+        console.log(error);
+        nextWriterSeq++;
+      }
+    }
+
+    console.log("다음 글을 찾을 수 없습니다.");
+  };
+
+  const navigateToPreviousPost = async () => {
+    let currentWriterSeq = parseInt(writerSeq, 10);
+    let previousWriterSeq = currentWriterSeq - 1;
+
+    for (let i = 0; i < 10; i++) {
+      try {
+        const res = await axios.get(
+          `/api/community/detail?boardSeq=${previousWriterSeq}`,
+        );
+        if (res.data && res.data.data) {
+          navigate(`/notice/post/${previousWriterSeq}`);
+          return;
+        } else {
+          previousWriterSeq--;
+        }
+      } catch (error) {
+        console.log(error);
+        previousWriterSeq--;
+      }
+    }
+
+    console.log("이전 글을 찾을 수 없습니다.");
   };
 
   if (loading) {
@@ -74,17 +162,15 @@ const PostDetail = ({ onDelete }) => {
           <div className="post__header__right">
             <button
               className="btn"
-              onClick={() =>
-                navigate(`/notice/post/${parseInt(writerSeq, 10) - 1}`)
-              }
+              onClick={navigateToPreviousPost}
+              disabled={!previousPostExists}
             >
               이전글
             </button>
             <button
               className="btn"
-              onClick={() =>
-                navigate(`/notice/post/${parseInt(writerSeq, 10) + 1}`)
-              }
+              onClick={navigateToNextPost}
+              disabled={!nextPostExists}
             >
               다음글
             </button>
@@ -120,28 +206,16 @@ const PostDetail = ({ onDelete }) => {
               </div>
 
               <div className="content__bottom">
-                {/* <div className="content__bottom__user-info">
-                  <img src="" alt="" />
-                  <a href="#" className="user-posts">
-                    죠르디님의 게시글 더보기
-                  </a>
-                </div> */}
                 <div>
                   <span>추천수: {post.data.hit}</span>
                   <span>댓글수: </span>
                 </div>
               </div>
-              <StyledModal
+              <ConfirmModal
                 isOpen={isModalOpen}
                 onRequestClose={handleCloseModal}
-                contentLabel="삭제 확인"
-              >
-                <p>정말로 삭제하시겠습니까?</p>
-                <div>
-                  <button onClick={handleDelete}>삭제</button>
-                  <button onClick={handleCloseModal}>취소</button>
-                </div>
-              </StyledModal>
+                onConfirm={handleDelete}
+              />
             </div>
           ) : (
             <p>게시물을 찾을 수 없습니다.</p>
@@ -154,33 +228,3 @@ const PostDetail = ({ onDelete }) => {
 };
 
 export default PostDetail;
-
-const StyledModal = styled(Modal)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  padding: 40px 20px;
-  border: 1px solid #ccc;
-  background-color: white;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 40px;
-
-  p {
-    margin: 0;
-  }
-
-  button {
-    padding: 8px 15px;
-    margin-right: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-`;
