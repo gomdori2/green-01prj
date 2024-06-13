@@ -4,23 +4,27 @@ import { useEffect, useState } from "react";
 import { getUserNickName } from "../../apis/user/userapi";
 
 const SetNickName = () => {
+  const [nickName, setNickName] = useState("");
 
-  const [nickName, setNickName] = useState("")
+  useEffect(() => {
+    return () => {};
+  }, []);
 
-  useEffect(()=>{
-    return()=>{}
-  },[])
+  const nickNameSubmit = async event => {
+    event.preventDefault();
 
+    // 닉네임형식 유효성 검사
 
-  const nickNameSubmit = async(event) => {
-    event.preventDefault()
-    console.log("닉네임확인")
-  }
-  // 닉네임형식 유효성 검사
+    // 백엔드에 전달할 닉네임
+    const reqData = `/api/user/duplicated?str=${nickName}&type=2`;
+    const result = await getUserNickName(reqData);
 
-  // 백엔드에 전달할 닉네임
-  const reqData = `/api/user/duplicated?str=${nickName}&type=2`;
-  const result = getUserNickName(reqData)
+    if (result.data.code === 1) {
+      alert("회원가입이 완료되었습니다! 로그인 창에서 로그인 후 이용해주세요");
+    } else {
+      alert("중복된 닉네임입니다. 다른 닉네임을 기재해주세요.");
+    }
+  };
   return (
     <main>
       <div className="set-nickname-wrap">
@@ -34,7 +38,11 @@ const SetNickName = () => {
 
         <div className="signup-nickname">
           <div className="signup-nickname-wrap">
-            <form onSubmit={(event)=>{nickNameSubmit(event)}}>
+            <form
+              onSubmit={event => {
+                nickNameSubmit(event);
+              }}
+            >
               <label htmlFor="nickname" className="nickname-txt">
                 닉네임을 설정해주세요
               </label>
@@ -45,7 +53,9 @@ const SetNickName = () => {
                 value={nickName}
                 required
                 placeholder="닉네임을 설정해주세요"
-                onChange={(event)=>{setNickName(event.target.value)}}
+                onChange={event => {
+                  setNickName(event.target.value);
+                }}
               />
 
               <div className="terms">

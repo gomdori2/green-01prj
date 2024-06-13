@@ -23,24 +23,26 @@ import "./css/common/reset.css";
 import "./css/common/common.css";
 import "./css/calendar.css";
 import PlantResisterList from "./pages/plantResister/PlantResisterList";
+import { Link } from "react-router-dom";
+import LogOut from "./components/login/LogOut";
 
 function App() {
-  const [isLogin, setIsLogin] = useState(true);
+  // 사용자 로그인 정보
+  const [userInfo, setUserInfo] = useState(null);
+
+  // const [isLogin, setIsLogin] = useState(true);
   const { posts, addPost, handleDelete, handleUpdate } = usePosts();
   return (
     <BrowserRouter>
       <Wrap>
-        <Header>
-          {isLogin ? (
-            <div>정보수정/로그아웃</div>
-          ) : (
-            <div>회원가입/회원로그인</div>
-          )}
-        </Header>
+        <Header userInfo={userInfo}></Header>
         <Main>
           <Routes>
             {/* 공통 레이아웃 적용 */}
-            <Route path="/" element={<Login />}></Route>
+            <Route
+              path="/"
+              element={<Login setUserInfo={setUserInfo} />}
+            ></Route>
             <Route path="/notice" element={<Notice posts={posts} />} />
             <Route
               path="/notice/write"
