@@ -1,8 +1,9 @@
 import axios from "axios";
 export const postUserLogin = async data => {
   try {
-    const res = await axios.post(data);
-    return res.data;
+    const response = await axios.post(data);
+    console.log(response);
+    return response;
   } catch (error) {
     return error;
   }
@@ -44,17 +45,17 @@ export const postUserSignUp = async data => {
     const response = await axios.post("/api/user/sign_up", data);
     return response;
   } catch (error) {
-    return error;
+    console.log(error);
   }
 };
 
 // 닉네임 정보 확인
-export const getUserNickName = async(data) =>{
+export const getUserNickName = async data => {
   try {
-    const response = await axios.get(data)
-    console.log(response)
+    const response = await axios.get(data);
+    console.log(response);
+    return response;
   } catch (error) {
-    console.log(error)
-    
+    console.log(error);
   }
-}
+};

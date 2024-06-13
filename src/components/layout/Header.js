@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const Header = ({ children }) => {
+const Header = ({ userInfo }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   // 여기에 헤더를 제외하고 싶은 path를 넣으세요
   const excludedPaths = ["/", "/register", "/signup", "/set-nickname"];
 
@@ -33,7 +34,20 @@ const Header = ({ children }) => {
         </ul>
         <ul>
           <li>
-            <Link>{children}</Link>
+            {userInfo ? (
+              <div>
+                {/* css 다듬어야함. */}
+                <Link to={"/components"}>정보수정</Link>/
+                <button
+                  onClick={() => {
+                    sessionStorage.removeItem("user");
+                    navigate("/");
+                  }}
+                >
+                  로그아웃
+                </button>
+              </div>
+            ) : null}
           </li>
         </ul>
       </HeaderDiv>
