@@ -32,8 +32,9 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
 
   // const [isLogin, setIsLogin] = useState(true);
-  const { posts, addPost, handleDelete, handleUpdate } = usePosts();
+  const { posts, addPost, handleUpdate } = usePosts();
   return (
+
     <UserInfoProvider>
       <BrowserRouter>
         <Wrap>
@@ -58,6 +59,7 @@ function App() {
               <Route path="/register" element={<Register />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/set-nickname" element={<SetNickName />}></Route>
+
 
               <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
               <Route
