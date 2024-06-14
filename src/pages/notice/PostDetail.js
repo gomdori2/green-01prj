@@ -14,11 +14,10 @@ const PostDetail = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 전체 게시물 리스트를 받아오는 함수
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
-        const res = await axios.get("/api/community/list?size=1000"); // GET 요청으로 수정
+        const res = await axios.get("/api/community/list?size=1000");
         setAllPosts(res.data.data.list);
       } catch (error) {
         setError(error);
@@ -28,7 +27,6 @@ const PostDetail = () => {
     fetchAllPosts();
   }, []);
 
-  // 현재 게시물 데이터를 받아오는 함수
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,7 +34,11 @@ const PostDetail = () => {
         const res = await axios.get(
           `/api/community/detail?boardSeq=${writerSeq}`,
         );
-        setPost(res.data);
+        if (res.data) {
+          setPost(res.data);
+        } else {
+          setError(new Error("게시물을 찾을 수 없습니다."));
+        }
       } catch (error) {
         setError(error);
       } finally {
@@ -73,8 +75,7 @@ const PostDetail = () => {
       item => item.boardSeq === parseInt(writerSeq, 10),
     );
     if (currentIdx !== -1 && currentIdx < allPosts.length - 1) {
-      const nextPostSeq = allPosts[currentIdx + 1].boardSeq;
-      navigate(`/notice/post/${nextPostSeq}`);
+      navigate(`/notice/post/${allPosts[currentIdx + 1].boardSeq}`);
     } else {
       alert("다음 글을 찾을 수 없습니다.");
     }
@@ -85,8 +86,7 @@ const PostDetail = () => {
       item => item.boardSeq === parseInt(writerSeq, 10),
     );
     if (currentIdx > 0) {
-      const previousPostSeq = allPosts[currentIdx - 1].boardSeq;
-      navigate(`/notice/post/${previousPostSeq}`);
+      navigate(`/notice/post/${allPosts[currentIdx - 1].boardSeq}`);
     } else {
       alert("이전 글을 찾을 수 없습니다.");
     }
