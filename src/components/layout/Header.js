@@ -1,12 +1,25 @@
 import styled from "@emotion/styled";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { userInfoContext } from "../../context/UserInfoProvider";
 
-const Header = ({ userInfo }) => {
+const Header = () => {
+  const { localUserData } = useContext(userInfoContext);
+  const [userSeq, setUserSeq] = useState();
+  // console.log(localUserInfo.userSeq);
   const location = useLocation();
+  console.log(location);
   const navigate = useNavigate();
-  // 여기에 헤더를 제외하고 싶은 path를 넣으세요
-  const excludedPaths = ["/", "/register", "/signup", "/set-nickname"];
+  useEffect(() => {
+    setUserSeq(localUserData?.userSeq);
+  }, [localUserData]);
 
+  useEffect(() => {
+    console.log("userSeq ", userSeq);
+  }, [userSeq]);
+
+  // 여기에 헤더를 제외하고 싶은 path를 넣으세요
+  const excludedPaths = ["/", "/register", "/signup"];
   if (!excludedPaths.includes(location.pathname)) {
     return (
       <HeaderDiv>
@@ -34,7 +47,7 @@ const Header = ({ userInfo }) => {
         </ul>
         <ul>
           <li>
-            {userInfo ? (
+            {userSeq ? (
               <div>
                 {/* css 다듬어야함. */}
                 <Link to={"/components"}>정보수정</Link>/

@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import CalendarDetail from "./components/calendar/CalendarDetail";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
-import { useState } from "react";
-import CalendarDetail from "./components/calendar/CalendarDetail";
 import Main from "./components/layout/Main";
+import Wrap from "./components/layout/Wrap";
 import usePosts from "./hooks/usePosts"; // Custom hook import
 import NotFound from "./pages/NotFound";
 import ReactCalendar from "./pages/calendar/ReactCalendar";
@@ -17,24 +18,19 @@ import PlantResisterDetail from "./pages/plantResister/PlantResisterDetail";
 import Register from "./pages/register/Register";
 import SetNickName from "./pages/register/SetNickName";
 import SignUp from "./pages/register/SignUp";
-import Wrap from "./components/layout/Wrap";
 
-import "./css/common/reset.css";
-import "./css/common/common.css";
-import "./css/calendar.css";
-import PlantResisterList from "./pages/plantResister/PlantResisterList";
-import { Link } from "react-router-dom";
-import LogOut from "./components/login/LogOut";
 import UserInfoProvider from "./context/UserInfoProvider";
+import "./css/calendar.css";
+import "./css/common/common.css";
+import "./css/common/reset.css";
+import PlantResisterList from "./pages/plantResister/PlantResisterList";
 
 function App() {
   // 사용자 로그인 정보
   const [userInfo, setUserInfo] = useState(null);
-
   // const [isLogin, setIsLogin] = useState(true);
   const { posts, addPost, handleUpdate } = usePosts();
   return (
-
     <UserInfoProvider>
       <BrowserRouter>
         <Wrap>
@@ -42,10 +38,7 @@ function App() {
           <Main>
             <Routes>
               {/* 공통 레이아웃 적용 */}
-              <Route
-                path="/"
-                element={<Login setUserInfo={setUserInfo} />}
-              ></Route>
+              <Route path="/" element={<Login />}></Route>
               <Route path="/notice" element={<Notice posts={posts} />} />
               <Route
                 path="/notice/write"
@@ -53,13 +46,12 @@ function App() {
               />
               <Route
                 path="/notice/post/:writerSeq"
-                element={<PostDetail posts={posts} onDelete={handleDelete} />}
+                element={<PostDetail posts={posts} />}
               />
               <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
               <Route path="/register" element={<Register />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/set-nickname" element={<SetNickName />}></Route>
-
 
               <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
               <Route

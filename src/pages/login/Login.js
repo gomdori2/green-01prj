@@ -3,7 +3,7 @@ import "../login/login.css";
 import { postUserLogin } from "../../apis/user/userapi";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = ({ setUserInfo }) => {
+const Login = () => {
   // const [loginId, setLoginId] = useState("jowonyoung1");
   // const [loginPw, setLoginPw] = useState("asdf@1234");
   const [loginId, setLoginId] = useState("jowonyoung2");
@@ -35,7 +35,6 @@ const Login = ({ setUserInfo }) => {
         userName: result.data.data.userName,
         userSeq: result.data.data.userSeq,
       };
-      setUserInfo(userInfo);
       // console.log("userInfo : ", userInfo);
       sessionStorage.setItem("user", JSON.stringify(userInfo));
       // JSON.stringify(response.data)는 JavaScript 객체를

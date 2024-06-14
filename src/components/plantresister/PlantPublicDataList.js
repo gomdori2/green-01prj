@@ -84,7 +84,6 @@ const PlantPublicDataListStyle = styled.div`
     padding-right: 10px;
   }
 `;
-
 const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
   // 팝업에서 데이터 빼서 앞에 input에 넘기기
   // 앞에 있는 곳에서 set 만 넘겨서 담아서 올릴 것
@@ -114,10 +113,7 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
 
   useEffect(() => {
     console.log(searchKeyword);
-    publicDataRead({
-      searchKeyword: searchKeyword,
-      page: page,
-    });
+    publicDataRead({ searchKeyword, page });
   }, [searchKeyword, page]);
   // handlePageChange 페이지 네이션 클릭 시 마다 이벤트
   const handlePageChange = data => {
@@ -133,10 +129,10 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
   //   );
   // }
   const handleKeyPress = e => {
+    setPage(1);
+    setCurrentPage(1);
     setSearchKeyword(e.target.value);
-    publicDataRead({ searchKeyword });
   };
-
   return (
     <>
       <FixedArea
@@ -154,7 +150,14 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
         <li>
           <div>
             <div>
-              <div className="">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  gap: 0,
+                  marginRight: "10px",
+                }}
+              >
                 <label style={{ width: "100px" }}>식물명</label>
                 <input
                   onKeyUp={e => {
@@ -210,12 +213,27 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
           onPageChange : page 클릭 할 때 마다 이벤트 
           currentPage : 클릭한 값의 전 값.
         */}
-        {pageCount > 0 && (
+        {pageCount && pageCount > 0 ? (
           <PageNation
             pageCount={pageCount} // 총 페이지 수 예시
             onPageChange={handlePageChange}
             currentPage={currentPage}
+            forcePage={1}
           />
+        ) : (
+          <div
+            style={{
+              fontWeight: "bold",
+              display: "flex",
+              width: "100%",
+              fontSize: "20px",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "300px",
+            }}
+          >
+            데이터가 없습니다.
+          </div>
         )}
       </PlantPublicDataListStyle>
     </>

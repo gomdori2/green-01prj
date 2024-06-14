@@ -28,7 +28,7 @@ const TextAreaStyle = styled.div`
 `;
 // valueDatas : 상위 컴포넌트에서 넘긴 데이터 매개변수
 // setTextData : 상위 컴포넌트에 넘겨야 할 데이터(넘긴다기보단 상위에 있는 이라 보면 될듯) textData 담아두기
-const TextArea = ({ valueDatas, setTextData }) => {
+const TextArea = ({ valueDatas, setTextData, maxLength }) => {
   // value.length = 글자 수
   const [valueLength, setValueLength] = useState(valueDatas?.length);
   return (
@@ -39,14 +39,14 @@ const TextArea = ({ valueDatas, setTextData }) => {
             id="text"
             value={valueDatas}
             rows={6}
-            maxLength={200}
+            maxLength={maxLength}
             onChange={e => {
               setValueLength(e.target.value.length);
               setTextData(e.target.value);
             }}
           />
           <span>
-            <strong>*</strong>글자수 {valueLength}/200
+            <strong>*</strong>글자수 {valueLength}/{maxLength}
           </span>
         </TextAreaStyle>
       </div>
