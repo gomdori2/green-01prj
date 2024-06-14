@@ -56,7 +56,7 @@ const Login = ({ setUserInfo }) => {
     <main>
       <div className="login-wrap">
         <header>식물 일정 관리</header>
-        <h1>소제목</h1>
+        <h1>로그인</h1>
         <div className="loginform-group">
           <form
             onSubmit={e => {

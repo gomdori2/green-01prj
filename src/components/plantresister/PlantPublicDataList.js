@@ -100,10 +100,10 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   // setOdataSeq > click 했을 때 seq 담아야함
-  const publicClick = async ({ searchKeyword, size, page }) => {
+  const publicDataRead = async ({ searchKeyword, page }) => {
     setIsLoading(true);
     try {
-      const result = await getOpenData({ searchKeyword, size, page });
+      const result = await getOpenData({ searchKeyword, page });
       setOpenListData(result.data.data.list);
       setPageCount(result.data.data.totalPage);
     } catch (error) {
@@ -113,7 +113,8 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
   };
 
   useEffect(() => {
-    publicClick({
+    console.log(searchKeyword);
+    publicDataRead({
       searchKeyword: searchKeyword,
       page: page,
     });
@@ -124,13 +125,18 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
     setCurrentPage(data.selected);
   };
   // 페이징이랑 뭔가 안맞음
-  if (isLoading) {
-    return (
-      <PlantPublicDataListStyle id="popupInner">
-        <Loading></Loading>
-      </PlantPublicDataListStyle>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <PlantPublicDataListStyle id="popupInner">
+  //       <Loading></Loading>
+  //     </PlantPublicDataListStyle>
+  //   );
+  // }
+  const handleKeyPress = e => {
+    setSearchKeyword(e.target.value);
+    publicDataRead({ searchKeyword });
+  };
+
   return (
     <>
       <FixedArea
@@ -151,16 +157,18 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
               <div className="">
                 <label style={{ width: "100px" }}>식물명</label>
                 <input
-                  onChange={e => {
-                    setSearchKeyword(e.target.value);
-                    // if (e.target.key === 27) {
-                    // }
+                  onKeyUp={e => {
+                    e.preventDefault();
+                    if (e.key === "Enter") {
+                      handleKeyPress(e);
+                    }
                   }}
                 />
                 <button
+                  type="button"
                   style={{ marginLeft: "15px" }}
                   onClick={() => {
-                    publicClick({ searchKeyword, size, page });
+                    publicDataRead({ searchKeyword, size, page });
                   }}
                   className="post-all btn"
                 >
