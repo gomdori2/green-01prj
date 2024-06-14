@@ -17,7 +17,12 @@ function Notice() {
   const [error, setError] = useState(null);
   const [totalPost, setTotalPost] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const [itemsPerPage, setItemsPerPage] = useState(() => {
+    // 세션 스토리지에서 itemsPerPage 값을 가져오기, 없으면 기본값 10 설정
+    const savedItemsPerPage = sessionStorage.getItem("itemsPerPage");
+    return savedItemsPerPage ? parseInt(savedItemsPerPage, 10) : 10;
+  });
 
   // 세션 스토리지에서 초기 order 값을 가져옴, 없으면 0으로 초기화
   const initialOrder =
@@ -57,9 +62,12 @@ function Notice() {
   };
 
   const handleItemsPerPageChange = event => {
-    setItemsPerPage(Number(event.target.value));
-    setCurrentPage(0);
-    navigate(`/notice/`);
+    const newValue = parseInt(event.target.value, 10);
+    setItemsPerPage(newValue);
+    // 세션 스토리지에 itemsPerPage 값을 저장
+    sessionStorage.setItem("itemsPerPage", newValue.toString());
+    // 부모 컴포넌트로 변경된 itemsPerPage 값을 전달
+    setItemsPerPage(newValue);
   };
 
   const orderClick = () => {
