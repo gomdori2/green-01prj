@@ -28,6 +28,9 @@ function Notice() {
     return savedItemsPerPage ? parseInt(savedItemsPerPage, 10) : 10;
   });
 
+  // 테스트 코드입니다.
+  const [Test, setTest] = useState("");
+
   // 세션 스토리지에서 초기 order 값을 가져옴, 없으면 0으로 초기화
   const initialOrder =
     sessionStorage.getItem("order") !== null
