@@ -66,15 +66,16 @@ const PlantResister = () => {
 
   // 팝업 데이터 받아와야함
   // 필요없어짐. seq만 넘기면된다함 {} X seq
+
   useEffect(() => {
-    const datas = { userSeq, odataSeq, etc, plantNickName };
     setUserSeq(localUserData.userSeq);
+    const datas = { userSeq, odataSeq, etc, plantNickName };
     // post 할 데이터_상세페이지_수정, 삭제
     // 아직 안됨. - 공공데이터
 
     // postData({ userSeq, plantsName, etc, plantNickName });
     console.log(datas);
-  }, [plantNickName, etc]);
+  }, [localUserData.userSeq, plantNickName, etc]);
   // 일단 default로 보냄.
   // 해당 되는 컴포넌트 하나 필요
   const getPlantsData = async () => {
