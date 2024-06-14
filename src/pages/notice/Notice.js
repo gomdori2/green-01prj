@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./Notice.scss";
 import axios from "axios";
 import NoticeTop from "../../components/notice/NoticeTop";
-import NoticeBottom from "../../components/notice/NoticeBottom";
 import NoticeMain from "../../components/notice/NoticeMain";
+import NoticeBottom from "../../components/notice/NoticeBottom";
 import SearchComponent from "../../components/notice/SearchComponent";
 
 function Notice() {
@@ -29,6 +29,11 @@ function Notice() {
       ? Number(sessionStorage.getItem("order"))
       : 0;
   const [order, setOrder] = useState(initialOrder);
+
+  // 버튼 텍스트를 관리하는 상태 추가
+  const [orderText, setOrderText] = useState(
+    order === 3 ? "오래된 순" : "최신 순",
+  );
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -81,6 +86,7 @@ function Notice() {
     setOrder(newOrder);
     setCurrentPage(0);
     sessionStorage.setItem("order", newOrder);
+    setOrderText(newOrder === 3 ? "오래된 순" : "최신 순"); // 버튼 텍스트 변경
     navigate(`/notice/`);
   };
 
@@ -99,6 +105,7 @@ function Notice() {
           orderClick={orderClick}
           itemsPerPage={itemsPerPage}
           handleItemsPerPageChange={handleItemsPerPageChange}
+          orderText={orderText} // orderText 추가
         />
         <NoticeMain handleSearchResult={handleSearchResult} getData={getData} />
         <NoticeBottom

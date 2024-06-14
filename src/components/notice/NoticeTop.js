@@ -1,14 +1,20 @@
 import React from "react";
 import { BsViewStacked, BsCardText } from "react-icons/bs";
 
-function NoticeTop({ orderClick, itemsPerPage, handleItemsPerPageChange }) {
+function NoticeTop({
+  orderClick,
+  itemsPerPage,
+  handleItemsPerPageChange,
+  orderText,
+}) {
+  // orderText 추가
   return (
     <div className="notice__top">
       <div className="flex-gap-4">
         <button className="post-all btn">전체글</button>
         <button className="post-best btn">추천글</button>
         <button className="post-best btn" onClick={orderClick}>
-          ↕
+          {orderText}
         </button>
       </div>
       <div className="notice__top__icon">
