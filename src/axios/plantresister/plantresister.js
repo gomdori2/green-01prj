@@ -53,13 +53,13 @@ export const getOneData = async ({ userSeq, plantSeq }) => {
 //   "etc": "testEtcText",
 //   "odataSeq": 9007199254740991 // 식물 공공 데이터 pk
 // }
-export const postData = async ({ userSeq, odataSeq, plantsAlias, etcData }) => {
+export const postData = async ({ userSeq, odataSeq, plantNickName, etc }) => {
   try {
     const data = await axios.post("/api/schedule/plant", {
       userSeq,
       odataSeq,
-      plantNickName: plantsAlias,
-      etc: etcData,
+      plantNickName,
+      etc,
     });
     // stuatus 받으려고
     return data;

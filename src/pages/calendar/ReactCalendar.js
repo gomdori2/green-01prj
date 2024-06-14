@@ -226,15 +226,15 @@ const ReactCalendar = () => {
             <span>날짜</span>
           </li>
         </CalendarListUlStyle>
-        <div>
-          <FaSun size="20" style={{ color: "#000" }} />
-          <FaSeedling size="20" style={{ color: "#000" }} />
-          <FaWind size="20" color="#000" />
-          <FaTree size="20" style={{ color: "#000" }} />
-        </div>
-        {calendarFilterData?.map((item, index) => (
-          <CalendarList key={item.pk} item={item}></CalendarList>
-        ))}
+        {calendarFilterData && calendarFilterData.length > 0 ? (
+          calendarFilterData.map((item, index) => (
+            <CalendarList key={item.pk} item={item}></CalendarList>
+          ))
+        ) : (
+          <div style={{ fontWeight: "bold", margin: "0 auto", height: "10px" }}>
+            등록 된 데이터가 없습니다.
+          </div>
+        )}
       </ReactCalendarListStyle>
     </ReactCalendarStyle>
   );

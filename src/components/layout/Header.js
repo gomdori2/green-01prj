@@ -12,7 +12,7 @@ const Header = ({ userInfo }) => {
       <HeaderDiv>
         <h1>
           <Link to="/">
-            <img src="./www/images/logo.png" alt="logo" />
+            <img src="./www/images/plantDiaryLogo.png" alt="logo" />
           </Link>
         </h1>
         <ul className="menu">
