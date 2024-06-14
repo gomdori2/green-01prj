@@ -3,76 +3,65 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./Notice.scss";
 import axios from "axios";
 import NoticeTop from "../../components/notice/NoticeTop";
-import NoticeMain from "../../components/notice/NoticeMain";
 import NoticeBottom from "../../components/notice/NoticeBottom";
+import NoticeMain from "../../components/notice/NoticeMain";
 import SearchComponent from "../../components/notice/SearchComponent";
 
 function Notice() {
   const navigate = useNavigate();
   const { page } = useParams();
+  const initialOrder = Number(sessionStorage.getItem("order")) || 0;
 
-  const [currentPage, setCurrentPage] = useState(Number(page) || 0);
+  const [currentPage, setCurrentPage] = useState(Number(page) || 1);
   const [getData, setGetData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalPost, setTotalPost] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchResult, setSearchResult] = useState(null);
-
-  const [itemsPerPage, setItemsPerPage] = useState(() => {
-    const savedItemsPerPage = sessionStorage.getItem("itemsPerPage");
-    return savedItemsPerPage ? parseInt(savedItemsPerPage, 10) : 10;
-  });
-
-  const initialOrder =
-    sessionStorage.getItem("order") !== null
-      ? Number(sessionStorage.getItem("order"))
-      : 0;
-  const [order, setOrder] = useState(initialOrder);
-
-  // 버튼 텍스트를 관리하는 상태 추가
-  const [orderText, setOrderText] = useState(
-    order === 3 ? "오래된 순" : "최신 순",
+  const [itemsPerPage, setItemsPerPage] = useState(
+    parseInt(sessionStorage.getItem("itemsPerPage"), 10) || 10,
   );
+  const [order, setOrder] = useState(initialOrder);
+  const [orderText, setOrderText] = useState(
+    initialOrder === 3 ? "오래된 순" : "최신 순",
+  );
+
+  useEffect(() => {
+    if (!page) {
+      navigate("/notice/page/1");
+    }
+  }, [page, navigate]);
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      let url = `/api/community/list?page=${currentPage + 1}&size=${itemsPerPage}&order=${order}`;
-
-      if (searchResult && searchResult.searchType && searchResult.searchQuery) {
+      let url = `/api/community/list?page=${currentPage}&size=${itemsPerPage}&order=${order}`;
+      if (searchResult) {
         const { searchType, searchQuery } = searchResult;
         const encodedKeyword = encodeURIComponent(searchQuery);
         url += `&search=${searchType}&keyword=${encodedKeyword}`;
       }
-
       const res = await axios.get(url);
-      setGetData(res.data.data.list);
-      setTotalPost(res.data.data.totalElements);
-      setTotalPages(res.data.data.totalPage);
-    } catch (error) {
-      setError(error);
+      const { list, totalElements, totalPage } = res.data.data;
+      setGetData(list);
+      setTotalPost(totalElements);
+      setTotalPages(totalPage);
+    } catch (err) {
+      setError(err);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    setCurrentPage(Number(page) || 0);
-  }, [page]);
-
-  useEffect(() => {
     fetchData();
-  }, [currentPage, itemsPerPage, order]);
-
-  useEffect(() => {
-    fetchData();
-  }, [searchResult]);
+  }, [currentPage, itemsPerPage, order, searchResult]);
 
   const handlePageClick = event => {
-    const selectedPage = event.selected;
+    const selectedPage = event.selected + 1; // ReactPaginate는 0부터 시작하므로 +1
     setCurrentPage(selectedPage);
-    navigate(`/notice/page=${selectedPage}`);
+    navigate(`/notice/page/${selectedPage}`);
   };
 
   const handleItemsPerPageChange = event => {
@@ -81,12 +70,11 @@ function Notice() {
     sessionStorage.setItem("itemsPerPage", newValue.toString());
   };
 
-  const orderClick = () => {
+  const handleOrderClick = () => {
     const newOrder = order === 3 ? 0 : 3;
     setOrder(newOrder);
-    setCurrentPage(0);
-    sessionStorage.setItem("order", newOrder);
-    setOrderText(newOrder === 3 ? "오래된 순" : "최신 순"); // 버튼 텍스트 변경
+    sessionStorage.setItem("order", newOrder.toString());
+    setOrderText(newOrder === 3 ? "오래된 순" : "최신 순");
     navigate(`/notice/`);
   };
 
@@ -102,14 +90,15 @@ function Notice() {
       <article className="notice">
         <h2 className="title">커뮤니티</h2>
         <NoticeTop
-          orderClick={orderClick}
+          orderClick={handleOrderClick}
           itemsPerPage={itemsPerPage}
           handleItemsPerPageChange={handleItemsPerPageChange}
-          orderText={orderText} // orderText 추가
+          orderText={orderText}
         />
         <NoticeMain handleSearchResult={handleSearchResult} getData={getData} />
         <NoticeBottom
           totalPages={totalPages}
+          currentPage={currentPage - 1} // ReactPaginate는 0부터 시작하므로 -1
           handlePageClick={handlePageClick}
         />
         <SearchComponent onSearch={handleSearchResult} />

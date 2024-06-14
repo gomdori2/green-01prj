@@ -37,7 +37,7 @@ function App() {
               {/* 공통 레이아웃 적용 */}
               <Route path="/" element={<Login />}></Route>
               <Route path="/notice" element={<Notice />} />
-              <Route path="/notice/page=:page" element={<Notice />} />
+              <Route path="/notice/page/:page" element={<Notice />} />
               <Route path="/notice/write" element={<PostWrite />} />
               <Route path="/notice/post/:writerSeq" element={<PostDetail />} />
               <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />

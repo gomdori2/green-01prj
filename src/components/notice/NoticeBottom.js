@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PageNation from "../../components/common/PageNation";
 
-function NoticeBottom({ totalPages, handlePageClick }) {
+function NoticeBottom({ totalPages, currentPage, handlePageClick }) {
   return (
     <div className="notice__bottom">
       <div>
@@ -12,8 +12,7 @@ function NoticeBottom({ totalPages, handlePageClick }) {
       </div>
       <PageNation
         pageCount={totalPages}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
+        currentPage={currentPage}
         onPageChange={handlePageClick}
       />
     </div>
