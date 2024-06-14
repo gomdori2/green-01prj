@@ -38,22 +38,31 @@ export const getUserId = async data => {
     console.log(error);
   }
 };
-
-// 회원 정보 등록 중복확인
-export const postUserSignUp = async data => {
+// 닉네임 정보 확인
+export const getUserNickName = async data => {
+  // console.log("getUserNickName data :", data);
   try {
-    const response = await axios.post("/api/user/sign_up", data);
+    const response = await axios.get(data);
+    console.log(response);
     return response;
   } catch (error) {
     console.log(error);
   }
 };
 
-// 닉네임 정보 확인
-export const getUserNickName = async data => {
+// 회원 정보 등록 중복확인
+export const postUserSignUp = async data => {
   try {
-    const response = await axios.get(data);
-    console.log(response);
+    console.log("postUserSignUp data :", data);
+    // {
+    //   "id": "string",
+    //   "pw": "string",
+    //   "pwCheck": "string",
+    //   "name": "string",
+    //   "token": "string"
+    // }
+
+    const response = await axios.post("/api/user/sign_up", data);
     return response;
   } catch (error) {
     console.log(error);
