@@ -20,7 +20,6 @@ const NoticeContents = ({ getData }) => {
           <th>조회</th>
         </tr>
       </thead>
-
       <tbody>
         {getData.map(post => (
           <tr key={post.boardSeq} onClick={() => handleRowClick(post.boardSeq)}>

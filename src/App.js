@@ -32,7 +32,7 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
 
   // const [isLogin, setIsLogin] = useState(true);
-  const { posts, addPost, handleUpdate } = usePosts();
+
   return (
     <UserInfoProvider>
       <BrowserRouter>
@@ -45,15 +45,10 @@ function App() {
                 path="/"
                 element={<Login setUserInfo={setUserInfo} />}
               ></Route>
-              <Route path="/notice" element={<Notice posts={posts} />} />
-              <Route
-                path="/notice/write"
-                element={<PostWrite addPost={addPost} />}
-              />
-              <Route
-                path="/notice/post/:writerSeq"
-                element={<PostDetail posts={posts} />}
-              />
+              <Route path="/notice" element={<Notice />} />
+              <Route path="/notice/page=:page" element={<Notice />} />
+              <Route path="/notice/write" element={<PostWrite />} />
+              <Route path="/notice/post/:writerSeq" element={<PostDetail />} />
               <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
               <Route path="/register" element={<Register />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>

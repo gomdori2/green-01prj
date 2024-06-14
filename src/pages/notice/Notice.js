@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./Notice.scss";
 import { BsViewStacked, BsCardText } from "react-icons/bs";
 import axios from "axios";
@@ -8,32 +8,32 @@ import NoticeContents from "../../components/notice/NoticeContents";
 
 function Notice() {
   const navigate = useNavigate();
+  const { page } = useParams(); // URL에서 페이지 번호 가져오기
 
-  const handleRowClick = boardSeq => {
-    navigate(`/notice/post/${boardSeq}`);
-  };
-
-  // 상태 관리 변수
+  const [currentPage, setCurrentPage] = useState(Number(page) || 0); // URL에서 페이지 번호 가져오기
   const [getData, setGetData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalPost, setTotalPost] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0); // 0부터 시작
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [order, setOrder] = useState(0); // 초기 정렬 순서
 
-  // 데이터 불러오기 함수
+  // 세션 스토리지에서 초기 order 값을 가져옴, 없으면 0으로 초기화
+  const initialOrder =
+    sessionStorage.getItem("order") !== null
+      ? Number(sessionStorage.getItem("order"))
+      : 0;
+  const [order, setOrder] = useState(initialOrder);
+
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const res = await axios.get(
         `/api/community/list?page=${currentPage + 1}&size=${itemsPerPage}&order=${order}`,
       );
-      setGetData(res.data.data.list); // 실제 데이터 리스트 설정
-      setTotalPost(res.data.data.totalElements); // 게시물 수
-      setTotalPages(res.data.data.totalPage); // 페이지 수
-      console.log("게시물 조회", res.data.data.list);
+      setGetData(res.data.data.list);
+      setTotalPost(res.data.data.totalElements);
+      setTotalPages(res.data.data.totalPage);
     } catch (error) {
       setError(error);
     } finally {
@@ -41,32 +41,37 @@ function Notice() {
     }
   };
 
-  // 컴포넌트가 마운트되거나 currentPage, itemsPerPage, order가 변경될 때마다 데이터 재요청
+  useEffect(() => {
+    setCurrentPage(Number(page) || 0);
+  }, [page]);
+
   useEffect(() => {
     fetchData();
   }, [currentPage, itemsPerPage, order]);
 
-  // 페이지 변경 핸들러
   const handlePageClick = event => {
-    setCurrentPage(event.selected); // 페이지 번호 업데이트
+    const selectedPage = event.selected;
+    setCurrentPage(selectedPage);
+    navigate(`/notice/page=${selectedPage}`);
+  };
+
+  const handleItemsPerPageChange = event => {
+    setItemsPerPage(Number(event.target.value));
+    setCurrentPage(0);
+    navigate(`/notice/page=0`);
+  };
+
+  const orderClick = () => {
+    const newOrder = order === 3 ? 0 : 3;
+    setOrder(newOrder);
+    setCurrentPage(0);
+    sessionStorage.setItem("order", newOrder); // 세션 스토리지에 새로운 order 값을 저장
+    navigate(`/notice/`);
   };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  // 페이지 당 아이템 수 변경 핸들러
-  const handleItemsPerPageChange = event => {
-    setItemsPerPage(Number(event.target.value));
-    setCurrentPage(0); // 페이지를 처음으로 리셋
-  };
-
-  // 정렬 순서 변경 핸들러
-  const orderClick = () => {
-    setOrder(prevOrder => (prevOrder === 3 ? 0 : 3)); // order 값을 토글
-    setCurrentPage(0); // 페이지를 처음으로 리셋
-  };
-
-  // 페이지 수 설정
   const pageCount = totalPages;
 
   return (
@@ -112,10 +117,10 @@ function Notice() {
           </Link>
         </div>
         <PageNation
-          pageCount={pageCount} // 총 페이지 수
-          marginPagesDisplayed={2} // 현재 페이지 양쪽에 표시될 페이지 수
-          pageRangeDisplayed={5} // 페이지 번호가 연속적으로 표시될 페이지 수
-          onPageChange={handlePageClick} // 페이지 클릭 이벤트 핸들러
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
         />
         <div>검색창 부분</div>
       </article>
