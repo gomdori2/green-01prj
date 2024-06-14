@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Notice.scss";
 import { BsViewStacked, BsCardText } from "react-icons/bs";
 import axios from "axios";
-import ReactPaginate from "react-paginate";
+import PageNation from "../../components/common/PageNation";
+import NoticeContents from "../../components/notice/NoticeContents";
 
 function Notice() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function Notice() {
     navigate(`/notice/post/${boardSeq}`);
   };
 
+  // 상태 관리 변수
   const [getData, setGetData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,7 +28,7 @@ function Notice() {
     setIsLoading(true);
     try {
       const res = await axios.get(
-        `/api/community/list?page=${currentPage + 1}&size=${itemsPerPage}&order=${order}`, // currentPage + 1
+        `/api/community/list?page=${currentPage + 1}&size=${itemsPerPage}&order=${order}`,
       );
       setGetData(res.data.data.list); // 실제 데이터 리스트 설정
       setTotalPost(res.data.data.totalElements); // 게시물 수
@@ -39,10 +41,12 @@ function Notice() {
     }
   };
 
+  // 컴포넌트가 마운트되거나 currentPage, itemsPerPage, order가 변경될 때마다 데이터 재요청
   useEffect(() => {
     fetchData();
   }, [currentPage, itemsPerPage, order]);
 
+  // 페이지 변경 핸들러
   const handlePageClick = event => {
     setCurrentPage(event.selected); // 페이지 번호 업데이트
   };
@@ -50,16 +54,19 @@ function Notice() {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  // 페이지 당 아이템 수 변경 핸들러
   const handleItemsPerPageChange = event => {
     setItemsPerPage(Number(event.target.value));
     setCurrentPage(0); // 페이지를 처음으로 리셋
   };
 
+  // 정렬 순서 변경 핸들러
   const orderClick = () => {
     setOrder(prevOrder => (prevOrder === 3 ? 0 : 3)); // order 값을 토글
     setCurrentPage(0); // 페이지를 처음으로 리셋
   };
 
+  // 페이지 수 설정
   const pageCount = totalPages;
 
   return (
@@ -96,50 +103,19 @@ function Notice() {
             </select>
           </div>
         </div>
-        <table className="notice__center">
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>제목</th>
-              <th>글쓴이</th>
-              <th>작성일</th>
-              <th>추천</th>
-              <th>조회</th>
-            </tr>
-          </thead>
-          <tbody>
-            {getData.map(post => (
-              <tr
-                key={post.boardSeq}
-                onClick={() => handleRowClick(post.boardSeq)}
-              >
-                <td>{post.boardSeq}</td>
-                <td>{post.title}</td>
-                <td>{post.writerName}</td>
-                <td>{post.inputDt}</td>
-                <td>{post.fav}</td>
-                <td>{post.hit}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+        <NoticeContents getData={getData} />
+
         <div className="notice__bottom">
           <Link to="/notice/write" className="btn">
             글쓰기
           </Link>
         </div>
-        <ReactPaginate
-          previousLabel={"<"}
-          nextLabel={">"}
-          breakLabel={"..."}
-          breakClassName={"break-me"}
-          pageCount={pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={handlePageClick}
-          containerClassName={"pagination"}
-          subContainerClassName={"pages pagination"}
-          activeClassName={"active"}
+        <PageNation
+          pageCount={pageCount} // 총 페이지 수
+          marginPagesDisplayed={2} // 현재 페이지 양쪽에 표시될 페이지 수
+          pageRangeDisplayed={5} // 페이지 번호가 연속적으로 표시될 페이지 수
+          onPageChange={handlePageClick} // 페이지 클릭 이벤트 핸들러
         />
         <div>검색창 부분</div>
       </article>
