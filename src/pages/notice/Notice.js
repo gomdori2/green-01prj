@@ -5,6 +5,7 @@ import { BsViewStacked, BsCardText } from "react-icons/bs";
 import axios from "axios";
 import PageNation from "../../components/common/PageNation";
 import NoticeContents from "../../components/notice/NoticeContents";
+import SearchComponent from "../../components/notice/SearchComponent";
 
 function Notice() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function Notice() {
   const handleItemsPerPageChange = event => {
     setItemsPerPage(Number(event.target.value));
     setCurrentPage(0);
-    navigate(`/notice/page=0`);
+    navigate(`/notice/`);
   };
 
   const orderClick = () => {
@@ -122,7 +123,7 @@ function Notice() {
           pageRangeDisplayed={5}
           onPageChange={handlePageClick}
         />
-        <div>검색창 부분</div>
+        <SearchComponent />
       </article>
     </div>
   );
