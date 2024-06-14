@@ -17,6 +17,7 @@ const CalendarListUlStyle = styled.div`
   span {
     display: block;
     width: 100%;
+
     text-align: center;
   }
 `;

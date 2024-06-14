@@ -5,33 +5,28 @@ import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import Main from "./components/layout/Main";
 import Wrap from "./components/layout/Wrap";
-import usePosts from "./hooks/usePosts"; // Custom hook import
+import UserInfoProvider from "./context/UserInfoProvider";
+import "./css/calendar.css";
+import "./css/common/common.css";
+import "./css/common/reset.css";
 import NotFound from "./pages/NotFound";
 import ReactCalendar from "./pages/calendar/ReactCalendar";
 import Login from "./pages/login/Login";
+import UserProfile from "./pages/login/UserProfile";
 import Notice from "./pages/notice/Notice";
 import PostDetail from "./pages/notice/PostDetail";
 import PostEdit from "./pages/notice/PostEdit";
 import PostWrite from "./pages/notice/PostWrite";
 import PlantResister from "./pages/plantResister/PlantResister";
 import PlantResisterDetail from "./pages/plantResister/PlantResisterDetail";
+import PlantResisterList from "./pages/plantResister/PlantResisterList";
 import Register from "./pages/register/Register";
 import SignUp from "./pages/register/SignUp";
-import UserInfoProvider from "./context/UserInfoProvider";
-import "./css/calendar.css";
-import "./css/common/common.css";
-import "./css/common/reset.css";
-import PlantResisterList from "./pages/plantResister/PlantResisterList";
-import { Link } from "react-router-dom";
-import LogOut from "./components/login/LogOut";
-import UserInfoProvider from "./context/UserInfoProvider";
-import UserProfile from "./pages/login/UserProfile";
-
 
 function App() {
   // 사용자 로그인 정보
   const [userInfo, setUserInfo] = useState(null);
-  
+
   return (
     <UserInfoProvider>
       <BrowserRouter>
@@ -48,7 +43,6 @@ function App() {
               <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
               <Route path="/register" element={<Register />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
-              <Route path="/notice" element={<Notice posts={posts} />} />             
               <Route path="/userprofile" element={<UserProfile />}></Route>
               <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
               <Route

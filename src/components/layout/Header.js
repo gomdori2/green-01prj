@@ -12,7 +12,6 @@ const Header = () => {
 
   const location = useLocation();
 
-
   const navigate = useNavigate();
   useEffect(() => {
     setUserSeq(localUserData?.userSeq);
@@ -21,10 +20,6 @@ const Header = () => {
   useEffect(() => {
     console.log("userSeq ", userSeq);
   }, [userSeq]);
-
-  const { localUserData } = useContext(userInfoContext);
-  const navigate = useNavigate();
-  const [userSeq, setUserSeq] = useState(null);
 
   // useEffect(() => {
   //   setUserSeq(localUserData.userSeq);
@@ -62,7 +57,7 @@ const Header = () => {
         </ul>
         <ul>
           <li>
-            {userSeq ? (     
+            {userSeq ? (
               <div className="user-actions">
                 {/* css 다듬어야함. */}
                 <Link className="action-item" to={"/userprofile"}>
