@@ -69,6 +69,10 @@ const PlantResister = () => {
   useEffect(() => {
     const datas = { userSeq, odataSeq, etc, plantNickName };
     setUserSeq(localUserData.userSeq);
+    console.log(localUserData);
+    console.log(localUserData.userSeq);
+    console.log(localUserData.userName);
+    console.log(localUserData.userId);
     // post 할 데이터_상세페이지_수정, 삭제
     // 아직 안됨. - 공공데이터
 
