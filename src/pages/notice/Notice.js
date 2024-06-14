@@ -11,6 +11,8 @@ function Notice() {
   const navigate = useNavigate();
   const { page } = useParams();
   const initialOrder = Number(sessionStorage.getItem("order")) || 0;
+  const initialItemsPerPage =
+    parseInt(sessionStorage.getItem("itemsPerPage"), 10) || 10;
 
   const [currentPage, setCurrentPage] = useState(Number(page) || 1);
   const [getData, setGetData] = useState([]);
@@ -19,19 +21,22 @@ function Notice() {
   const [totalPost, setTotalPost] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchResult, setSearchResult] = useState(null);
-  const [itemsPerPage, setItemsPerPage] = useState(
-    parseInt(sessionStorage.getItem("itemsPerPage"), 10) || 10,
-  );
+  const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
   const [order, setOrder] = useState(initialOrder);
   const [orderText, setOrderText] = useState(
     initialOrder === 3 ? "오래된 순" : "최신 순",
   );
 
   useEffect(() => {
+    // 페이지 파라미터가 없으면 첫 페이지로 이동
     if (!page) {
-      navigate("/notice/page/1");
+      navigate(`/notice/page/${currentPage}`);
     }
-  }, [page, navigate]);
+  }, [page, currentPage, navigate]);
+
+  useEffect(() => {
+    fetchData();
+  }, [currentPage, itemsPerPage, order, searchResult]);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -53,10 +58,6 @@ function Notice() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, [currentPage, itemsPerPage, order, searchResult]);
 
   const handlePageClick = event => {
     const selectedPage = event.selected + 1; // ReactPaginate는 0부터 시작하므로 +1
