@@ -56,7 +56,7 @@ function Notice() {
   };
 
   const orderClick = () => {
-    setOrder(prevOrder => (prevOrder === 1 ? 0 : 1)); // order 값을 토글
+    setOrder(prevOrder => (prevOrder === 3 ? 0 : 3)); // order 값을 토글
     setCurrentPage(0); // 페이지를 처음으로 리셋
   };
 

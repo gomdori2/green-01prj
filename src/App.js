@@ -34,7 +34,6 @@ function App() {
   // const [isLogin, setIsLogin] = useState(true);
   const { posts, addPost, handleUpdate } = usePosts();
   return (
-
     <UserInfoProvider>
       <BrowserRouter>
         <Wrap>
@@ -53,13 +52,12 @@ function App() {
               />
               <Route
                 path="/notice/post/:writerSeq"
-                element={<PostDetail posts={posts} onDelete={handleDelete} />}
+                element={<PostDetail posts={posts} />}
               />
               <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
               <Route path="/register" element={<Register />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/set-nickname" element={<SetNickName />}></Route>
-
 
               <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
               <Route
