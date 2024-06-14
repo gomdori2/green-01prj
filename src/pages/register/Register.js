@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserEmail, getUserEmailToken } from "../../apis/user/userapi";
-import "../register/register.css";
+import "../register/register.scss";
 
 const Register = () => {
   // const [userEmail, setUserEmail] = useState("");

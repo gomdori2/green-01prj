@@ -3,6 +3,7 @@ export const userInfoContext = createContext();
 
 export const UserInfoProvider = ({ children }) => {
   const [localUserData, setLocalUserId] = useState(null);
+
   useEffect(() => {
     const savedUser = sessionStorage.getItem("user");
     // 객체 텍스트 째로 넘어와서 파싱해줌. 없으면 null

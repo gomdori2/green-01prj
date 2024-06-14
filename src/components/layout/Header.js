@@ -1,17 +1,32 @@
 import styled from "@emotion/styled";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { userInfoContext } from "../../context/UserInfoProvider";
+// 정보수정, 로그아웃 아이콘
+import { FiLogOut } from "react-icons/fi";
+import { FaUserPen } from "react-icons/fa6";
 
 const Header = ({ userInfo }) => {
   const location = useLocation();
+  const { localUserData } = useContext(userInfoContext);
   const navigate = useNavigate();
+  const [userSeq, setUserSeq] = useState(null);
+
+  // useEffect(() => {
+  //   setUserSeq(localUserData.userSeq);
+  // }, [localUserData]);
+  // useEffect(() => {
+  //   console.log(userSeq);
+  // }, [userSeq]);
+
   // 여기에 헤더를 제외하고 싶은 path를 넣으세요
-  const excludedPaths = ["/", "/register", "/signup", "/set-nickname"];
+  const excludedPaths = ["/", "/register", "/signup"];
 
   if (!excludedPaths.includes(location.pathname)) {
     return (
       <HeaderDiv>
         <h1>
-          <Link to="/">
+          <Link to="/notice">
             <img src="./www/images/plantDiaryLogo.png" alt="logo" />
           </Link>
         </h1>
@@ -35,16 +50,21 @@ const Header = ({ userInfo }) => {
         <ul>
           <li>
             {userInfo ? (
-              <div>
+              <div className="user-actions">
                 {/* css 다듬어야함. */}
-                <Link to={"/components"}>정보수정</Link>/
+                <Link className="action-item" to={"/userprofile"}>
+                  <FaUserPen size={20} />
+                </Link>
+                /
                 <button
+                  className="action-item"
                   onClick={() => {
                     sessionStorage.removeItem("user");
                     navigate("/");
                   }}
                 >
                   로그아웃
+                  <FiLogOut size={18} />
                 </button>
               </div>
             ) : null}
@@ -88,5 +108,23 @@ const HeaderDiv = styled.div`
     justify-content: center;
     align-items: center;
     height: 100%;
+  }
+  .user-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 간격 조정 가능 */
+  }
+  .action-item {
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .action-item button {
+    font-weight: inherit;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 `;

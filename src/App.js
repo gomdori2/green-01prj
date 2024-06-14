@@ -15,7 +15,6 @@ import PostWrite from "./pages/notice/PostWrite";
 import PlantResister from "./pages/plantResister/PlantResister";
 import PlantResisterDetail from "./pages/plantResister/PlantResisterDetail";
 import Register from "./pages/register/Register";
-import SetNickName from "./pages/register/SetNickName";
 import SignUp from "./pages/register/SignUp";
 import Wrap from "./components/layout/Wrap";
 
@@ -26,6 +25,7 @@ import PlantResisterList from "./pages/plantResister/PlantResisterList";
 import { Link } from "react-router-dom";
 import LogOut from "./components/login/LogOut";
 import UserInfoProvider from "./context/UserInfoProvider";
+import UserProfile from "./pages/login/UserProfile";
 
 function App() {
   // 사용자 로그인 정보
@@ -34,7 +34,6 @@ function App() {
   // const [isLogin, setIsLogin] = useState(true);
   const { posts, addPost, handleUpdate } = usePosts();
   return (
-
     <UserInfoProvider>
       <BrowserRouter>
         <Wrap>
@@ -53,13 +52,12 @@ function App() {
               />
               <Route
                 path="/notice/post/:writerSeq"
-                element={<PostDetail posts={posts} onDelete={handleDelete} />}
+                element={<PostDetail posts={posts} />}
               />
               <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
               <Route path="/register" element={<Register />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
-              <Route path="/set-nickname" element={<SetNickName />}></Route>
-
+              <Route path="/userprofile" element={<UserProfile />}></Route>
 
               <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
               <Route
