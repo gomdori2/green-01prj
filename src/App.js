@@ -31,8 +31,7 @@ import UserProfile from "./pages/login/UserProfile";
 function App() {
   // 사용자 로그인 정보
   const [userInfo, setUserInfo] = useState(null);
-  // const [isLogin, setIsLogin] = useState(true);
-  const { posts, addPost, handleUpdate } = usePosts();
+  
   return (
     <UserInfoProvider>
       <BrowserRouter>
@@ -42,18 +41,14 @@ function App() {
             <Routes>
               {/* 공통 레이아웃 적용 */}
               <Route path="/" element={<Login />}></Route>
-              <Route path="/notice" element={<Notice posts={posts} />} />
-              <Route
-                path="/notice/write"
-                element={<PostWrite addPost={addPost} />}
-              />
-              <Route
-                path="/notice/post/:writerSeq"
-                element={<PostDetail posts={posts} />}
-              />
+              <Route path="/notice" element={<Notice />} />
+              <Route path="/notice/page=:page" element={<Notice />} />
+              <Route path="/notice/write" element={<PostWrite />} />
+              <Route path="/notice/post/:writerSeq" element={<PostDetail />} />
               <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
               <Route path="/register" element={<Register />}></Route>
               <Route path="/signup" element={<SignUp />}></Route>
+              <Route path="/notice" element={<Notice posts={posts} />} />             
               <Route path="/userprofile" element={<UserProfile />}></Route>
               <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
               <Route
