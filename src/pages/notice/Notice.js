@@ -1,3 +1,4 @@
+// Notice 컴포넌트
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./Notice.scss";
@@ -17,6 +18,7 @@ function Notice() {
   const [error, setError] = useState(null);
   const [totalPost, setTotalPost] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchResult, setSearchResult] = useState(null); // 검색 결과 상태 추가
 
   const [itemsPerPage, setItemsPerPage] = useState(() => {
     // 세션 스토리지에서 itemsPerPage 값을 가져오기, 없으면 기본값 10 설정
@@ -34,9 +36,16 @@ function Notice() {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(
-        `/api/community/list?page=${currentPage + 1}&size=${itemsPerPage}&order=${order}`,
-      );
+      let url = `/api/community/list?page=${currentPage + 1}&size=${itemsPerPage}&order=${order}`;
+
+      // 검색 결과가 있을 경우, 검색 파라미터를 추가하여 요청
+      if (searchResult && searchResult.searchType && searchResult.searchQuery) {
+        const { searchType, searchQuery } = searchResult;
+        const encodedKeyword = encodeURIComponent(searchQuery);
+        url += `&search=${searchType}&keyword=${encodedKeyword}`;
+      }
+
+      const res = await axios.get(url);
       setGetData(res.data.data.list);
       setTotalPost(res.data.data.totalElements);
       setTotalPages(res.data.data.totalPage);
@@ -53,7 +62,7 @@ function Notice() {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, itemsPerPage, order]);
+  }, [currentPage, itemsPerPage, order, searchResult]); // searchResult 추가
 
   const handlePageClick = event => {
     const selectedPage = event.selected;
@@ -76,6 +85,11 @@ function Notice() {
     setCurrentPage(0);
     sessionStorage.setItem("order", newOrder); // 세션 스토리지에 새로운 order 값을 저장
     navigate(`/notice/`);
+  };
+
+  // 검색 결과를 설정하는 콜백 함수
+  const handleSearchResult = (searchType, searchQuery) => {
+    setSearchResult({ searchType, searchQuery });
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -118,6 +132,8 @@ function Notice() {
           </div>
         </div>
 
+        {/* 검색 컴포넌트와 검색 결과를 표시하는 컴포넌트 */}
+        <SearchComponent onSearch={handleSearchResult} />
         <NoticeContents getData={getData} />
 
         <div className="notice__bottom">
@@ -131,7 +147,6 @@ function Notice() {
           pageRangeDisplayed={5}
           onPageChange={handlePageClick}
         />
-        <SearchComponent />
       </article>
     </div>
   );
