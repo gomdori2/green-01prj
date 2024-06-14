@@ -15,6 +15,7 @@ const PostEdit = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(
           `/api/community/detail?boardSeq=${writerSeq}`,
         );
@@ -22,10 +23,9 @@ const PostEdit = () => {
         if (postData) {
           setPost(postData);
           setTitle(postData.title);
-          setContent(postData.content);
+          setContent(postData.contents);
         } else {
-          alert("게시물을 찾을 수 없습니다.");
-          navigate("/notice");
+          throw new Error("게시물을 찾을 수 없습니다.");
         }
       } catch (error) {
         setError(error);
@@ -35,34 +35,37 @@ const PostEdit = () => {
     };
 
     fetchPost();
-  }, [writerSeq, navigate]);
+  }, [writerSeq]);
 
   const handleUpdate = async () => {
-    if (!post) {
-      alert("게시물을 불러오는 중 오류가 발생했습니다.");
-      return;
-    }
-
     try {
+      // 유효성 검사 추가: 제목과 내용이 모두 입력되었는지 확인
+      if (!title.trim() || !content.trim()) {
+        alert("제목과 내용을 모두 입력해주세요.");
+        return;
+      }
+
+      setLoading(true);
       const updatedPost = {
         boardSeq: writerSeq,
-        writerSeq: 1,
-        // writerSeq: post.writerSeq, // post.writerSeq를 사용합니다.
+        writerSeq: 1, // 수정 필요: 실제 로그인한 사용자의 writerSeq로 변경
         title: title,
         content: content,
       };
 
       const res = await axios.patch(`/api/community/`, updatedPost);
-      console.log("서버 응답:", res.data); // 서버 응답을 확인하기 위해 로그를 추가합니다.
+      console.log("서버 응답:", res.data);
       if (res.data.code === 1) {
         navigate(`/notice/post/${writerSeq}`);
       } else {
-        alert("게시물 수정에 실패했습니다.");
+        throw new Error("게시물 수정에 실패했습니다.");
       }
     } catch (error) {
-      console.error("에러 발생:", error); // 에러 로그를 추가합니다.
+      console.error("에러 발생:", error);
       alert("게시물 수정 중 오류가 발생했습니다.");
       setError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,6 +81,7 @@ const PostEdit = () => {
             수정
           </button>
 
+          {/* 카테고리 선택을 위한 UI 추가 */}
           <div className="form-group none">
             <label htmlFor="category">카테고리</label>
             <select id="category" name="category">
