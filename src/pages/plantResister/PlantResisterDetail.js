@@ -61,8 +61,8 @@ const PlantResisterDetail = () => {
   // 팝업 데이터 받아와야함
   const data = useLocation();
   const [publicPlantsData, setPublicPlantsData] = useState({});
-  const [plantSeq, setPlantSeq] = useState({});
-  const [userSeq, setUserSeq] = useState({});
+  const [plantSeq, setPlantSeq] = useState();
+  const [userSeq, setUserSeq] = useState();
 
   useEffect(() => {
     setPlantSeq(data?.state);
@@ -73,16 +73,17 @@ const PlantResisterDetail = () => {
   }, [plantNickName, textData]);
   useEffect(() => {
     setUserSeq(localUserData?.userSeq);
+  }, [localUserData]);
+  useEffect(() => {
     const plantData = {
       userSeq,
       plantSeq,
     };
     console.log(plantData);
     getPlantsData(userSeq, plantSeq);
-  }, [localUserData]);
-  useEffect(() => {
     // console.log("userSeq ", userSeq);
   }, [userSeq]);
+
   const putData = async () => {
     // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
     console.log(await axios.post("/api/post", { textData, plantNickName }));
