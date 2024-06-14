@@ -62,7 +62,20 @@ function Notice() {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, itemsPerPage, order, searchResult]); // searchResult 추가
+  }, [currentPage, itemsPerPage, order]); // searchResult 추가
+
+  const fetchDataSearch = () => {
+    // setGetData(res.data.data.list);
+    // setTotalPost(res.data.data.totalElements);
+    // setTotalPages(res.data.data.totalPage);
+  };
+  useEffect(() => {
+    fetchDataSearch();
+  }, [searchResult]); // searchResult 추가
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, [currentPage, itemsPerPage, order, searchResult]); // searchResult 추가
 
   const handlePageClick = event => {
     const selectedPage = event.selected;
@@ -89,13 +102,19 @@ function Notice() {
 
   // 검색 결과를 설정하는 콜백 함수
   const handleSearchResult = (searchType, searchQuery) => {
-    setSearchResult({ searchType, searchQuery });
+    console.log(searchType);
+
+    setGetData(searchType.data.list);
+    setTotalPost(searchType.data.totalElements);
+    setTotalPages(searchType.data.totalPage);
+
+    //setSearchResult({ searchType, searchQuery });
   };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
-  const pageCount = totalPages;
+  // const pageCount = totalPages;
 
   return (
     <div className="inner">
@@ -142,7 +161,7 @@ function Notice() {
           </Link>
         </div>
         <PageNation
-          pageCount={pageCount}
+          pageCount={totalPages}
           marginPagesDisplayed={2}
           pageRangeDisplayed={5}
           onPageChange={handlePageClick}
