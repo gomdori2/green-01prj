@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { getUserId, postUserSignUp } from "../../apis/user/userapi";
+import {
+  getUserId,
+  getUserNickName,
+  postUserSignUp,
+} from "../../apis/user/userapi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import "../register/signup.css";
+import "../register/signup.scss";
 
 const SignUp = () => {
   // 사용자가 아이디 중복확인을 했는지 체크 변수
   const [isCheckId, setIsCheckId] = useState(false);
-
   const location = useLocation(); // useLocation 훅 사용
   const { email, token } = location.state || {}; // 이메일 값 추출
   const [userEmail, setUserEmail] = useState(email || ""); // 이메일 초기값 설정
@@ -16,7 +19,7 @@ const SignUp = () => {
   const [userIdDisabled, setUserIdDisabled] = useState(false);
   const [userPwd, setUserPwd] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
-  const [userName, setUserName] = useState("");
+  const [nickName, setNickName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,10 +42,8 @@ const SignUp = () => {
     // 아이디 중복 확인 결과에 따라 처리
     if (result.data.code === 1) {
       alert("사용 가능한 아이디입니다.");
-
       // 중복검사 완료로 설정
       setIsCheckId(true);
-
       setIdCheckMessage(true);
       // 아이디가 사용 가능한 경우 아이디 입력 필드를 비활성화
       setUserIdDisabled(true);
@@ -50,7 +51,6 @@ const SignUp = () => {
       alert("이미 사용 중인 아이디입니다.");
       // 중복검사 완료 안한 것으로 다시 셋팅
       setIsCheckId(false);
-
       setUserIdDisabled(false);
     }
   };
@@ -83,21 +83,35 @@ const SignUp = () => {
       return;
     }
 
-    // 이름 유효성 검사 함수
-    const checkUserNamePattern = () => {
-      if (typeof userName !== "string" || userName.trim() === "") {
-        alert("이름을 입력해주세요.");
-        return false; // 유효하지 않은 경우 false 반환
-      }
-      return true; // 유효한 경우 true 반환
-    };
+    // 닉네임 입력 검사
+    handleCheckNickName();
+  };
 
+  // 닉네임 중복 검사 함수
+  const handleCheckNickName = async () => {
+    // 닉네임 형식 유효성 검사
+    const NickNamePattern = /^[a-zA-Z가-힣]{2,10}$/;
+    if (!NickNamePattern.test(nickName)) {
+      alert("닉네임은 2~10자 이내, 영어 및 한글, 숫자만 가능합니다.");
+      return;
+    }
+
+    // 백엔드에 전달할 닉네임
+    const reqData = `/api/user/duplicated?str=${nickName}&type=2`;
+    const result = await getUserNickName(reqData);
+    if (result.data.code === 1) {
+      signupResultFunc();
+    } else {
+      alert(result.data.msg);
+    }
+  };
+  const signupResultFunc = async () => {
     // 백엔드로 전달하는 회원가입 정보
     const signUpReqData = {
       id: userId,
       pw: userPwd,
       pwCheck: checkPassword,
-      name: userName,
+      name: nickName,
       token: token,
     };
 
@@ -106,8 +120,8 @@ const SignUp = () => {
     console.log(signUpResult);
 
     if (signUpResult.data.code === 1) {
-      alert("인증이 완료되었습니다.");
-      navigate("/set-nickname");
+      alert("회원가입이 완료되었습니다! 로그인 창에서 로그인 후 이용해주세요");
+      navigate("/");
     } else {
       alert("회원가입에 실패했습니다. 다시 확인해주세요.");
     }
@@ -188,22 +202,25 @@ const SignUp = () => {
               <p className="pw-error-message">
                 {userPwd !== checkPassword && "비밀번호가 일치하지 않습니다."}
               </p>
-              <label htmlFor="name">이름</label>
+              <label htmlFor="nickname" className="nickname-txt">
+                닉네임을 설정해주세요
+              </label>
               <input
                 type="text"
-                id="name"
-                name="name"
+                id="nickname"
+                name="nickname"
+                value={nickName}
                 required
-                placeholder="고객님의 이름을 입력해주세요"
+                placeholder="닉네임을 설정해주세요"
                 onChange={event => {
-                  setUserName(event.target.value);
+                  setNickName(event.target.value);
                 }}
               />
 
               <input
                 type="submit"
-                value="다음페이지"
-                className="next-btn"
+                value="가입완료"
+                className="send-btn"
                 id="submitBtn"
                 // disabled={userPwd !== checkPassword}
                 onClick={() => {}}
