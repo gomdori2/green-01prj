@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../login/login.css";
+import "../login/login.scss";
 import { postUserLogin } from "../../apis/user/userapi";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const Login = () => {
       // sessionStorage.setItem(key, value)
       const userInfo = {
         userId: result.data.data.userId,
-        userName: result.data.data.userName,
+        userNickName: result.data.data.userName,
         userSeq: result.data.data.userSeq,
       };
       // console.log("userInfo : ", userInfo);
@@ -54,8 +54,9 @@ const Login = () => {
   return (
     <main>
       <div className="login-wrap">
-        <header>식물 일정 관리</header>
-        <h1>로그인</h1>
+        <header>
+          <img src="./www/images/plantDiaryLogo2.png" />
+        </header>
         <div className="loginform-group">
           <form
             onSubmit={e => {
@@ -67,7 +68,7 @@ const Login = () => {
               value={loginId}
               className="login-id"
               required
-              placeholder="아이디 또는 이메일"
+              placeholder="아이디"
               onChange={event => {
                 // console.log(event.target);
                 setLoginId(event.target.value);
