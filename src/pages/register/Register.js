@@ -32,8 +32,9 @@ const Register = () => {
         alert("메일이 전송되었습니다. 메일에서 인증코드를 확인해주세요");
         setEmailSend(true);
         // 인증 코드를 작성하는 곳을 작업시작
-      } else {
-        alert("메일 전송에 실패했습니다. 다시 시도해주세요.");
+      }
+      if (result.data.code === -2) {
+        alert("이미 가입된 메일입니다.");
       }
     } catch (error) {
       alert("메일 전송 중 오류가 발생했습니다. 다시 시도해주세요");
@@ -45,8 +46,8 @@ const Register = () => {
   const verifyCode = async event => {
     event.preventDefault();
 
-    console.log("Auth Code:", authCode);  // 인증 코드 확인을 위해 콘솔에 출력
-    
+    console.log("Auth Code:", authCode); // 인증 코드 확인을 위해 콘솔에 출력
+
     // 토큰 인증 처리
     const tokenData = `/api/user/auth/email/token?token=${authCode}`;
     const result = await getUserEmailToken(tokenData);
