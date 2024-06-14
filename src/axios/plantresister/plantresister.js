@@ -32,7 +32,7 @@ export const getData = async ({ userSeq, page }) => {
 // 식물등록리스트 상세 조회
 // /api/schedule/plant/detail
 // /api/schedule/plant/detail?userSeq=1&plantSeq=1
-export const getOneData = async ({ userSeq, plantSeq }) => {
+export const getOneData = async (userSeq, plantSeq) => {
   try {
     const data = await axios.get(
       `/api/schedule/plant/detail?userSeq=${userSeq}&plantSeq=${plantSeq}`,

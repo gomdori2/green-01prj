@@ -49,8 +49,12 @@ const DetailDivInnerStyle = styled.div`
     width: 30%;
   }
 `;
+
 const PlantResister = () => {
   const { localUserData } = useContext(userInfoContext);
+  if (!localUserData) {
+    return;
+  }
   // 팝업 클릭용
   const [isClicked, setIsClicked] = useState(false);
   // text area 때문에 만들어 놓음
@@ -61,22 +65,25 @@ const PlantResister = () => {
   const [plantNickName, setPlantNickName] = useState("");
   const [etc, setEtc] = useState("");
   const [odataSeq, setOdataSeq] = useState();
-  const [userSeq, setUserSeq] = useState(0);
+  const [userSeqData, setuserSeqData] = useState(0);
   const [plantName, setPlantName] = useState();
 
   // 팝업 데이터 받아와야함
   // 필요없어짐. seq만 넘기면된다함 {} X seq
 
   useEffect(() => {
-    setUserSeq(localUserData.userSeq);
-
-    const datas = { userSeq, odataSeq, etc, plantNickName };
+    const datas = {
+      userSeq: localUserData.userSeq,
+      odataSeq,
+      etc,
+      plantNickName,
+    };
     // post 할 데이터_상세페이지_수정, 삭제
     // 아직 안됨. - 공공데이터
 
-    // postData({ userSeq, plantsName, etc, plantNickName });
+    // postData({ userSeqData, plantsName, etc, plantNickName });
     console.log(datas);
-  }, [localUserData.userSeq, plantNickName, etc]);
+  }, [plantNickName, etc]);
   // 일단 default로 보냄.
   // 해당 되는 컴포넌트 하나 필요
   const getPlantsData = async () => {
@@ -86,8 +93,13 @@ const PlantResister = () => {
   const isClickFunc = () => {
     setIsClicked(true);
   };
-  const postHandler = async ({ userSeq, odataSeq, plantNickName, etc }) => {
-    await postData({ userSeq, odataSeq, plantNickName, etc });
+  const postHandler = async ({
+    userSeq: userSeqDataData,
+    odataSeq,
+    plantNickName,
+    etc,
+  }) => {
+    await postData({ userSeq: userSeqDataData, odataSeq, plantNickName, etc });
   };
   useEffect(() => {}, [isClicked]);
 
@@ -129,13 +141,23 @@ const PlantResister = () => {
           <div className="flex-box-div text-area-div">
             <label htmlFor="text">기타사항</label>
             <div className="text-area-style">
-              <TextArea valueDatas={etc} setTextData={setEtc}></TextArea>
+              <TextArea
+                valueDatas={etc}
+                setTextData={setEtc}
+                maxLength={100}
+              ></TextArea>
             </div>
           </div>
           <div className="flex-box-div">
             <button
+              type="button"
               onClick={() => {
-                postHandler({ userSeq, odataSeq, plantNickName, etc });
+                postHandler({
+                  userSeq: localUserData.userSeq,
+                  odataSeq,
+                  plantNickName,
+                  etc,
+                });
               }}
             >
               등록

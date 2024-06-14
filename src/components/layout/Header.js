@@ -6,8 +6,22 @@ import { userInfoContext } from "../../context/UserInfoProvider";
 import { FiLogOut } from "react-icons/fi";
 import { FaUserPen } from "react-icons/fa6";
 
-const Header = ({ userInfo }) => {
+const Header = () => {
+  const { localUserData } = useContext(userInfoContext);
+  const [userSeq, setUserSeq] = useState();
+
   const location = useLocation();
+
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    setUserSeq(localUserData?.userSeq);
+  }, [localUserData]);
+
+  useEffect(() => {
+    console.log("userSeq ", userSeq);
+  }, [userSeq]);
+
   const { localUserData } = useContext(userInfoContext);
   const navigate = useNavigate();
   const [userSeq, setUserSeq] = useState(null);
@@ -21,7 +35,6 @@ const Header = ({ userInfo }) => {
 
   // 여기에 헤더를 제외하고 싶은 path를 넣으세요
   const excludedPaths = ["/", "/register", "/signup"];
-
   if (!excludedPaths.includes(location.pathname)) {
     return (
       <HeaderDiv>
@@ -49,7 +62,7 @@ const Header = ({ userInfo }) => {
         </ul>
         <ul>
           <li>
-            {userInfo ? (
+            {userSeq ? (     
               <div className="user-actions">
                 {/* css 다듬어야함. */}
                 <Link className="action-item" to={"/userprofile"}>

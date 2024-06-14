@@ -60,7 +60,7 @@ const CalendarListUlStyle = styled.div`
 
 const PlantResisterList = () => {
   const { localUserData } = useContext(userInfoContext);
-  const [userSeq, setUserSeq] = useState(localUserData.userSeq);
+  const [userSeq, setUserSeq] = useState(null);
   const [todoApiData, setTodoApiData] = useState(["todoApi"]);
   const [list, setList] = useState([]);
   const [size, setSize] = useState(10);
@@ -70,12 +70,16 @@ const PlantResisterList = () => {
   const [currentPage, setCurrentPage] = useState();
 
   useEffect(() => {
-    setUserSeq(localUserData.userSeq);
-  }, [userSeq]);
+    setUserSeq(localUserData?.userSeq);
+  }, [localUserData]);
+
+  useEffect(() => {}, [userSeq]);
+
   const getDataList = async ({ userSeq, page }) => {
     // setIsLoading(true);
 
     const result = await getData({ userSeq, page });
+    console.log(result);
     const stauts = result.status.toString().charAt(0);
     if (stauts === "2") {
       setList(result?.data.data.list);
@@ -102,7 +106,6 @@ const PlantResisterList = () => {
   // }
   return (
     <ReactCalendarStyle>
-      <TitleDivStyle></TitleDivStyle>
       <ReactCalendarListStyle>
         <CalendarListUlStyle>
           <li>
@@ -112,11 +115,9 @@ const PlantResisterList = () => {
           </li>
         </CalendarListUlStyle>
         {/* 인덱스로 받는거 pk로 바꿔야함. */}
-        {list?.map((item, index) =>
-          item ? (
-            <PlantRegisterList key={item.pk} index={index} item={item} />
-          ) : null,
-        )}
+        {list?.map(item => (
+          <PlantRegisterList key={item.plantSeq} item={item} />
+        ))}
 
         <button
           onClick={() => {
