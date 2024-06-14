@@ -6,6 +6,7 @@ import { getData } from "../../axios/plantresister/plantresister";
 import PageNation from "../../components/common/PageNation";
 import { toast } from "react-toastify";
 import Loading from "../../components/common/Loading";
+import { userInfoContext } from "../../context/UserInfoProvider";
 // 클래스로 바꿔라 제발
 const ReactCalendarStyle = styled.div`
   display: flex;
@@ -58,14 +59,19 @@ const CalendarListUlStyle = styled.div`
 `;
 
 const PlantResisterList = () => {
+  const { localUserData } = useContext(userInfoContext);
+  const [userSeq, setUserSeq] = useState(localUserData.userSeq);
   const [todoApiData, setTodoApiData] = useState(["todoApi"]);
   const [list, setList] = useState([]);
-  const [userSeq, setUserSeq] = useState(3);
   const [size, setSize] = useState(10);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState();
+
+  useEffect(() => {
+    setUserSeq(localUserData.userSeq);
+  }, [userSeq]);
   const getDataList = async ({ userSeq, page }) => {
     // setIsLoading(true);
 
@@ -81,8 +87,10 @@ const PlantResisterList = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    getDataList({ userSeq, page });
-  }, [page]);
+    if (userSeq) {
+      getDataList({ userSeq, page });
+    }
+  }, [userSeq, page]);
   // handlePageChange 페이지 네이션 클릭 시 마다 이벤트
   const handlePageChange = data => {
     setPage(data.selected + 1);
