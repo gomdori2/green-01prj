@@ -73,7 +73,6 @@ const PlantResisterDetail = () => {
   // 해당 되는 컴포넌트 하나 필요
   const getPlantsData = async () => {
     // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
-    console.log(await axios.get("/api/getPlants"));
   };
   useEffect(() => {
     console.log(isClicked);
