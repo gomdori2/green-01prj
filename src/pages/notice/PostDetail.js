@@ -173,10 +173,9 @@ const PostDetail = () => {
               </div>
 
               <div className="content__bottom">
-                <div>
-                  <span>추천수: {post.data.hit}</span>
-                  <span>댓글수: </span>
-                </div>
+                <button className="btn-hit btn">
+                  추천하기 {post.data.fav}
+                </button>
               </div>
               <ConfirmModal
                 isOpen={isModalOpen}

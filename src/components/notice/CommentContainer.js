@@ -11,11 +11,13 @@ const CommentContainer = () => {
     writer: 1,
     content: "",
   });
+  const [editIndex, setEditIndex] = useState(-1); // 현재 수정 중인 댓글의 인덱스
+  const [editContent, setEditContent] = useState(""); // 수정 중인 댓글 내용
 
   useEffect(() => {
     console.log(writerSeq);
     fetchComments();
-  }, []);
+  }, [writerSeq]);
 
   const fetchComments = async () => {
     try {
@@ -44,6 +46,33 @@ const CommentContainer = () => {
     }
   };
 
+  const updateComment = async (commentSeq, writer, content) => {
+    try {
+      const res = await axios.patch(`/api/community/comment`, null, {
+        params: {
+          commentSeq: commentSeq,
+          writer: 1,
+          content: content,
+        },
+      });
+      console.log(res);
+      setEditIndex(-1); // 수정 모드 종료
+      fetchComments(); // 댓글 수정 후 새로 댓글 목록을 가져옴
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    }
+  };
+
+  const deleteComment = async commentSeq => {
+    try {
+      const res = await axios.delete(`/api/community/comment/${commentSeq}`);
+      console.log(res);
+      fetchComments(); // 댓글 삭제 후 새로 댓글 목록을 가져옴
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
   const handleInputChange = event => {
     setFormData({
       ...formData,
@@ -51,30 +80,70 @@ const CommentContainer = () => {
     });
   };
 
+  const handleEditChange = event => {
+    setEditContent(event.target.value);
+  };
+
   const handleFormSubmit = event => {
     event.preventDefault();
     postComments();
   };
 
-  console.log("comments", comments.length);
+  const handleEditSubmit = (event, commentSeq, writer) => {
+    event.preventDefault();
+    updateComment(commentSeq, writer, editContent);
+  };
 
   return (
     <div>
-      <h3>댓글</h3>
+      <h3>전체 댓글 {comments.length}개</h3>
       {comments.map((comment, index) => (
         <div key={index} className="comment">
           <div className="comment__wrap">
             <div className="comment__info">
               <p className="comment__name">{comment.writerName}</p>
-              {/* 작성자 이름 출력 */}
-              <p className="comment__text">{comment.cmtText}</p>
-              {/* comment의 cmtText 속성 출력 */}
+              {editIndex === index ? (
+                <form
+                  onSubmit={e =>
+                    handleEditSubmit(e, comment.commentSeq, comment.writer)
+                  }
+                >
+                  <textarea
+                    value={editContent}
+                    onChange={handleEditChange}
+                  ></textarea>
+                  <button type="submit" className="btn">
+                    저장
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditIndex(-1)}
+                    className="btn"
+                  >
+                    취소
+                  </button>
+                </form>
+              ) : (
+                <p className="comment__text">{comment.cmtText}</p>
+              )}
               <p className="comment__date">{comment.inputDt}</p>
-              {/* 작성 날짜 출력 */}
             </div>
             <div className="comment__btns">
-              <button className="btn">수정</button>
-              <button className="btn">삭제</button>
+              <button
+                onClick={() => {
+                  setEditIndex(index);
+                  setEditContent(comment.cmtText);
+                }}
+                className="btn"
+              >
+                수정
+              </button>
+              <button
+                onClick={() => deleteComment(comment.commentSeq)}
+                className="btn"
+              >
+                삭제
+              </button>
             </div>
           </div>
         </div>
