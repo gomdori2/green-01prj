@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import "./CommentContainer.scss";
 
 const CommentContainer = () => {
   const { writerSeq } = useParams();
@@ -55,20 +56,31 @@ const CommentContainer = () => {
     postComments();
   };
 
+  console.log("comments", comments.length);
+
   return (
     <div>
-      <h2>댓글 영역</h2>
-
+      <h3>댓글</h3>
       {comments.map((comment, index) => (
-        <div key={index}>
-          <p>{comment.cmtText}</p> {/* comment의 cmtText 속성 출력 */}
-          <p>{comment.writerName}</p> {/* 작성자 이름 출력 */}
-          <p>{comment.inputDt}</p> {/* 작성 날짜 출력 */}
+        <div key={index} className="comment">
+          <div className="comment__wrap">
+            <div className="comment__info">
+              <p className="comment__name">{comment.writerName}</p>
+              {/* 작성자 이름 출력 */}
+              <p className="comment__text">{comment.cmtText}</p>
+              {/* comment의 cmtText 속성 출력 */}
+              <p className="comment__date">{comment.inputDt}</p>
+              {/* 작성 날짜 출력 */}
+            </div>
+            <div className="comment__btns">
+              <button className="btn">수정</button>
+              <button className="btn">삭제</button>
+            </div>
+          </div>
         </div>
       ))}
 
-      <form onSubmit={handleFormSubmit}>
-        <label htmlFor="comment">댓글 입력 영역</label>
+      <form onSubmit={handleFormSubmit} className="comment__form">
         <input
           type="text"
           value={formData.content}
@@ -76,7 +88,9 @@ const CommentContainer = () => {
           onChange={handleInputChange}
           placeholder="댓글을 입력하세요"
         />
-        <button type="submit">등록</button>
+        <button type="submit" className="btn">
+          등록
+        </button>
       </form>
     </div>
   );
