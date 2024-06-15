@@ -34,7 +34,7 @@ function NoticeMain({ getData }) {
             <td>{post.writerName}</td>
             <td>{formatDate(post.inputDt)}</td> {/* 변환된 날짜 사용 */}
             <td>{post.hit}</td>
-            <td>{post.fav}</td>
+            {post.fav === 0 ? <td>{""}</td> : <td>{post.fav}</td>}
           </tr>
         ))}
       </tbody>
