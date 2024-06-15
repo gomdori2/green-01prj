@@ -61,9 +61,19 @@ export const postUserSignUp = async data => {
     //   "name": "string",
     //   "token": "string"
     // }
-
     const response = await axios.post("/api/user/sign_up", data);
     return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 회원정보 수정
+export const patchUserProfile = async data => {
+  try {
+    const response = await axios.patch("/api/user", data);
+    console.log(response);
+    return response.data;
   } catch (error) {
     console.log(error);
   }
