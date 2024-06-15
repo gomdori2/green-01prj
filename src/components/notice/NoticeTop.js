@@ -18,14 +18,15 @@ function NoticeTop({
           {orderText}
         </button>
       </div>
-      <div className="notice__top__icon">
-        <button className="view-Type">
+      <div className="notice__top__icon flex-gap-4">
+        <button className="view-Type border">
           <BsCardText size={15} />
         </button>
-        <button className="view-Type">
+        <button className="view-Type border">
           <BsViewStacked size={15} />
         </button>
         <select
+          className="select"
           name="itemsPerPage"
           value={itemsPerPage}
           onChange={handleItemsPerPageChange}

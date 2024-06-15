@@ -1,8 +1,27 @@
 .notice__top {
+  width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: end;
 }
 
+.notice__top__icon {
+  display: flex;
+  align-items: center;
+}
+
 .order-old {
+  margin: 0 10px;
   font-size: 13px;
+}
+
+.view-Type {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
 }
