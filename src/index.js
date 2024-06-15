@@ -1,8 +1,6 @@
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css";
-import "./css/common/common.css";
-import "./css/common/reset.css";
+import "./App.scss";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserInfoProvider from "./context/UserInfoProvider";
