@@ -3,7 +3,7 @@ import axios from "axios";
 import "./SearchComponent.scss";
 
 const SearchComponent = ({ onSearch }) => {
-  const [searchType, setSearchType] = useState("title");
+  const [searchType, setSearchType] = useState("1");
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchTypeChange = event => {
@@ -23,27 +23,26 @@ const SearchComponent = ({ onSearch }) => {
 
     // searchType에 따라 searchValue 설정
     if (searchType === "titleAndContent") {
-      searchValue = 2;
-    } else if (searchType === "writer") {
-      searchValue = 3;
+      setSearchType("2");
+    }
+    if (searchType === "writer") {
+      setSearchType("3");
     }
 
     try {
       const res = await axios.get(`/api/community/list`, {
         params: {
-          order: order,
+          order,
           search: searchValue,
           keyword: searchQuery,
-          size: size,
+          size,
           page: 1,
         },
       });
-      onSearch(res.data.data); // 검색 결과를 부모 컴포넌트로 전달
-      console.log("검색결과", res.data.data.list);
-      console.log("검색결과", res.data.data.list.length);
+      onSearch(res.data.data, searchType, searchQuery); // 검색 결과와 검색 유형, 검색어를 전달
+      console.log("검색결과", res.data);
     } catch (error) {
       console.error("Error while fetching data:", error);
-      // 에러 처리 로직 추가
     }
   };
 
@@ -54,9 +53,9 @@ const SearchComponent = ({ onSearch }) => {
         value={searchType}
         onChange={handleSearchTypeChange}
       >
-        <option value="title">제목</option>
-        <option value="titleAndContent">제목+내용</option>
-        <option value="writer">글쓴이</option>
+        <option value="1">제목</option>
+        <option value="2">제목+내용</option>
+        <option value="3">글쓴이</option>
       </select>
       <input
         type="text"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import "./Notice.scss";
 import axios from "axios";
 import NoticeTop from "../../components/notice/NoticeTop";
@@ -11,6 +11,7 @@ import PageNation from "../../components/common/PageNation";
 function Notice() {
   const navigate = useNavigate();
   const { page } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialOrder = Number(sessionStorage.getItem("order")) || 0;
   const initialItemsPerPage =
     parseInt(sessionStorage.getItem("itemsPerPage"), 10) || 10;
@@ -29,11 +30,18 @@ function Notice() {
   );
 
   useEffect(() => {
-    // 페이지 파라미터가 없으면 첫 페이지로 이동
     if (!page) {
       navigate(`/notice/page/${currentPage}`);
     }
   }, [page, currentPage, navigate]);
+
+  useEffect(() => {
+    const searchType = searchParams.get("searchType");
+    const searchQuery = searchParams.get("searchQuery");
+    if (searchType && searchQuery) {
+      setSearchResult({ searchType, searchQuery });
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     fetchData();
@@ -48,12 +56,18 @@ function Notice() {
         const encodedKeyword = encodeURIComponent(searchQuery);
         url += `&search=${searchType}&keyword=${encodedKeyword}`;
       }
+      console.log("Fetching data from URL:", url);
       const res = await axios.get(url);
-      const { list, totalElements } = res.data.data;
-      setGetData(list);
-      setTotalPost(totalElements);
-      setTotalPages(Math.ceil(totalElements / itemsPerPage));
+      if (res.status === 200 && res.data.data) {
+        const { list, totalElements } = res.data.data;
+        setGetData(list);
+        setTotalPost(totalElements);
+        setTotalPages(Math.ceil(totalElements / itemsPerPage));
+      } else {
+        throw new Error("Unexpected response format");
+      }
     } catch (err) {
+      console.error("Error fetching data:", err);
       setError(err);
     } finally {
       setIsLoading(false);
@@ -63,7 +77,9 @@ function Notice() {
   const handlePageClick = event => {
     const selectedPage = event.selected + 1; // ReactPaginate는 0부터 시작하므로 +1
     setCurrentPage(selectedPage);
-    navigate(`/notice/page/${selectedPage}`);
+    navigate(
+      `/notice/page/${selectedPage}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+    );
   };
 
   const handleItemsPerPageChange = event => {
@@ -78,15 +94,21 @@ function Notice() {
     setOrder(newOrder);
     sessionStorage.setItem("order", newOrder.toString());
     setOrderText(newOrder === 3 ? "오래된 순" : "최신 순");
-    navigate(`/notice/`);
+    navigate(
+      `/notice/page/1${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+    );
   };
 
-  const handleSearchResult = searchData => {
-    setGetData(searchData.list); // 검색결과 리스트
-    setTotalPost(searchData.list.length); // 검색결과 게시물 수
-    setTotalPages(Math.ceil(searchData.list.length / itemsPerPage));
+  const handleSearchResult = (searchData, searchType, searchQuery) => {
+    setGetData(searchData.list);
+    setTotalPost(searchData.list.length);
+    const newTotalPages = Math.ceil(searchData.list.length / itemsPerPage);
+    setTotalPages(newTotalPages);
     setCurrentPage(1);
-    navigate(`/notice/page/1`);
+    setSearchParams({ searchType, searchQuery });
+    navigate(
+      `/notice/page/1?searchType=${searchType}&searchQuery=${encodeURIComponent(searchQuery)}`,
+    );
   };
 
   if (isLoading) return <div>Loading...</div>;
