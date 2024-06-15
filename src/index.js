@@ -10,12 +10,16 @@ import UserInfoProvider from "./context/UserInfoProvider";
 // as 는 강제로 타입지정
 // const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 
-// js 버전
-const root = ReactDOM.createRoot(document.getElementById("root"));
+// Ensure the root element exists in your HTML
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+  throw new Error("The root element with id 'root' was not found.");
+}
 
+const root = ReactDOM.createRoot(rootElement);
 root.render(
-  <>
+  <UserInfoProvider>
     <App />
     <ToastContainer autoClose={500}></ToastContainer>
-  </>,
+  </UserInfoProvider>,
 );
