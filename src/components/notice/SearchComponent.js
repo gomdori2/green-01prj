@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./SearchContainer.scss";
+import "./SearchComponent.scss";
 
 const SearchComponent = ({ onSearch }) => {
   const [searchType, setSearchType] = useState("title");
@@ -16,8 +16,8 @@ const SearchComponent = ({ onSearch }) => {
 
   const handleSearch = async () => {
     // 세션에서 order와 size 값 가져오기
-    const order = sessionStorage.getItem("order") || 0; // 기본값 0 설정
-    const size = sessionStorage.getItem("itemsPerPage") || 10; // 기본값 10 설정
+    const order = sessionStorage.getItem("order") || 3; // 기본값 3 설정
+    const size = sessionStorage.getItem("itemsPerPage") || 15; // 기본값 15 설정
 
     let searchValue = 1; // 기본적으로 제목으로 검색 설정
 
@@ -38,7 +38,9 @@ const SearchComponent = ({ onSearch }) => {
           page: 1,
         },
       });
-      onSearch(res.data); // 검색 결과를 부모 컴포넌트로 전달
+      onSearch(res.data.data); // 검색 결과를 부모 컴포넌트로 전달
+      console.log("검색결과", res.data);
+      console.log("검색결과", res.data.data.list);
     } catch (error) {
       console.error("Error while fetching data:", error);
       // 에러 처리 로직 추가

@@ -49,7 +49,7 @@ function Notice() {
         url += `&search=${searchType}&keyword=${encodedKeyword}`;
       }
       const res = await axios.get(url);
-      const { list, totalElements, totalPage } = res.data.data;
+      const { list, totalElements } = res.data.data;
       setGetData(list);
       setTotalPost(totalElements);
       setTotalPages(Math.ceil(totalElements / itemsPerPage));
@@ -81,8 +81,12 @@ function Notice() {
     navigate(`/notice/`);
   };
 
-  const handleSearchResult = (searchType, searchQuery) => {
-    setSearchResult({ searchType, searchQuery });
+  const handleSearchResult = searchData => {
+    setGetData(searchData.list);
+    setTotalPost(searchData.totalElements);
+    setTotalPages(Math.ceil(searchData.totalElements / itemsPerPage));
+    setCurrentPage(1);
+    navigate(`/notice/page/1`);
   };
 
   if (isLoading) return <div>Loading...</div>;
