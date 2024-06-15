@@ -1,8 +1,6 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import PageNation from "../../components/common/PageNation";
 
-function NoticeBottom({ totalPages, currentPage, handlePageClick }) {
+function NoticeBottom() {
   return (
     <div className="notice__bottom">
       <div>
@@ -10,11 +8,6 @@ function NoticeBottom({ totalPages, currentPage, handlePageClick }) {
           글쓰기
         </Link>
       </div>
-      <PageNation
-        pageCount={totalPages}
-        currentPage={currentPage}
-        onPageChange={handlePageClick}
-      />
     </div>
   );
 }

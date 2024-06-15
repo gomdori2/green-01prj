@@ -6,6 +6,7 @@ import NoticeTop from "../../components/notice/NoticeTop";
 import NoticeBottom from "../../components/notice/NoticeBottom";
 import NoticeMain from "../../components/notice/NoticeMain";
 import SearchComponent from "../../components/notice/SearchComponent";
+import PageNation from "../../components/common/PageNation";
 
 function Notice() {
   const navigate = useNavigate();
@@ -98,10 +99,11 @@ function Notice() {
           orderText={orderText}
         />
         <NoticeMain handleSearchResult={handleSearchResult} getData={getData} />
-        <NoticeBottom
-          totalPages={totalPages}
+        <NoticeBottom />
+        <PageNation
+          pageCount={totalPages}
           currentPage={currentPage - 1} // ReactPaginate는 0부터 시작하므로 -1
-          handlePageClick={handlePageClick}
+          onPageChange={handlePageClick}
         />
         <SearchComponent onSearch={handleSearchResult} />
       </article>
