@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Notice__pagination = () => {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지

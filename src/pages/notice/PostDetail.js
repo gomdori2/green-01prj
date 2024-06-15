@@ -11,9 +11,21 @@ const PostDetail = () => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [previousPostExists, setPreviousPostExists] = useState(false);
-  const [nextPostExists, setNextPostExists] = useState(false);
+  const [allPosts, setAllPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchAllPosts = async () => {
+      try {
+        const res = await axios.get("/api/community/list?size=1000");
+        setAllPosts(res.data.data.list);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchAllPosts();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,8 +34,11 @@ const PostDetail = () => {
         const res = await axios.get(
           `/api/community/detail?boardSeq=${writerSeq}`,
         );
-        setPost(res.data);
-        setPreviousPostExists(parseInt(writerSeq, 10) > 1);
+        if (res.data) {
+          setPost(res.data);
+        } else {
+          setError(new Error("게시물을 찾을 수 없습니다."));
+        }
       } catch (error) {
         setError(error);
       } finally {
@@ -33,40 +48,6 @@ const PostDetail = () => {
 
     fetchData();
   }, [writerSeq]);
-
-  useEffect(() => {
-    const checkNextPost = async () => {
-      let currentWriterSeq = parseInt(writerSeq, 10);
-      let nextWriterSeq = currentWriterSeq + 1;
-      let maxAttempts = 5;
-
-      while (maxAttempts > 0) {
-        try {
-          const res = await axios.get(
-            `/api/community/detail?boardSeq=${nextWriterSeq}`,
-          );
-          if (res.data && res.data.data) {
-            setNextPostExists(true);
-            return;
-          } else {
-            nextWriterSeq++;
-          }
-        } catch (error) {
-          console.log(error);
-          nextWriterSeq++;
-        } finally {
-          maxAttempts--;
-        }
-      }
-
-      setNextPostExists(false);
-      alert("다음 글을 찾을 수 없습니다.");
-    };
-
-    if (post && post.data) {
-      checkNextPost();
-    }
-  }, [writerSeq, post]);
 
   const handleDelete = async () => {
     try {
@@ -89,58 +70,26 @@ const PostDetail = () => {
     setIsModalOpen(false);
   };
 
-  const navigateToNextPost = async () => {
-    let currentWriterSeq = parseInt(writerSeq, 10);
-    let nextWriterSeq = currentWriterSeq + 1;
-    let maxAttempts = 5;
-
-    while (maxAttempts > 0) {
-      try {
-        const res = await axios.get(
-          `/api/community/detail?boardSeq=${nextWriterSeq}`,
-        );
-        if (res.data && res.data.data) {
-          navigate(`/notice/post/${nextWriterSeq}`);
-          return;
-        } else {
-          nextWriterSeq++;
-        }
-      } catch (error) {
-        console.log(error);
-        nextWriterSeq++;
-      } finally {
-        maxAttempts--;
-      }
+  const navigateToNextPost = () => {
+    const currentIdx = allPosts.findIndex(
+      item => item.boardSeq === parseInt(writerSeq, 10),
+    );
+    if (currentIdx !== -1 && currentIdx < allPosts.length - 1) {
+      navigate(`/notice/post/${allPosts[currentIdx + 1].boardSeq}`);
+    } else {
+      alert("다음 글을 찾을 수 없습니다.");
     }
-
-    console.log("다음 글을 찾을 수 없습니다.");
   };
 
-  const navigateToPreviousPost = async () => {
-    let currentWriterSeq = parseInt(writerSeq, 10);
-    let previousWriterSeq = currentWriterSeq - 1;
-    let maxAttempts = 5;
-
-    while (maxAttempts > 0) {
-      try {
-        const res = await axios.get(
-          `/api/community/detail?boardSeq=${previousWriterSeq}`,
-        );
-        if (res.data && res.data.data) {
-          navigate(`/notice/post/${previousWriterSeq}`);
-          return;
-        } else {
-          previousWriterSeq--;
-        }
-      } catch (error) {
-        console.log(error);
-        previousWriterSeq--;
-      } finally {
-        maxAttempts--;
-      }
+  const navigateToPreviousPost = () => {
+    const currentIdx = allPosts.findIndex(
+      item => item.boardSeq === parseInt(writerSeq, 10),
+    );
+    if (currentIdx > 0) {
+      navigate(`/notice/post/${allPosts[currentIdx - 1].boardSeq}`);
+    } else {
+      alert("이전 글을 찾을 수 없습니다.");
     }
-
-    alert("이전 글을 찾을 수 없습니다.");
   };
 
   if (loading) {
@@ -172,14 +121,23 @@ const PostDetail = () => {
             <button
               className="btn"
               onClick={navigateToPreviousPost}
-              disabled={!previousPostExists}
+              disabled={
+                allPosts.findIndex(
+                  item => item.boardSeq === parseInt(writerSeq, 10),
+                ) === 0
+              }
             >
               이전글
             </button>
             <button
               className="btn"
               onClick={navigateToNextPost}
-              disabled={!nextPostExists}
+              disabled={
+                allPosts.findIndex(
+                  item => item.boardSeq === parseInt(writerSeq, 10),
+                ) ===
+                allPosts.length - 1
+              }
             >
               다음글
             </button>

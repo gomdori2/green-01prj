@@ -25,6 +25,7 @@ const PageNation = ({ pageCount, onPageChange, currentPage, displayPage }) => {
       // 여기 ... 이든 뭐든 넣으면
       // < 12345... > 이런식으로 나머지 나와요
       breakLabel=""
+      forcePage={currentPage} // 현재 페이지를 강제로 설정
     />
   );
 };

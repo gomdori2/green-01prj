@@ -1,11 +1,10 @@
 .pagination {
-  margin-top: 2rem;
+  padding: 10px 0;
   width: 100%;
   display: flex;
   justify-content: center;
   gap: 1rem;
-
-  > * {
+  a {
     cursor: pointer;
   }
 }
@@ -13,10 +12,10 @@
 .pagination__link {
   transition: all 0.25s;
   padding: 0.2rem 0.6rem;
-  border-radius: 0.3rem;
+  border-radius: 4px;
 }
 
 .pagination__link__active {
-  background-color: #bbb;
-  color: #fefefe;
+  background-color: #4caf50;
+  color: #fff;
 }

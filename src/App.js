@@ -28,45 +28,48 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
 
   return (
-    <BrowserRouter>
-      <Wrap>
-        <Header userInfo={userInfo} />
-        <Main>
-          <Routes>
-            {/* 공통 레이아웃 적용 */}
-            <Route
+
+    <UserInfoProvider>
+      <BrowserRouter>
+        <Wrap>
+          <Header userInfo={userInfo}></Header>
+          <Main>
+            <Routes>
+              {/* 공통 레이아웃 적용 */}
+              <Route
               path="/"
               element={<Login setUserInfo={setUserInfo} />}
             ></Route>
-            <Route path="/notice" element={<Notice />} />
-            <Route path="/notice/page=:page" element={<Notice />} />
-            <Route path="/notice/write" element={<PostWrite />} />
-            <Route path="/notice/post/:writerSeq" element={<PostDetail />} />
-            <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
-            <Route path="/register" element={<Register />}></Route>
-            <Route path="/signup" element={<SignUp />}></Route>
-            <Route path="/userprofile" element={<UserProfile />}></Route>
-            <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
-            <Route
-              path="/reactCalendar/:pk"
-              element={<CalendarDetail />}
-            ></Route>
-            <Route path="/plantResister" element={<PlantResister />}></Route>
-            <Route
-              path="/plantResisterDetail/:pk"
-              element={<PlantResisterDetail />}
-            ></Route>
-            <Route
-              path="/plantResisterList"
-              element={<PlantResisterList />}
-            ></Route>
-            {/* 잘못된 경로 */}
-            <Route path="*" element={<NotFound />}></Route>
-          </Routes>
-        </Main>
-        <Footer />
-      </Wrap>
-    </BrowserRouter>
+              <Route path="/notice" element={<Notice />} />
+              <Route path="/notice/page/:page" element={<Notice />} />
+              <Route path="/notice/write" element={<PostWrite />} />
+              <Route path="/notice/post/:writerSeq" element={<PostDetail />} />
+              <Route path="/notice/edit/:writerSeq" element={<PostEdit />} />
+              <Route path="/register" element={<Register />}></Route>
+              <Route path="/signup" element={<SignUp />}></Route>
+              <Route path="/userprofile" element={<UserProfile />}></Route>
+              <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
+              <Route
+                path="/reactCalendar/:pk"
+                element={<CalendarDetail />}
+              ></Route>
+              <Route path="/plantResister" element={<PlantResister />}></Route>
+              <Route
+                path="/plantResisterDetail/:pk"
+                element={<PlantResisterDetail />}
+              ></Route>
+              <Route
+                path="/plantResisterList"
+                element={<PlantResisterList />}
+              ></Route>
+              {/* 잘못된 경로 */}
+              <Route path="*" element={<NotFound />}></Route>
+            </Routes>
+          </Main>
+          <Footer />
+        </Wrap>
+      </BrowserRouter>
+    </UserInfoProvider>
   );
 }
 
