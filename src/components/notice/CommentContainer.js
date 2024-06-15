@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import axios from "axios";
 
-const CommentComponent = () => {
-  // 댓글 입력 및 저장을 위한 상태 관리
+const CommentComponent = ({ boardSeq }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-
-  // 답글 입력창 표시 여부 및 답글 내용 관리
   const [replyInputVisible, setReplyInputVisible] = useState({});
   const [replyContent, setReplyContent] = useState("");
+
+  // 기존 댓글 및 답글 로드
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await axios.get(
+          `/api/community/comments?boardSeq=${boardSeq}`,
+        );
+        setComments(response.data);
+      } catch (error) {
+        console.error("Error loading comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, [boardSeq]);
 
   // 댓글 입력값 변경 핸들러
   const handleInputChange = e => {
@@ -16,18 +30,34 @@ const CommentComponent = () => {
   };
 
   // 댓글 등록 핸들러
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (comment.trim() !== "") {
-      setComments([...comments, { text: comment, replies: [] }]);
-      setComment("");
+      try {
+        const response = await axios.post("/api/community/comment", {
+          boardSeq: boardSeq,
+          writer: 1,
+          content: comment,
+        });
+        if (response.status === 200) {
+          setComments([...comments, { text: comment, replies: [] }]);
+          setComment("");
+        }
+      } catch (error) {
+        console.error("Error submitting comment:", error);
+      }
     }
   };
 
   // 댓글 삭제 핸들러
-  const handleDelete = index => {
-    const newComments = [...comments];
-    newComments.splice(index, 1);
-    setComments(newComments);
+  const handleDelete = async (index, commentId) => {
+    try {
+      await axios.delete(`/api/community/comment/${commentId}`);
+      const newComments = [...comments];
+      newComments.splice(index, 1);
+      setComments(newComments);
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
   };
 
   // 답글 입력창 표시/숨김 핸들러
@@ -45,20 +75,34 @@ const CommentComponent = () => {
   };
 
   // 답글 등록 핸들러
-  const handleReplySubmit = parentCommentId => {
+  const handleReplySubmit = async (parentCommentId, commentIndex) => {
     if (replyContent.trim() !== "") {
-      const newComments = comments.map((comment, index) => {
-        if (index === parentCommentId) {
-          return {
-            ...comment,
-            replies: [...comment.replies, replyContent],
-          };
+      try {
+        const response = await axios.post("/api/community/comment", {
+          boardSeq: boardSeq,
+          writer: 1,
+          content: replyContent,
+        });
+        if (response.status === 200) {
+          const newComments = comments.map((comment, index) => {
+            if (index === commentIndex) {
+              return {
+                ...comment,
+                replies: [...comment.replies, { text: replyContent }],
+              };
+            }
+            return comment;
+          });
+          setComments(newComments);
+          setReplyInputVisible({
+            ...replyInputVisible,
+            [parentCommentId]: false,
+          });
+          setReplyContent("");
         }
-        return comment;
-      });
-      setComments(newComments);
-      setReplyInputVisible({ ...replyInputVisible, [parentCommentId]: false });
-      setReplyContent("");
+      } catch (error) {
+        console.error("Error submitting reply:", error);
+      }
     }
   };
 
@@ -77,7 +121,7 @@ const CommentComponent = () => {
         {comments.map((comment, index) => (
           <CommentItem key={index}>
             {comment.text}
-            <DeleteButton onClick={() => handleDelete(index)}>
+            <DeleteButton onClick={() => handleDelete(index, comment.id)}>
               삭제
             </DeleteButton>
             <ReplyButton onClick={() => handleReplyToggle(index)}>
@@ -91,7 +135,7 @@ const CommentComponent = () => {
                   onChange={handleReplyChange}
                   placeholder="답글을 입력하세요"
                 />
-                <button onClick={() => handleReplySubmit(index)}>
+                <button onClick={() => handleReplySubmit(index, comment.id)}>
                   답글 등록
                 </button>
               </div>
@@ -99,7 +143,7 @@ const CommentComponent = () => {
             {comment.replies && (
               <ReplyList>
                 {comment.replies.map((reply, replyIndex) => (
-                  <ReplyItem key={replyIndex}>{reply}</ReplyItem>
+                  <ReplyItem key={replyIndex}>{reply.text}</ReplyItem>
                 ))}
               </ReplyList>
             )}

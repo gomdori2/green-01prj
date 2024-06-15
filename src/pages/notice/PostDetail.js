@@ -187,7 +187,7 @@ const PostDetail = () => {
           ) : (
             <p>게시물을 찾을 수 없습니다.</p>
           )}
-          <CommentComponent />
+          <CommentComponent boardSeq={writerSeq} />
         </div>
       </div>
     </div>
