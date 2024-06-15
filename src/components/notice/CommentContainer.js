@@ -81,14 +81,13 @@ const CommentContainer = () => {
       ))}
 
       <form onSubmit={handleFormSubmit} className="comment__form">
-        <input
-          type="text"
+        <textarea
           value={formData.content}
           id="comment"
           onChange={handleInputChange}
           placeholder="댓글을 입력하세요"
-        />
-        <button type="submit" className="btn">
+        ></textarea>
+        <button type="submit" className="comment__add-btn">
           등록
         </button>
       </form>
