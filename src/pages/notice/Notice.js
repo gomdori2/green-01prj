@@ -82,9 +82,9 @@ function Notice() {
   };
 
   const handleSearchResult = searchData => {
-    setGetData(searchData.list);
-    setTotalPost(searchData.totalElements);
-    setTotalPages(Math.ceil(searchData.totalElements / itemsPerPage));
+    setGetData(searchData.list); // 검색결과 리스트
+    setTotalPost(searchData.list.length); // 검색결과 게시물 수
+    setTotalPages(Math.ceil(searchData.list.length / itemsPerPage));
     setCurrentPage(1);
     navigate(`/notice/page/1`);
   };

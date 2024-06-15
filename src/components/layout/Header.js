@@ -18,7 +18,7 @@ const Header = () => {
   }, [localUserData]);
 
   useEffect(() => {
-    console.log("userSeq ", userSeq);
+    // console.log("userSeq ", userSeq);
   }, [userSeq]);
 
   // useEffect(() => {

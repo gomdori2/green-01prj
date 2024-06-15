@@ -39,8 +39,8 @@ const SearchComponent = ({ onSearch }) => {
         },
       });
       onSearch(res.data.data); // 검색 결과를 부모 컴포넌트로 전달
-      console.log("검색결과", res.data);
       console.log("검색결과", res.data.data.list);
+      console.log("검색결과", res.data.data.list.length);
     } catch (error) {
       console.error("Error while fetching data:", error);
       // 에러 처리 로직 추가
