@@ -1,5 +1,6 @@
 import React from "react";
 import { BsViewStacked, BsCardText } from "react-icons/bs";
+import "./NoticeTop.scss";
 
 function NoticeTop({
   orderClick,
@@ -12,8 +13,8 @@ function NoticeTop({
     <div className="notice__top">
       <div className="flex-gap-4">
         <button className="post-all btn">전체글</button>
-        <button className="post-best btn">추천글</button>
-        <button className="post-best btn" onClick={orderClick}>
+        <button className="post-best btn-normal">추천글</button>
+        <button className="order-old" onClick={orderClick}>
           {orderText}
         </button>
       </div>
