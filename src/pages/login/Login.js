@@ -3,7 +3,7 @@ import "../login/login.scss";
 import { postUserLogin } from "../../apis/user/userapi";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setUserInfo }) => {
   // const [loginId, setLoginId] = useState("jowonyoung1");
   // const [loginPw, setLoginPw] = useState("asdf@1234");
   const [loginId, setLoginId] = useState("jowonyoung2");
@@ -37,6 +37,7 @@ const Login = () => {
       };
       // console.log("userInfo : ", userInfo);
       sessionStorage.setItem("user", JSON.stringify(userInfo));
+      setUserInfo(userInfo);
       // JSON.stringify(response.data)는 JavaScript 객체를
       // JSON 문자열로 변환하는 함수
       // ('{"userSeq":4,"userId":userId,"userName":userName,"loginType":"email"}');

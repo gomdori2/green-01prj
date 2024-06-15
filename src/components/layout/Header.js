@@ -6,7 +6,7 @@ import { userInfoContext } from "../../context/UserInfoProvider";
 import { FiLogOut } from "react-icons/fi";
 import { FaUserPen } from "react-icons/fa6";
 
-const Header = () => {
+const Header = ({ userInfo }) => {
   const { localUserData } = useContext(userInfoContext);
   const [userSeq, setUserSeq] = useState();
 
@@ -136,3 +136,4 @@ const HeaderDiv = styled.div`
     gap: 5px;
   }
 `;
+

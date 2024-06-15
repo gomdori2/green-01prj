@@ -1,8 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
-export const userInfoContext = createContext();
 
-export const UserInfoProvider = ({ children }) => {
-  const [localUserData, setLocalUserId] = useState(null);
+export const userInfoContext = createContext();
+const UserInfoProvider = ({ children }) => {
+  const [localUserData, setLocalUserData] = useState(null);
   const savedUser = sessionStorage.getItem("user");
 
   useEffect(() => {
@@ -10,16 +10,12 @@ export const UserInfoProvider = ({ children }) => {
     // 객체 텍스트 째로 넘어와서 파싱해줌. 없으면 null
     const parseSaveUser = savedUser ? JSON.parse(savedUser) : null;
     if (savedUser !== null || savedUser !== "") {
-      setLocalUserId(parseSaveUser);
+      setLocalUserData(parseSaveUser);
     }
   }, []);
 
   return (
-    <userInfoContext.Provider
-      value={{
-        localUserData,
-      }}
-    >
+    <userInfoContext.Provider value={{ localUserData, setLocalUserData }}>
       {children}
     </userInfoContext.Provider>
   );

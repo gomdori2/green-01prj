@@ -28,6 +28,7 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
 
   return (
+
     <UserInfoProvider>
       <BrowserRouter>
         <Wrap>
@@ -35,7 +36,10 @@ function App() {
           <Main>
             <Routes>
               {/* 공통 레이아웃 적용 */}
-              <Route path="/" element={<Login />}></Route>
+              <Route
+              path="/"
+              element={<Login setUserInfo={setUserInfo} />}
+            ></Route>
               <Route path="/notice" element={<Notice />} />
               <Route path="/notice/page/:page" element={<Notice />} />
               <Route path="/notice/write" element={<PostWrite />} />
