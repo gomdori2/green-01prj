@@ -51,7 +51,7 @@ function Notice() {
       const { list, totalElements, totalPage } = res.data.data;
       setGetData(list);
       setTotalPost(totalElements);
-      setTotalPages(totalPage);
+      setTotalPages(Math.ceil(totalElements / itemsPerPage));
     } catch (err) {
       setError(err);
     } finally {
@@ -69,6 +69,7 @@ function Notice() {
     const newValue = parseInt(event.target.value, 10);
     setItemsPerPage(newValue);
     sessionStorage.setItem("itemsPerPage", newValue.toString());
+    setTotalPages(Math.ceil(totalPost / newValue));
   };
 
   const handleOrderClick = () => {
