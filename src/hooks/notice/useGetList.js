@@ -1,29 +1,25 @@
+// src/hooks/notice/useGetList.js
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { fetchListData } from "../../apis/notice/api";
 
 const useGetList = url => {
   const [getListData, setGetListData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const getList = async fetchUrl => {
-    try {
-      console.log("Fetching data from URL:", fetchUrl);
-      const res = await axios.get(fetchUrl);
-      setGetListData(res.data);
-    } catch (err) {
-      console.error("Error fetching data:", err);
-      setError(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (url) {
-      setIsLoading(true);
-      getList(url);
-    }
+    const fetchData = async () => {
+      try {
+        const data = await fetchListData(url);
+        setGetListData(data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
   }, [url]);
 
   return { getListData, isLoading, error };

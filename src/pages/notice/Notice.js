@@ -1,3 +1,4 @@
+// src/pages/Notice.js
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import "./Notice.scss";
@@ -6,8 +7,8 @@ import NoticeBottom from "../../components/notice/NoticeBottom";
 import NoticeMain from "../../components/notice/NoticeMain";
 import SearchComponent from "../../components/notice/SearchComponent";
 import PageNation from "../../components/common/PageNation";
-import useGetList from "../../hooks/notice/useGetList.js";
-import axios from "axios";
+import useGetList from "../../hooks/notice/useGetList";
+import { fetchBestPost, fetchAllPosts } from "../../apis/notice/api";
 
 function Notice() {
   const navigate = useNavigate();
@@ -95,9 +96,8 @@ function Notice() {
 
   const bestButtonClick = async () => {
     try {
-      const URL = `/api/community/list?order=1`;
-      const response = await axios.get(URL);
-      setBestPost(response.data.data.list);
+      const list = await fetchBestPost();
+      setBestPost(list);
       setShowBest(true);
     } catch (error) {
       console.log(error);
@@ -106,9 +106,8 @@ function Notice() {
 
   const allButtonClick = async () => {
     try {
-      const URL = `/api/community/list?page=${currentPage}&size=${itemsPerPage}&order=${order}`;
-      const response = await axios.get(URL);
-      setGetData(response.data.data.list);
+      const list = await fetchAllPosts(currentPage, itemsPerPage, order);
+      setGetData(list);
       setShowBest(false);
     } catch (error) {
       console.log(error);
