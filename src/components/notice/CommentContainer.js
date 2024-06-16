@@ -15,7 +15,6 @@ const CommentContainer = () => {
   const [editContent, setEditContent] = useState(""); // 수정 중인 댓글 내용
 
   useEffect(() => {
-    console.log(writerSeq);
     fetchComments();
   }, [writerSeq]);
 
@@ -24,52 +23,47 @@ const CommentContainer = () => {
       const res = await axios.get(
         `/api/community/comment?board_seq=${writerSeq}&page=1`,
       );
-      console.log(res.data.data.list); // 데이터 구조를 확인
       setComments(res.data.data.list);
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
   };
 
-  const postComments = async () => {
+  const postComment = async () => {
     try {
-      const res = await axios.post("/api/community/comment", formData);
-      console.log(res);
-      setFormData({
-        boardSeq: writerSeq,
-        writer: 1,
-        content: "",
-      });
-      fetchComments(); // 댓글 등록 후 새로 댓글 목록을 가져옴
+      await axios.post("/api/community/comment", formData);
+      setFormData({ boardSeq: writerSeq, writer: 1, content: "" });
+      fetchComments();
     } catch (error) {
       console.error("Error posting comment:", error);
     }
   };
 
-  const updateComment = async (commentSeq, writer, content) => {
+  const updateComment = async (commentSeq, content) => {
     try {
-      const res = await axios.patch(`/api/community/comment`, null, {
+      await axios.patch(`/api/community/comment`, null, {
         params: {
           commentSeq: commentSeq,
           writer: 1,
           content: content,
         },
       });
-      console.log(res);
-      setEditIndex(-1); // 수정 모드 종료
-      fetchComments(); // 댓글 수정 후 새로 댓글 목록을 가져옴
+      setEditIndex(-1);
+      fetchComments();
     } catch (error) {
       console.error("Error updating comment:", error);
     }
   };
 
-  const deleteComment = async cmtSeq => {
+  const deleteComment = async commentSeq => {
     try {
-      const url = `/api/community/comment?commentSeq=${cmtSeq}&writer=1`;
-      const res = await axios.delete(url);
-      console.log("삭제요청", res);
-      console.log("삭제요청", url);
-      fetchComments(); // 댓글 삭제 후 새로 댓글 목록을 가져옴
+      await axios.delete(`/api/community/comment`, {
+        params: {
+          commentSeq: commentSeq,
+          writer: 1,
+        },
+      });
+      fetchComments();
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
@@ -88,12 +82,12 @@ const CommentContainer = () => {
 
   const handleFormSubmit = event => {
     event.preventDefault();
-    postComments();
+    postComment();
   };
 
-  const handleEditSubmit = (event, commentSeq, writer) => {
+  const handleEditSubmit = (event, commentSeq) => {
     event.preventDefault();
-    updateComment(commentSeq, writer, editContent);
+    updateComment(commentSeq, editContent);
   };
 
   return (
@@ -105,11 +99,7 @@ const CommentContainer = () => {
             <div className="comment__info">
               <p className="comment__name">{comment.writerName}</p>
               {editIndex === index ? (
-                <form
-                  onSubmit={e =>
-                    handleEditSubmit(e, comment.commentSeq, comment.writer)
-                  }
-                >
+                <form onSubmit={e => handleEditSubmit(e, comment.cmtSeq)}>
                   <textarea
                     value={editContent}
                     onChange={handleEditChange}
