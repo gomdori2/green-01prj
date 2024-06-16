@@ -30,7 +30,9 @@ const SpanIcon = styled.span`
   }
 `;
 const CalendarList = ({ item }) => {
-  const { pk, title, text, day, img, gardning } = item;
+  // 이름은 굳이 필요없음.
+  // 조회에 있어서 넣어둠
+  const { managementDate, plantPic, plantName, gardning, content } = item;
   const uiIcon = {
     1: (
       <FaSun
@@ -58,17 +60,16 @@ const CalendarList = ({ item }) => {
     ),
   };
 
-  console.log(gardning);
   return (
-    <CalendarListUlStyle key={pk}>
+    <CalendarListUlStyle key={managementDate}>
       <Link
-        to={`/reactCalendar/${pk}`}
-        state={{ pk, title, text, day, img, gardning }}
+        to={`/reactCalendarDetail/${managementDate}`}
+        state={{ managementDate }}
       >
         <li>
           <span>
             <img
-              src={img}
+              src={plantPic}
               style={{
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "contain",
@@ -77,7 +78,7 @@ const CalendarList = ({ item }) => {
               }}
             ></img>
           </span>
-          <span>{text}</span>
+          <span>{content}</span>
           <SpanIcon>
             <div>
               {gardning?.map(iconKey => (
@@ -86,7 +87,7 @@ const CalendarList = ({ item }) => {
             </div>
           </SpanIcon>
 
-          <span>{day}</span>
+          <span>{managementDate}</span>
         </li>
       </Link>
     </CalendarListUlStyle>

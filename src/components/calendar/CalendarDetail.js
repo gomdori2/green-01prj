@@ -1,9 +1,14 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import TextArea from "../common/TextArea";
 import { FaSeedling, FaSun, FaTree, FaWind } from "react-icons/fa6";
-import axios from "axios";
+import {
+  calendarPatchData,
+  deletePlantSch,
+  postPlantSch,
+} from "../../axios/calendar/calendar";
+import { userInfoContext } from "../../context/UserInfoProvider";
 
 const DetailDivStyle = styled.div`
   width: 100%;
@@ -66,42 +71,104 @@ const GardningIconStyle = styled.div`
 `;
 const CalendarDetail = () => {
   const location = useLocation();
-  const { pk } = useParams();
+  // 앞에서 받으면 편한거 같긴한데 일단 선언해서사용
+  const { contextUserData } = useContext(userInfoContext);
+  const [userSeq, setUserSeq] = useState(null);
+  const { plantManagementSeq } = useParams(1);
   // location.state가 null일 경우 빈 객체로 대체_ null 났을 때 오류 잡으려고
-  const state = location.state || {};
-  const { title, text, day } = state;
-  const [titleData, setTitilData] = useState(title);
-  const [textData, setTextData] = useState(text);
+  // const state = location.state || {};
+  // const { title, text, day } = state;
+  // const [titleData, setTitilData] = useState();
+  // const [textData, setTextData] = useState();
   const [checkedValues, setCheckedValues] = useState([]);
+  const [modContent, setModContent] = useState(1, 2, 3, 4);
+  useEffect(() => {
+    setUserSeq(contextUserData.userSeq);
+
+    console.log(userSeq);
+    return () => {};
+  }, []);
 
   useEffect(() => {
-    const datas = { titleData, textData, checkedValues };
+    console.log(userSeq);
+    return () => {};
+  }, [userSeq]);
+
+  const item = {
+    managementDate: "2024-02-20",
+    plantPic: "ss",
+    plantName: "asdasd",
+    gardning: "1,2,3",
+    content: "테스트 내용",
+  };
+  const { managementDate, plantPic, plantName, gardning, content } = item;
+  useEffect(() => {
+    // 받아온 gardning 데이터 1,2,3,4 넣어주자
+    // 이외에 데이터는 그냥 쓰믄됨
+    const gardeningArray = item.gardning.split(",").map(num => parseInt(num));
+    console.log(gardeningArray);
+    setCheckedValues(gardeningArray);
+    console.log(checkedValues);
+    //setCheckedValues(arrayGardning);
+    //const datas = { titleData, textData, checkedValues };
     // post 할 데이터_상세페이지_수정, 삭제
+    // console.log(datas);
+  }, []);
 
-    console.log(datas);
-  }, [titleData, textData, checkedValues]);
-  const putData = async () => {
-    // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
-    console.log(
-      await axios.put("/api/put", { pk, titleData, textData, checkedValues }),
-    );
-  };
-
-  const deleteData = async () => {
-    console.log(await axios.delete("/api/delete", { pk }));
-  };
   const handleIconClick = value => {
-    setCheckedValues(prevValues =>
-      prevValues.includes(value)
-        ? prevValues.filter(item => item !== value)
-        : [...prevValues, value],
-    );
+    // value가 쉼표로 구분된 문자열인 경우 배열로 변환
+    const clickedValue = parseInt(value);
+    setCheckedValues(prevValues => {
+      // 이미 체크된 값인지 확인
+      const isChecked = prevValues?.includes(clickedValue);
+
+      if (isChecked) {
+        // 이미 체크된 값이면 제거
+        return prevValues?.filter(item => item !== clickedValue);
+      } else {
+        // 체크되지 않은 값이면 추가
+        return [...prevValues, clickedValue];
+      }
+    });
   };
   const uiIcon = {
     1: <FaSun size="20" style={{ color: "#fff" }} />,
     2: <FaSeedling size="20" style={{ color: "#fff" }} />,
     3: <FaWind size="20" color="#fff" />,
     4: <FaTree size="20" style={{ color: "#fff" }} />,
+  };
+  // ****************수정**************
+  const handlePatchData = (
+    plantSeq,
+    plantManagementSeq,
+    checkedValues,
+    modContent,
+  ) => {
+    // 넘길때 , 떼고 숫자로 넘김
+    const checkeArray = checkedValues.join("");
+    const parseCheckeArray = parseInt(checkeArray);
+    calendarPatchData(
+      plantSeq,
+      plantManagementSeq,
+      parseCheckeArray,
+      modContent,
+    );
+  };
+  // ****************등록 : 등록페이지가 있어야하면 뺄것.**************
+  const postPlantSchCalendar = async (
+    plantSeq,
+    modContent,
+    gardning,
+    contents,
+  ) => {
+    const result = await postPlantSch(plantSeq, modContent, gardning, contents);
+    return result;
+  };
+  // ****************삭제**************
+  const deleteData = async () => {
+    // 일단 값을 넣어서 보냄\
+    // plantManagementSeq 확인 해볼 것
+    await deletePlantSch(userSeq, plantManagementSeq);
   };
   return (
     <DetailDivStyle>
@@ -114,11 +181,11 @@ const CalendarDetail = () => {
           {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
           <div>
             <label>관리날짜</label>
-            <input id="day" value={day} readOnly />
+            <input id="day" value={managementDate} readOnly />
           </div>
           <div>
             <label>등록식물</label>
-            <input id="day" value={day} readOnly />
+            <input id="day" value={plantName} readOnly />
           </div>
           {/* <div>
             <label htmlFor="title"></label>
@@ -137,9 +204,9 @@ const CalendarDetail = () => {
               <div>
                 <GardningIconStyle>
                   <div
-                    onClick={() => handleIconClick("1")}
+                    onClick={() => handleIconClick(1)}
                     style={{
-                      background: checkedValues.includes("1")
+                      background: checkedValues?.includes(1)
                         ? "#FFD700"
                         : "#F5DEB3",
                       borderRadius: "10px",
@@ -154,9 +221,9 @@ const CalendarDetail = () => {
                     <FaSun style={{ color: "#fff" }} />
                   </div>
                   <div
-                    onClick={() => handleIconClick("2")}
+                    onClick={() => handleIconClick(2)}
                     style={{
-                      background: checkedValues.includes("2")
+                      background: checkedValues?.includes(2)
                         ? "#32CD32"
                         : "#98FB98",
                       borderRadius: "10px",
@@ -171,9 +238,9 @@ const CalendarDetail = () => {
                     <FaSeedling style={{ color: "#fff" }} />
                   </div>
                   <div
-                    onClick={() => handleIconClick("3")}
+                    onClick={() => handleIconClick(3)}
                     style={{
-                      background: checkedValues.includes("3")
+                      background: checkedValues?.includes(3)
                         ? "#00BFFF"
                         : "#87CEEB",
                       borderRadius: "10px",
@@ -188,9 +255,9 @@ const CalendarDetail = () => {
                     <FaWind style={{ color: "#fff" }} />
                   </div>
                   <div
-                    onClick={() => handleIconClick("4")}
+                    onClick={() => handleIconClick(4)}
                     style={{
-                      background: checkedValues.includes("4")
+                      background: checkedValues?.includes(4)
                         ? "#32CD32"
                         : "#98FB98",
                       borderRadius: "10px",
@@ -209,28 +276,42 @@ const CalendarDetail = () => {
             </IconStyle>
           </div>
           <div>
-            <strong>체크된 값 </strong> {checkedValues.join(", ")}
+            <strong>체크된 값 </strong> {checkedValues?.join(", ")}
           </div>
           <div className="text-area-div">
             <label htmlFor="text">기타사항</label>
             <div className="text-area-style">
               <TextArea
-                valueDatas={textData}
-                setTextData={setTextData}
+                valueDatas={modContent}
+                setTextData={setModContent}
+                maxLength={100}
               ></TextArea>
             </div>
           </div>
           <div>
             <button
               onClick={() => {
-                putData();
+                const plantManagementSeq = 1;
+                const plantSeq = 10;
+                handlePatchData(
+                  plantSeq,
+                  plantManagementSeq,
+                  checkedValues,
+                  modContent,
+                );
+                // 등록 페이지가 있을 시 빼고 얘기해보고 필요없다 하면
+                // 그냥 무조건 등록 / 수정
+                // const plantSeq = 11;
+                // const gardning = "1,2,3,4";
+                // const contents = "asdfasdfasdfasfsadfsda";
+                // postPlantSchCalendar(plantSeq, modContent, gardning, contents);
               }}
             >
               수정
             </button>
             <button
               onClick={() => {
-                deleteData();
+                deleteData(userSeq, plantManagementSeq);
               }}
             >
               삭제
