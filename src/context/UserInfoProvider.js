@@ -1,21 +1,27 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export const userInfoContext = createContext();
+export const useUser = () => useContext(userInfoContext);
 const UserInfoProvider = ({ children }) => {
-  const [localUserData, setLocalUserData] = useState(null);
-  const savedUser = sessionStorage.getItem("user");
+  // const savedUser = sessionStorage.getItem("user");
+
+  const [contextUserData, setContextUserData] = useState(() => {
+    // 세션 스토리지에서 사용자 데이터를 불러옵니다.
+    const savedUserData = sessionStorage.getItem("user");
+    return savedUserData ? JSON.parse(savedUserData) : null;
+  });
 
   useEffect(() => {
-    // console.log("UserInfoProvider savedUser : ", savedUser);
-    // 객체 텍스트 째로 넘어와서 파싱해줌. 없으면 null
-    const parseSaveUser = savedUser ? JSON.parse(savedUser) : null;
-    if (savedUser !== null || savedUser !== "") {
-      setLocalUserData(parseSaveUser);
+    // contextUserData가 변경될 때마다 세션 스토리지에 저장합니다.
+    if (contextUserData) {
+      sessionStorage.setItem("user", JSON.stringify(contextUserData));
+    } else {
+      sessionStorage.removeItem("user");
     }
-  }, []);
+  }, [contextUserData]);
 
   return (
-    <userInfoContext.Provider value={{ localUserData, setLocalUserData }}>
+    <userInfoContext.Provider value={{ contextUserData, setContextUserData }}>
       {children}
     </userInfoContext.Provider>
   );

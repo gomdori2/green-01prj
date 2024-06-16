@@ -51,8 +51,8 @@ const DetailDivInnerStyle = styled.div`
 `;
 
 const PlantResister = () => {
-  const { localUserData } = useContext(userInfoContext);
-  if (!localUserData) {
+  const { contextUserData } = useContext(userInfoContext);
+  if (!contextUserData) {
     return;
   }
   // 팝업 클릭용
@@ -73,7 +73,7 @@ const PlantResister = () => {
 
   useEffect(() => {
     const datas = {
-      userSeq: localUserData.userSeq,
+      userSeq: contextUserData.userSeq,
       odataSeq,
       etc,
       plantNickName,
@@ -114,7 +114,11 @@ const PlantResister = () => {
           {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
           <div>
             <label>식물명</label>
-            <input value={plantName ? plantName : ""} readOnly />
+            <input
+              value={plantName ? plantName : ""}
+              readOnly
+              placeholder="식물불러오기로 등록해주세요."
+            />
             {isClicked ? (
               <PlantPublicDataList
                 // setOdataSeq={setOdataSeq}
@@ -135,6 +139,7 @@ const PlantResister = () => {
                 setPlantNickName(e.target.value);
                 console.log(e.target.value);
               }}
+              placeholder="식물 애칭을 입력해주세요."
             />
           </div>
 
@@ -148,12 +153,15 @@ const PlantResister = () => {
               ></TextArea>
             </div>
           </div>
-          <div className="flex-box-div">
+          <div
+            className="flex-box-div"
+            style={{ display: "flex", justifyContent: "end", gap: 15 }}
+          >
             <button
               type="button"
               onClick={() => {
                 postHandler({
-                  userSeq: localUserData.userSeq,
+                  userSeq: contextUserData.userSeq,
                   odataSeq,
                   plantNickName,
                   etc,
