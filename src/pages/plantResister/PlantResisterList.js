@@ -106,6 +106,7 @@ const PlantResisterList = () => {
   // }
   return (
     <ReactCalendarStyle>
+      <TitleDivStyle>등록 식물 리스트</TitleDivStyle>
       <ReactCalendarListStyle>
         <CalendarListUlStyle>
           <li>
@@ -115,11 +116,29 @@ const PlantResisterList = () => {
           </li>
         </CalendarListUlStyle>
         {/* 인덱스로 받는거 pk로 바꿔야함. */}
-        {list?.map(item => (
-          <PlantRegisterList key={item.plantSeq} item={item} />
-        ))}
+        {list && list.length > 0 ? (
+          list?.map(item => (
+            <PlantRegisterList key={item.plantSeq} item={item} />
+          ))
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              fontWeight: "bold",
+              margin: "0 auto",
+              height: "100px",
+              borderBottom: "1px solid gray",
+            }}
+          >
+            등록 된 데이터가 없습니다.
+          </div>
+        )}
 
         <button
+          style={{ textAlign: "end", marginRight: "20px" }}
           onClick={() => {
             navigate(`/PlantResister`);
           }}

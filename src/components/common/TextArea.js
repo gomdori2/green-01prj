@@ -44,6 +44,7 @@ const TextArea = ({ valueDatas, setTextData, maxLength }) => {
               setValueLength(e.target.value.length);
               setTextData(e.target.value);
             }}
+            placeholder="내용을 입력해주세요."
           />
           <span>
             <strong>*</strong>글자수 {valueLength}/{maxLength}

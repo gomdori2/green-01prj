@@ -7,15 +7,15 @@ import { FiLogOut } from "react-icons/fi";
 import { FaUserPen } from "react-icons/fa6";
 
 const Header = ({ userInfo }) => {
-  const { localUserData } = useContext(userInfoContext);
+  const { contextUserData, setContextUserData } = useContext(userInfoContext);
   const [userSeq, setUserSeq] = useState();
-
+  console.log(contextUserData);
   const location = useLocation();
 
   const navigate = useNavigate();
   useEffect(() => {
-    setUserSeq(localUserData?.userSeq);
-  }, [localUserData]);
+    setUserSeq(contextUserData?.userSeq);
+  }, [contextUserData]);
 
   useEffect(() => {
     // console.log("userSeq ", userSeq);
@@ -57,7 +57,7 @@ const Header = ({ userInfo }) => {
         </ul>
         <ul>
           <li>
-            {userInfo ? (
+            {userSeq ? (
               <div className="user-actions">
                 {/* css 다듬어야함. */}
                 <Link className="action-item" to={"/userprofile"}>
@@ -68,6 +68,7 @@ const Header = ({ userInfo }) => {
                   className="action-item"
                   onClick={() => {
                     sessionStorage.removeItem("user");
+                    setContextUserData(null);
                     navigate("/");
                   }}
                 >

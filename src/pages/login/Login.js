@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../login/login.scss";
 import { postUserLogin } from "../../apis/user/userapi";
 import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../../context/UserInfoProvider";
 
 const Login = ({ setUserInfo }) => {
   // const [loginId, setLoginId] = useState("jowonyoung1");
@@ -10,7 +11,7 @@ const Login = ({ setUserInfo }) => {
   const [loginPw, setLoginPw] = useState("asdf@1234");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
+  const { contextUserData, setContextUserData } = useUser();
   // 로그인시 처리할 함수
   const handleSubmit = async event => {
     // 웹브라우저 새로고침 방지 코드(기본기능 막기)
@@ -37,6 +38,8 @@ const Login = ({ setUserInfo }) => {
       };
       // console.log("userInfo : ", userInfo);
       sessionStorage.setItem("user", JSON.stringify(userInfo));
+      setContextUserData(userInfo);
+      console.log(contextUserData);
       setUserInfo(userInfo);
       // JSON.stringify(response.data)는 JavaScript 객체를
       // JSON 문자열로 변환하는 함수

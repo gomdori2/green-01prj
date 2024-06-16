@@ -24,7 +24,6 @@ const PlantRegListUlStyle = styled.div`
   }
 `;
 const PlantRegisterList = ({ item, index }) => {
-  // 현재 seq 없음
   const { plantSeq } = item;
 
   useEffect(() => {
@@ -40,6 +39,7 @@ const PlantRegisterList = ({ item, index }) => {
         // 이정보들을 다 넘기는게 아니라...해당 pk 만 받아서 넘길 것.
         // getOntRead > pk 받아서 해당 화면에 뿌리기 state X
       >
+        {/* 다듬어야함. */}
         <li>
           <div>{plantSeq}</div>
           <img src={item.plantPic}></img>
