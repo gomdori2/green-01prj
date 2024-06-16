@@ -7,13 +7,18 @@ function NoticeTop({
   itemsPerPage,
   handleItemsPerPageChange,
   orderText,
+  bestButtonClick,
+  allButtonClick,
 }) {
-  // orderText 추가
   return (
     <div className="notice__top">
       <div className="flex-gap-4">
-        <button className="post-all btn">전체글</button>
-        <button className="post-best btn-normal">추천글</button>
+        <button className="post-all btn" onClick={allButtonClick}>
+          전체글
+        </button>
+        <button className="post-best btn-normal" onClick={bestButtonClick}>
+          추천글
+        </button>
         <button className="order-old" onClick={orderClick}>
           {orderText}
         </button>

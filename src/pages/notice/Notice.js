@@ -7,6 +7,7 @@ import NoticeMain from "../../components/notice/NoticeMain";
 import SearchComponent from "../../components/notice/SearchComponent";
 import PageNation from "../../components/common/PageNation";
 import useGetList from "../../hooks/useGetList";
+import axios from "axios";
 
 function Notice() {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ function Notice() {
   const [orderText, setOrderText] = useState(
     initialOrder === 3 ? "오래된 순" : "최신 순",
   );
+  const [bestPost, setBestPost] = useState([]);
+  const [showBest, setShowBest] = useState(false);
 
   const url = `/api/community/list?page=${currentPage}&size=${itemsPerPage}&order=${order}`;
   const { getListData, isLoading, error } = useGetList(url);
@@ -90,6 +93,28 @@ function Notice() {
     );
   };
 
+  const bestButtonClick = async () => {
+    try {
+      const URL = `/api/community/list?order=1`;
+      const response = await axios.get(URL);
+      setBestPost(response.data.data.list);
+      setShowBest(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const allButtonClick = async () => {
+    try {
+      const URL = `/api/community/list?page=${currentPage}&size=${itemsPerPage}&order=${order}`;
+      const response = await axios.get(URL);
+      setGetData(response.data.data.list);
+      setShowBest(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -102,8 +127,13 @@ function Notice() {
           itemsPerPage={itemsPerPage}
           handleItemsPerPageChange={handleItemsPerPageChange}
           orderText={orderText}
+          bestButtonClick={bestButtonClick}
+          allButtonClick={allButtonClick}
         />
-        <NoticeMain handleSearchResult={handleSearchResult} getData={getData} />
+        <NoticeMain
+          handleSearchResult={handleSearchResult}
+          getData={showBest ? bestPost : getData}
+        />
         <NoticeBottom />
         <PageNation
           pageCount={totalPages}
