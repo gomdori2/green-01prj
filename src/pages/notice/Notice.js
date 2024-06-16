@@ -6,7 +6,7 @@ import NoticeBottom from "../../components/notice/NoticeBottom";
 import NoticeMain from "../../components/notice/NoticeMain";
 import SearchComponent from "../../components/notice/SearchComponent";
 import PageNation from "../../components/common/PageNation";
-import useGetList from "../../hooks/useGetList";
+import useGetList from "../../hooks/notice/useGetList.js";
 import axios from "axios";
 
 function Notice() {
