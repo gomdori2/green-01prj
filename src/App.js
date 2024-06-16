@@ -7,8 +7,6 @@ import Main from "./components/layout/Main";
 import Wrap from "./components/layout/Wrap";
 import UserInfoProvider from "./context/UserInfoProvider";
 import "./css/calendar.css";
-import "./css/common/common.css";
-import "./css/common/reset.css";
 import NotFound from "./pages/NotFound";
 import ReactCalendar from "./pages/calendar/ReactCalendar";
 import Login from "./pages/login/Login";
@@ -28,7 +26,6 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
 
   return (
-
     <UserInfoProvider>
       <BrowserRouter>
         <Wrap>
@@ -37,9 +34,9 @@ function App() {
             <Routes>
               {/* 공통 레이아웃 적용 */}
               <Route
-              path="/"
-              element={<Login setUserInfo={setUserInfo} />}
-            ></Route>
+                path="/"
+                element={<Login setUserInfo={setUserInfo} />}
+              ></Route>
               <Route path="/notice" element={<Notice />} />
               <Route path="/notice/page/:page" element={<Notice />} />
               <Route path="/notice/write" element={<PostWrite />} />

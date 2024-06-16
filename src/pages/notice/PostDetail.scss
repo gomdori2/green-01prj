@@ -51,12 +51,7 @@
 
   .content__bottom {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    &__user-info {
-      display: flex;
-      align-items: center;
-    }
+    justify-content: center;
   }
 
   &__comment {

@@ -1,179 +1,167 @@
-import React, { useState } from "react";
-import styled from "@emotion/styled";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "./CommentContainer.scss";
 
-const CommentComponent = () => {
-  // 댓글 입력 및 저장을 위한 상태 관리
-  const [comment, setComment] = useState("");
+const CommentContainer = () => {
+  const { writerSeq } = useParams();
   const [comments, setComments] = useState([]);
+  const [formData, setFormData] = useState({
+    boardSeq: writerSeq,
+    writer: 1,
+    content: "",
+  });
+  const [editIndex, setEditIndex] = useState(-1); // 현재 수정 중인 댓글의 인덱스
+  const [editContent, setEditContent] = useState(""); // 수정 중인 댓글 내용
 
-  // 답글 입력창 표시 여부 및 답글 내용 관리
-  const [replyInputVisible, setReplyInputVisible] = useState({});
-  const [replyContent, setReplyContent] = useState("");
+  useEffect(() => {
+    console.log(writerSeq);
+    fetchComments();
+  }, [writerSeq]);
 
-  // 댓글 입력값 변경 핸들러
-  const handleInputChange = e => {
-    setComment(e.target.value);
-  };
-
-  // 댓글 등록 핸들러
-  const handleSubmit = () => {
-    if (comment.trim() !== "") {
-      setComments([...comments, { text: comment, replies: [] }]);
-      setComment("");
+  const fetchComments = async () => {
+    try {
+      const res = await axios.get(
+        `/api/community/comment?board_seq=${writerSeq}&page=1`,
+      );
+      console.log(res.data.data.list); // 데이터 구조를 확인
+      setComments(res.data.data.list);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
     }
   };
 
-  // 댓글 삭제 핸들러
-  const handleDelete = index => {
-    const newComments = [...comments];
-    newComments.splice(index, 1);
-    setComments(newComments);
-  };
-
-  // 답글 입력창 표시/숨김 핸들러
-  const handleReplyToggle = commentId => {
-    setReplyInputVisible({
-      ...replyInputVisible,
-      [commentId]: !replyInputVisible[commentId],
-    });
-    setReplyContent("");
-  };
-
-  // 답글 입력값 변경 핸들러
-  const handleReplyChange = e => {
-    setReplyContent(e.target.value);
-  };
-
-  // 답글 등록 핸들러
-  const handleReplySubmit = parentCommentId => {
-    if (replyContent.trim() !== "") {
-      const newComments = comments.map((comment, index) => {
-        if (index === parentCommentId) {
-          return {
-            ...comment,
-            replies: [...comment.replies, replyContent],
-          };
-        }
-        return comment;
+  const postComments = async () => {
+    try {
+      const res = await axios.post("/api/community/comment", formData);
+      console.log(res);
+      setFormData({
+        boardSeq: writerSeq,
+        writer: 1,
+        content: "",
       });
-      setComments(newComments);
-      setReplyInputVisible({ ...replyInputVisible, [parentCommentId]: false });
-      setReplyContent("");
+      fetchComments(); // 댓글 등록 후 새로 댓글 목록을 가져옴
+    } catch (error) {
+      console.error("Error posting comment:", error);
     }
+  };
+
+  const updateComment = async (commentSeq, writer, content) => {
+    try {
+      const res = await axios.patch(`/api/community/comment`, null, {
+        params: {
+          commentSeq: commentSeq,
+          writer: 1,
+          content: content,
+        },
+      });
+      console.log(res);
+      setEditIndex(-1); // 수정 모드 종료
+      fetchComments(); // 댓글 수정 후 새로 댓글 목록을 가져옴
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    }
+  };
+
+  const deleteComment = async commentSeq => {
+    try {
+      const res = await axios.delete(`/api/community/comment/${commentSeq}`);
+      console.log(res);
+      fetchComments(); // 댓글 삭제 후 새로 댓글 목록을 가져옴
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  const handleInputChange = event => {
+    setFormData({
+      ...formData,
+      content: event.target.value,
+    });
+  };
+
+  const handleEditChange = event => {
+    setEditContent(event.target.value);
+  };
+
+  const handleFormSubmit = event => {
+    event.preventDefault();
+    postComments();
+  };
+
+  const handleEditSubmit = (event, commentSeq, writer) => {
+    event.preventDefault();
+    updateComment(commentSeq, writer, editContent);
   };
 
   return (
-    <CommentContainer>
-      <label htmlFor="comment">댓글</label>
-      <CommentInput
-        type="text"
-        value={comment}
-        id="comment"
-        onChange={handleInputChange}
-        placeholder="댓글을 입력하세요"
-      />
-      <button onClick={handleSubmit}>등록</button>
-      <CommentList>
-        {comments.map((comment, index) => (
-          <CommentItem key={index}>
-            {comment.text}
-            <DeleteButton onClick={() => handleDelete(index)}>
-              삭제
-            </DeleteButton>
-            <ReplyButton onClick={() => handleReplyToggle(index)}>
-              답글
-            </ReplyButton>
-            {replyInputVisible[index] && (
-              <div>
-                <ReplyInput
-                  type="text"
-                  value={replyContent}
-                  onChange={handleReplyChange}
-                  placeholder="답글을 입력하세요"
-                />
-                <button onClick={() => handleReplySubmit(index)}>
-                  답글 등록
-                </button>
-              </div>
-            )}
-            {comment.replies && (
-              <ReplyList>
-                {comment.replies.map((reply, replyIndex) => (
-                  <ReplyItem key={replyIndex}>{reply}</ReplyItem>
-                ))}
-              </ReplyList>
-            )}
-          </CommentItem>
-        ))}
-      </CommentList>
-    </CommentContainer>
+    <div>
+      <h3>전체 댓글 {comments.length}개</h3>
+      {comments.map((comment, index) => (
+        <div key={index} className="comment">
+          <div className="comment__wrap">
+            <div className="comment__info">
+              <p className="comment__name">{comment.writerName}</p>
+              {editIndex === index ? (
+                <form
+                  onSubmit={e =>
+                    handleEditSubmit(e, comment.commentSeq, comment.writer)
+                  }
+                >
+                  <textarea
+                    value={editContent}
+                    onChange={handleEditChange}
+                  ></textarea>
+                  <button type="submit" className="btn">
+                    저장
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditIndex(-1)}
+                    className="btn"
+                  >
+                    취소
+                  </button>
+                </form>
+              ) : (
+                <p className="comment__text">{comment.cmtText}</p>
+              )}
+              <p className="comment__date">{comment.inputDt}</p>
+            </div>
+            <div className="comment__btns">
+              <button
+                onClick={() => {
+                  setEditIndex(index);
+                  setEditContent(comment.cmtText);
+                }}
+                className="btn"
+              >
+                수정
+              </button>
+              <button
+                onClick={() => deleteComment(comment.commentSeq)}
+                className="btn"
+              >
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <form onSubmit={handleFormSubmit} className="comment__form">
+        <textarea
+          value={formData.content}
+          id="comment"
+          onChange={handleInputChange}
+          placeholder="댓글을 입력하세요"
+        ></textarea>
+        <button type="submit" className="comment__add-btn">
+          등록
+        </button>
+      </form>
+    </div>
   );
 };
 
-export default CommentComponent;
-
-// 스타일 정의
-const CommentContainer = styled.div`
-  margin-top: 20px;
-`;
-
-const CommentInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const CommentList = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const CommentItem = styled.li`
-  margin-top: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const DeleteButton = styled.button`
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 10px;
-`;
-
-const ReplyButton = styled.button`
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 10px;
-`;
-
-const ReplyInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const ReplyList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
-`;
-
-const ReplyItem = styled.li`
-  margin-top: 5px;
-  padding: 5px 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #f8f9fa;
-`;
+export default CommentContainer;

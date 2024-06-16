@@ -77,9 +77,6 @@ const PostEdit = () => {
       <div className="post-add">
         <div className="post-add__top">
           <h2 className="title">글 수정 페이지</h2>
-          <button className="btn" onClick={handleUpdate}>
-            수정
-          </button>
 
           {/* 카테고리 선택을 위한 UI 추가 */}
           <div className="form-group none">
@@ -108,6 +105,10 @@ const PostEdit = () => {
               placeholder="내용을 입력하세요"
             />
           </form>
+
+          <button className="btn edit-btn" onClick={handleUpdate}>
+            수정
+          </button>
         </div>
       </div>
     </div>

@@ -1,39 +1,10 @@
-// @import "./reset.scss";
-@import "./common.scss";
-
-// CSS
-
 .notice {
   width: 100%;
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
   gap: 20px;
-  &__top {
-    display: flex;
-    justify-content: space-between;
-    height: 40px;
-    background-color: #fff;
-    width: 100%;
-    &__icon {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-  }
-  &__center {
-    width: 100%;
-    border-collapse: collapse;
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  }
+
   &__bottom {
     display: flex;
     justify-content: end;
@@ -51,25 +22,6 @@
       border-radius: 5px;
     }
   }
-}
-
-.view-Type {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 6px;
-  background-color: transparent;
-  cursor: pointer;
-  border: 1px solid #333;
-  border-radius: 4px;
-  width: 30px;
-  height: 30px;
-}
-
-.select-box {
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid #333;
 }
 
 .notice__bottom {
