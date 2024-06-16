@@ -9,6 +9,7 @@ import SearchComponent from "../../components/notice/SearchComponent";
 import PageNation from "../../components/common/PageNation";
 import useGetList from "../../hooks/notice/useGetList";
 import { fetchBestPost, fetchAllPosts } from "../../apis/notice/api";
+import { calculateTotalPages, getOrderText } from "../../utils/utils";
 
 function Notice() {
   const navigate = useNavigate();
@@ -25,9 +26,7 @@ function Notice() {
   const [searchResult, setSearchResult] = useState(null);
   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
   const [order, setOrder] = useState(initialOrder);
-  const [orderText, setOrderText] = useState(
-    initialOrder === 3 ? "오래된 순" : "최신 순",
-  );
+  const [orderText, setOrderText] = useState(getOrderText(initialOrder));
   const [bestPost, setBestPost] = useState([]);
   const [showBest, setShowBest] = useState(false);
 
@@ -53,7 +52,7 @@ function Notice() {
       const { list, totalElements } = getListData.data;
       setGetData(list);
       setTotalPost(totalElements);
-      setTotalPages(Math.ceil(totalElements / itemsPerPage));
+      setTotalPages(calculateTotalPages(totalElements, itemsPerPage));
     }
   }, [getListData, itemsPerPage]);
 
@@ -69,14 +68,14 @@ function Notice() {
     const newValue = parseInt(event.target.value, 10);
     setItemsPerPage(newValue);
     sessionStorage.setItem("itemsPerPage", newValue.toString());
-    setTotalPages(Math.ceil(totalPost / newValue));
+    setTotalPages(calculateTotalPages(totalPost, newValue));
   };
 
   const handleOrderClick = () => {
     const newOrder = order === 3 ? 0 : 3;
     setOrder(newOrder);
     sessionStorage.setItem("order", newOrder.toString());
-    setOrderText(newOrder === 3 ? "오래된 순" : "최신 순");
+    setOrderText(getOrderText(newOrder));
     navigate(
       `/notice/page/1${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
     );
@@ -85,7 +84,10 @@ function Notice() {
   const handleSearchResult = (searchData, searchType, searchQuery) => {
     setGetData(searchData.list);
     setTotalPost(searchData.list.length);
-    const newTotalPages = Math.ceil(searchData.list.length / itemsPerPage);
+    const newTotalPages = calculateTotalPages(
+      searchData.list.length,
+      itemsPerPage,
+    );
     setTotalPages(newTotalPages);
     setCurrentPage(1);
     setSearchParams({ searchType, searchQuery });
