@@ -57,7 +57,7 @@ const Header = ({ userInfo }) => {
         </ul>
         <ul>
           <li>
-            {userSeq ? (
+            {userInfo ? (
               <div className="user-actions">
                 {/* css 다듬어야함. */}
                 <Link className="action-item" to={"/userprofile"}>
@@ -136,4 +136,3 @@ const HeaderDiv = styled.div`
     gap: 5px;
   }
 `;
-
