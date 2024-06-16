@@ -7,6 +7,15 @@
   }
 }
 
+.form-group{
+  gap: 10px !important;
+
+  p {
+    color: red;
+    font-size: 12px;
+  }
+}
+
 .modify-bt {
   width: 30%;
   background-color: #4caf50;

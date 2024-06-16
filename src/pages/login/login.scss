@@ -30,8 +30,9 @@ body {
 
 .loginform-group {
   padding: 20px 10px;
-  border: 2px solid rgb(235, 234, 234);
-  border-radius: 5px;
+  border: 1px solid rgb(235, 234, 234);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .loginform-group input {

@@ -1,51 +1,56 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../login/userprofile.scss";
 import { getUserNickName, patchUserProfile } from "../../apis/user/userapi";
+
 const UserProfile = () => {
+  // 유저 고유번호
+  const [userSeq, setUserSeq] = useState("");
+
+  // 비밀번호 설정
   const [newpassword, setNewPassword] = useState("");
   const [newPasswordCheck, setNewPasswordCheck] = useState("");
+  const [passwordPattern, setPasswordPattern] = useState(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,20}$/)
+  const [passwordValid, setPasswordValid] = useState(true)
+  const [passwordMatch, setPasswordMatch] = useState(true)
+
+  // 닉네임 설정
   const [newNickName, setNewNickName] = useState("");
-  const [userSeq, setUserSeq] = useState("");
+  const [nickNamePattern, setNickNamePattern] = useState(/^[a-zA-Z가-힣0-9]{2,10}$/)
+  const [nickNameValid, setNickNameValid] = useState(true)
 
   useEffect(() => {
     // 세션에서 사용자 정보 불러오기
     const userSeq = sessionStorage.getItem("userSeq");
-    console.log(userSeq);
     if (userSeq !== null) {
       setUserSeq(userSeq);
     }
   }, []);
 
-  //  유저 정보 수정 시 처리할 함수
-  const handleSubmit = e => {
-    console.log(e.target.value);
-    // 이벤트 기본 동작 방지
+  // 유저 정보 수정 시 처리할 함수
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     // 비밀번호 형식 유효성 검사
-    const passwordPattern =
-      // /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,20}$/;
-
     if (!passwordPattern.test(newpassword)) {
-      alert(
-        "비밀번호는 영어 및 숫자, 특수문자를 포함하며 8~20자 사이이어야 하며 영어와 숫자가 최소 1개씩 들어가야합니다.",
-      );
+      setPasswordValid(false)
       return;
     }
-    if (newpassword !== newPasswordCheck) {
-      alert("비밀번호가 서로 다릅니다. 다시 확인해주세요.");
+    // 비밀번호가 일치하지 않을 경우
+    if(newpassword !== newPasswordCheck){
+      setPasswordMatch(false)
       return;
     }
+    // 비밀번호가 일치할 경우
+    setPasswordMatch(true)
+    setPasswordValid(true)
     newNickNameAvailable();
   };
 
   // 닉네임 중복 검사 함수
   const newNickNameAvailable = async () => {
     // 닉네임 형식 유효성 검사
-    const NickNamePattern = /^[a-zA-Z가-힣]{2,10}$/;
-    if (!NickNamePattern.test(newNickName)) {
-      alert("닉네임은 2~10자 이내, 영어 및 한글, 숫자만 가능합니다.");
+    if (!nickNamePattern.test(newNickName)) {
+      setNickNameValid(false)
       return;
     }
 
@@ -59,7 +64,7 @@ const UserProfile = () => {
     }
   };
 
-  //  프로필 정보 수정 함수
+  // 프로필 정보 수정 함수
   const profileUpdateResultFunc = async () => {
     // 백엔드로 전달하는 수정된 유저 정보
     const profileUpdateReqData = {
@@ -72,63 +77,71 @@ const UserProfile = () => {
     // 수정된 유저 정보
     const profileUpdateResult = await patchUserProfile(profileUpdateReqData);
     console.log(profileUpdateResult);
-
-    // 정보 수정 처리 실행 후
+    alert("수정이 완료되었습니다!")
   };
 
   return (
     <div className="userinfo-update">
       <h2>사용자 정보 수정</h2>
-      <form
-        onSubmit={event => {
-          handleSubmit(event);
-        }}
-      >
-        {/* <div className="form-group">
-          <label htmlFor="seq">사용자 번호</label>
-          <input type="text" name="seq"  />
-        </div> */}
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="password">새 비밀번호</label>
+          <label htmlFor="password">새비밀번호</label>
           <input
             type="password"
             name="password"
+            placeholder="8~20자 이내 영문, 숫자, 특수문자만 입력 가능, 영문과 숫자는 최소 1개씩 포함"
             value={newpassword}
-            onChange={e => {
-              console.log(e.target.value);
-              setNewPassword(e.target.value);
+            onChange={(e) => {
+              setNewPassword(e.target.value);    
+              // 비밀번호 정규식 패턴 검사
+              setPasswordValid(passwordPattern.test(e.target.value))
+              // 비밀번호 확인과 비교하여 일치 여부 업데이트
+              setPasswordMatch(e.target.value === newPasswordCheck)         
             }}
           />
+          {!passwordValid && (
+            <p>비밀번호가 형식에 맞지 않습니다.</p>
+          )}
         </div>
         <div className="form-group">
           <label htmlFor="confirm-password">비밀번호 확인</label>
           <input
             type="password"
             name="confirm-password"
+            placeholder="비밀번호를 한번 더 입력해주세요."
             value={newPasswordCheck}
-            onChange={e => {
+            onChange={(e) => {
               setNewPasswordCheck(e.target.value);
+              // 입력이 변경될 때 마다 상태 업데이트
+              setPasswordMatch(e.target.value === newpassword)
             }}
           />
+          {newPasswordCheck && !passwordMatch && (
+            <p>비밀번호가 일치하지 않습니다.</p>
+          )}
         </div>
         <div className="form-group">
           <label>닉네임</label>
           <input
             type="text"
             name="name"
+            placeholder="2~10자 이내 한글 및 영문, 숫자만 가능합니다."
             value={newNickName}
-            onChange={e => {
+            onChange={(e) => {
               setNewNickName(e.target.value);
+              setNickNameValid(nickNamePattern.test(e.target.value))
             }}
           />
+          {!nickNameValid && (
+            <p>닉네임이 형식에 맞지 않습니다.</p>
+          )}
         </div>
         <div className="form-group">
           <input
             type="submit"
             value="수정하기"
             className="modify-bt"
-            onClick={() => {}}
-          ></input>
+          />
         </div>
       </form>
     </div>

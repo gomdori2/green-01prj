@@ -7,8 +7,8 @@ import { useUser } from "../../context/UserInfoProvider";
 const Login = ({ setUserInfo }) => {
   // const [loginId, setLoginId] = useState("jowonyoung1");
   // const [loginPw, setLoginPw] = useState("asdf@1234");
-  const [loginId, setLoginId] = useState("jowonyoung2");
-  const [loginPw, setLoginPw] = useState("asdf@1234");
+  const [loginId, setLoginId] = useState("jowonyoung3");
+  const [loginPw, setLoginPw] = useState("whdnjsdud3");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const { contextUserData, setContextUserData } = useUser();
