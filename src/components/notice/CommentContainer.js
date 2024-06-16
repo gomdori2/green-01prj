@@ -63,10 +63,12 @@ const CommentContainer = () => {
     }
   };
 
-  const deleteComment = async commentSeq => {
+  const deleteComment = async cmtSeq => {
     try {
-      const res = await axios.delete(`/api/community/comment/${commentSeq}`);
-      console.log(res);
+      const url = `/api/community/comment?commentSeq=${cmtSeq}&writer=1`;
+      const res = await axios.delete(url);
+      console.log("삭제요청", res);
+      console.log("삭제요청", url);
       fetchComments(); // 댓글 삭제 후 새로 댓글 목록을 가져옴
     } catch (error) {
       console.error("Error deleting comment:", error);
@@ -139,7 +141,7 @@ const CommentContainer = () => {
                 수정
               </button>
               <button
-                onClick={() => deleteComment(comment.commentSeq)}
+                onClick={() => deleteComment(comment.cmtSeq)}
                 className="btn"
               >
                 삭제
