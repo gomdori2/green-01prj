@@ -92,6 +92,19 @@ const PostDetail = () => {
     }
   };
 
+  const handleLikeClick = async () => {
+    console.log("추천 버튼 클릭됨");
+    try {
+      const response = await axios.get(
+        `/api/community/like?boardSeq=${post.data.boardSeq}&writer=1`,
+      );
+      console.log("추천 요청 성공:", response.data);
+      // 필요한 경우 상태를 업데이트
+    } catch (error) {
+      console.log("추천 요청 실패:", error);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -173,7 +186,7 @@ const PostDetail = () => {
               </div>
 
               <div className="content__bottom">
-                <button className="btn-hit btn">
+                <button className="btn-hit btn" onClick={handleLikeClick}>
                   추천하기 {post.data.fav}
                 </button>
               </div>
