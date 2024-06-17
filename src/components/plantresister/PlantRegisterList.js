@@ -33,7 +33,7 @@ const PlantRegisterList = ({ item, index }) => {
   return (
     <PlantRegListUlStyle key={plantSeq}>
       <Link
-        to={`/PlantResisterDetail/${plantSeq}`}
+        to={`/plantResisterDetail/${plantSeq}`}
         state={plantSeq}
         // state 보류
         // 이정보들을 다 넘기는게 아니라...해당 pk 만 받아서 넘길 것.

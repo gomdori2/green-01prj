@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getOpenData } from "../../axios/plantresister/plantresister";
 import PageNation from "../common/PageNation";
 import Loading from "../common/Loading";
+import { TbPlantOff } from "react-icons/tb";
 // 클래스로 바꿔라 제발
 const FixedArea = styled.div`
   position: fixed;
@@ -84,6 +85,12 @@ const PlantPublicDataListStyle = styled.div`
     padding-right: 10px;
   }
 `;
+const TitleDivStyle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  padding-left: 5px;
+`;
 const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
   // 팝업에서 데이터 빼서 앞에 input에 넘기기
   // 앞에 있는 곳에서 set 만 넘겨서 담아서 올릴 것
@@ -146,7 +153,7 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
       {/* 팝업이랑 구분해놓음 */}
       {/* 체크박스 click 시 직접 등록 / 아니면 식물 불러오기 버튼으로 ... */}
       <PlantPublicDataListStyle id="popupInner">
-        <div>식물이름찾기</div>
+        <TitleDivStyle>식물이름찾기</TitleDivStyle>
         <li>
           <div>
             <div>
@@ -201,7 +208,12 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
             }}
           >
             <div className="imgBox">
-              <img className="imgStyle" src={item.imgUrl}></img>
+              {item.imgUrl ? (
+                <img className="imgStyle" src={item.imgUrl}></img>
+              ) : (
+                // 수정해야함.
+                <TbPlantOff size={20} />
+              )}
             </div>
             <div>
               <span className="spanStyle">{item.plantGnrlNm}</span>

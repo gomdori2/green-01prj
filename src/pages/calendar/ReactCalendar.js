@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import CalendarList from "../../components/calendar/CalendarList";
 // ***************************************** 물주기 아이콘  ********************************************* //
@@ -24,12 +24,13 @@ import { BsWind } from "react-icons/bs";
 import { RiTreeFill } from "react-icons/ri";
 import { BiSolidTreeAlt } from "react-icons/bi";
 import { RiPlantFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import Loading from "../../components/common/Loading";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { getMonthCalendar } from "../../axios/calendar/calendar";
+import { getDayReadSch, getMonthCalendar } from "../../axios/calendar/calendar";
+import { userInfoContext } from "../../context/UserInfoProvider";
 // ***************************************** 형태(가지치기) 아이콘  ********************************************* //
 
 const ReactCalendarStyle = styled.div`
@@ -81,6 +82,10 @@ const CalendarListUlStyle = styled.div`
 `;
 const ReactCalendar = () => {
   const [calendarFilterData, setCalendarFilterData] = useState([]);
+  const { contextUserData } = useContext(userInfoContext);
+  const [userSeq, setUserSeq] = useState(null);
+  const [page, setPage] = useState(1);
+  const navigate = useNavigate();
   // 날짜 요일 출력
   // 캘린더의 날짜 출력을 US 달력으로 변경하기
   const weekName = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
@@ -88,6 +93,20 @@ const ReactCalendar = () => {
     const idx = date.getDay();
     return weekName[idx];
   };
+  useEffect(() => {
+    setUserSeq(contextUserData.userSeq);
+    console.log(userSeq);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    console.log(userSeq);
+    return () => {};
+  }, [userSeq]);
+
+  useEffect(() => {
+    getMonthCalendars();
+  }, []);
 
   // 특정 날짜 클래스 적용하기
   //   const tileClassName = ({ date }) => {
@@ -118,10 +137,10 @@ const ReactCalendar = () => {
     console.log(result);
     return result;
   };
-  useEffect(() => {
-    getMonthCalendars();
-    return () => {};
-  }, []);
+
+  const getDayData = async (userSeq, getClickDay, page) => {
+    await getDayReadSch(userSeq, getClickDay, page);
+  };
 
   // 내용 출력하기
   const tileContent = ({ date }) => {
@@ -178,12 +197,15 @@ const ReactCalendar = () => {
   // 날짜 선택 시 처리
   const onClickDay = (value, event) => {
     const checkDay = moment(value).format("yyyy-MM-DD");
+    console.log(checkDay);
+
     setClickDay(checkDay);
 
     // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
     const dayResult = allData.find(item => checkDay === item.day);
     if (dayResult) {
       setClickInfo(dayResult);
+      getDayData(userSeq, checkDay, page);
       toast.success("조회 되었습니다.");
     } else {
       setClickInfo(null);
@@ -226,15 +248,38 @@ const ReactCalendar = () => {
             <span>날짜</span>
           </li>
         </CalendarListUlStyle>
+        {/* plantSeq 받아서 pk로 받아넣기 */}
         {calendarFilterData && calendarFilterData.length > 0 ? (
           calendarFilterData.map((item, index) => (
-            <CalendarList key={item.pk} item={item}></CalendarList>
+            <CalendarList key={item.managementDate} item={item}></CalendarList>
           ))
         ) : (
-          <div style={{ fontWeight: "bold", margin: "0 auto", height: "10px" }}>
-            등록 된 데이터가 없습니다.
+          <div
+            style={{
+              display: "flex",
+
+              fontWeight: "bold",
+              margin: "0 auto",
+              height: "70px",
+              justifyContent: "center",
+              alignItems: "center",
+              borderBottom: "1px solid gray",
+              width: "100%",
+            }}
+          >
+            등록 된 식물이 없습니다.
           </div>
         )}
+        <div style={{ textAlign: "end", marginRight: "10px" }}>
+          <button
+            type="button"
+            onClick={() => {
+              navigate("/plantResister");
+            }}
+          >
+            등록
+          </button>
+        </div>
       </ReactCalendarListStyle>
     </ReactCalendarStyle>
   );

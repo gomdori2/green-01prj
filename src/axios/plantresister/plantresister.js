@@ -77,9 +77,14 @@ export const postData = async ({ userSeq, odataSeq, plantNickName, etc }) => {
 //   "etc": "string"
 // }
 
-export const patchData = async () => {
+export const patchData = async ({ userSeq, plantSeq, plantNickName, etc }) => {
   try {
-    const data = await axios.patch("/api/opendata/");
+    const data = await axios.patch("/api/schedule/plant", {
+      userSeq,
+      plantSeq,
+      plantNickName,
+      etc,
+    });
     return data;
   } catch (error) {
     toast.warning(error);
@@ -89,10 +94,10 @@ export const patchData = async () => {
 // 식물등록 삭제
 // /api/schedule/plant
 // /api/schedule/plant?userSeq=1&plantSeq=1
-export const deleteData = async ({ userSeq, plantSeq }) => {
+export const deleteData = async (userSeq, plantSeq) => {
   try {
     const data = await axios.delete(
-      `/api/opendata/?userSeq=${userSeq}&plantSeq=${plantSeq}`,
+      `/api/schedule/plant?userSeq=${userSeq}&plantSeq=${plantSeq}`,
     );
     return data;
   } catch (error) {
