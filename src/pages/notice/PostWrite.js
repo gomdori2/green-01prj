@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
@@ -16,7 +16,7 @@ const PostWrite = () => {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
-    writerSeq: "1",
+    writerSeq: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,6 +28,14 @@ const PostWrite = () => {
       [name]: value,
     }));
   };
+
+  useEffect(() => {
+    // 컴포넌트 마운트 시 세션에서 userSeq 값 가져오기
+    const storedUser = JSON.parse(sessionStorage.getItem("user"));
+    if (storedUser) {
+      setFormData(prevData => ({ ...prevData, writerSeq: storedUser.userSeq }));
+    }
+  }, []); // 빈 dependency array로 컴포넌트 마운트 시 한 번만 실행
 
   const handleSubmit = async e => {
     e.preventDefault();
