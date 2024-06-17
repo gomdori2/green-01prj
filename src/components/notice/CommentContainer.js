@@ -1,11 +1,17 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import ReactPaginate from "react-paginate";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import "./CommentContainer.scss";
+import "../../css/common/pagination.css";
+import PageNation from "../common/PageNation";
 
 const CommentContainer = () => {
   const { writerSeq } = useParams();
   const [comments, setComments] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지
+  const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
   const [formData, setFormData] = useState({
     boardSeq: writerSeq,
     writer: "",
@@ -22,15 +28,16 @@ const CommentContainer = () => {
       return;
     }
     setFormData(prevFormData => ({ ...prevFormData, writer: userSeq }));
-    fetchComments();
-  }, [writerSeq]);
+    fetchComments(currentPage);
+  }, [writerSeq, currentPage]);
 
-  const fetchComments = async () => {
+  const fetchComments = async page => {
     try {
       const res = await axios.get(
-        `/api/community/comment?board_seq=${writerSeq}&page=1`,
+        `/api/community/comment?board_seq=${writerSeq}&page=${page + 1}`,
       );
       setComments(res.data.data.list);
+      setTotalPages(res.data.data.totalPages); // 전체 페이지 수 설정
     } catch (error) {
       console.error("Error fetching comments:", error);
     }
@@ -48,7 +55,7 @@ const CommentContainer = () => {
         ...prevFormData,
         content: "",
       }));
-      fetchComments();
+      fetchComments(currentPage);
     } catch (error) {
       console.error("Error posting comment:", error);
     }
@@ -71,7 +78,7 @@ const CommentContainer = () => {
         },
       });
       setEditIndex(-1);
-      fetchComments();
+      fetchComments(currentPage);
     } catch (error) {
       console.error("Error updating comment:", error);
     }
@@ -92,7 +99,7 @@ const CommentContainer = () => {
           writer: userSeq,
         },
       });
-      fetchComments();
+      fetchComments(currentPage);
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
@@ -117,6 +124,10 @@ const CommentContainer = () => {
   const handleEditSubmit = (event, commentSeq) => {
     event.preventDefault();
     updateComment(commentSeq, editContent);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
   };
 
   return (
@@ -181,6 +192,12 @@ const CommentContainer = () => {
           등록
         </button>
       </form>
+
+      <PageNation
+        pageCount={2}
+        onPageChange={handlePageChange}
+        currentPage={currentPage}
+      />
     </div>
   );
 };
