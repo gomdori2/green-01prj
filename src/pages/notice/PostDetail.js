@@ -113,7 +113,22 @@ const PostDetail = () => {
         `/api/community/like?boardSeq=${post.data.boardSeq}&writer=${userSeq}`,
       );
       console.log("추천 요청 성공:", response.data);
-      // 필요한 경우 상태를 업데이트
+
+      // 서버 응답에 따라 상태 업데이트
+      if (response.data.code === 1) {
+        setPost(prevPost => ({
+          ...prevPost,
+          data: {
+            ...prevPost.data,
+            fav:
+              response.data.data === 1
+                ? prevPost.data.fav + 1
+                : prevPost.data.fav - 1,
+          },
+        }));
+      } else {
+        alert("추천 요청 실패: " + response.data.msg);
+      }
     } catch (error) {
       console.log("추천 요청 실패:", error);
     }
