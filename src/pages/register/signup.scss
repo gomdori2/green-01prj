@@ -45,6 +45,12 @@ label:after {
 
 .signupform-wrap {
   margin-bottom: 20px;
+
+  p {
+    color: red;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
 }
 
 .signup form {
@@ -63,9 +69,13 @@ label:after {
 .signup input {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+input::placeholder {
+  font-size: 13px; 
 }
 
 .signup input[type="email"] {
@@ -73,6 +83,10 @@ label:after {
   /* 이메일폼이 드래그 되지 않도록 설정 */
   background-color: rgba(0, 0, 0, 0.1); /* 배경색을 약간 어둡게 설정 */
   color: gray;
+}
+
+#confirm-password{
+  margin-bottom: 10px;
 }
 
 .id-input-wrap {
@@ -119,7 +133,7 @@ label:after {
   cursor: pointer;
   font-size: 16px;
   padding: 10px;
-  margin-top: 15px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 

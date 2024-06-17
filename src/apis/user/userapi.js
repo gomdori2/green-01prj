@@ -1,4 +1,5 @@
 import axios from "axios";
+// 로그인 확인
 export const postUserLogin = async data => {
   try {
     const response = await axios.post(data);
@@ -9,6 +10,7 @@ export const postUserLogin = async data => {
   }
 };
 
+// 이메일 인증 확인
 export const getUserEmail = async data => {
   try {
     const response = await axios.get(data);
@@ -19,6 +21,7 @@ export const getUserEmail = async data => {
   }
 };
 
+// 이메일인증 토큰 확인
 export const getUserEmailToken = async data => {
   try {
     const response = await axios.get(data);

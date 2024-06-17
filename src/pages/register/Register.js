@@ -4,21 +4,26 @@ import { getUserEmail, getUserEmailToken } from "../../apis/user/userapi";
 import "../register/register.scss";
 
 const Register = () => {
-  // const [userEmail, setUserEmail] = useState("");
-  const [userEmail, setUserEmail] = useState("jwy7254@gmail.com");
-  const [authCode, setAuthCode] = useState("");
+  const [userEmail, setUserEmail] = useState("");
   const [emailSend, setEmailSend] = useState(false);
+  const [emailPattern, setEmailPattern] = useState(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+  const [emailValid, setEmailValid] = useState(true)
+
+  const [authCode, setAuthCode] = useState("");
+  
   const navigate = useNavigate();
 
   // 메일 인증 시 처리할 함수
-  const mailSubmit = async event => {
-    event.preventDefault();
+  const mailSubmit = async (e) => {
+    e.preventDefault();
 
     // 이메일 형식 유효성 검사
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailPattern = () =>{
+    // /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(userEmail)) {
-      alert("이메일을 다시 확인해주세요.");
+      setEmailValid(false)
       return;
+    }
     }
 
     try {
@@ -43,10 +48,10 @@ const Register = () => {
   };
 
   // 인증 코드 확인 시 처리할 함수
-  const verifyCode = async event => {
-    event.preventDefault();
-
-    console.log("Auth Code:", authCode); // 인증 코드 확인을 위해 콘솔에 출력
+  const verifyCode = async (e) => {
+    e.preventDefault();
+    // 인증 코드 확인을 위해 콘솔에 출력
+    console.log("Auth Code:", authCode); 
 
     // 토큰 인증 처리
     const tokenData = `/api/user/auth/email/token?token=${authCode}`;
@@ -83,14 +88,17 @@ const Register = () => {
               className="user-email"
               required
               placeholder="메일주소를 입력해주세요"
-              onChange={event => setUserEmail(event.target.value)}
+              onChange={e => 
+                {setUserEmail(e.target.value)
+                setEmailValid(emailPattern.test(e.target.value))
+              }}
             />
             <button type="submit" className="send-button">
               전송
             </button>
           </div>
         </form>
-
+            {!emailValid && (<p style={{ color: "red", fontSize: "12px", padding:"0px 10px 10px 10px"}}>이메일 형식이 올바르지 않습니다.</p>) }
         {emailSend && (
           <form onSubmit={verifyCode}>
             <div className="registerform-group">
@@ -100,7 +108,7 @@ const Register = () => {
                 value={authCode}
                 required
                 placeholder="인증코드를 입력해주세요"
-                onChange={event => setAuthCode(event.target.value)}
+                onChange={e => setAuthCode(e.target.value)}
               />
               <button type="submit" className="send-button">
                 인증확인
