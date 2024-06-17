@@ -1,12 +1,15 @@
+// src/pages/Notice.js
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import "./Notice.scss";
-import axios from "axios";
 import NoticeTop from "../../components/notice/NoticeTop";
 import NoticeBottom from "../../components/notice/NoticeBottom";
 import NoticeMain from "../../components/notice/NoticeMain";
 import SearchComponent from "../../components/notice/SearchComponent";
 import PageNation from "../../components/common/PageNation";
+import useGetList from "../../hooks/notice/useGetList";
+import { fetchBestPost, fetchAllPosts } from "../../apis/notice/api";
+import { calculateTotalPages, getOrderText } from "../../utils/utils";
 
 function Notice() {
   const navigate = useNavigate();
@@ -16,18 +19,19 @@ function Notice() {
   const initialItemsPerPage =
     parseInt(sessionStorage.getItem("itemsPerPage"), 10) || 10;
 
-  const [currentPage, setCurrentPage] = useState(Number(page) || 1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [getData, setGetData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [totalPost, setTotalPost] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchResult, setSearchResult] = useState(null);
   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
   const [order, setOrder] = useState(initialOrder);
-  const [orderText, setOrderText] = useState(
-    initialOrder === 3 ? "오래된 순" : "최신 순",
-  );
+  const [orderText, setOrderText] = useState(getOrderText(initialOrder));
+  const [bestPost, setBestPost] = useState([]);
+  const [showBest, setShowBest] = useState(false);
+
+  const url = `/api/community/list?page=${currentPage}&size=${itemsPerPage}&order=${order}`;
+  const { getListData, isLoading, error } = useGetList(url);
 
   useEffect(() => {
     if (!page) {
@@ -44,38 +48,16 @@ function Notice() {
   }, [searchParams]);
 
   useEffect(() => {
-    fetchData();
-  }, [currentPage, itemsPerPage, order, searchResult]);
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      let url = `/api/community/list?page=${currentPage}&size=${itemsPerPage}&order=${order}`;
-      if (searchResult) {
-        const { searchType, searchQuery } = searchResult;
-        const encodedKeyword = encodeURIComponent(searchQuery);
-        url += `&search=${searchType}&keyword=${encodedKeyword}`;
-      }
-      console.log("Fetching data from URL:", url);
-      const res = await axios.get(url);
-      if (res.status === 200 && res.data.data) {
-        const { list, totalElements } = res.data.data;
-        setGetData(list);
-        setTotalPost(totalElements);
-        setTotalPages(Math.ceil(totalElements / itemsPerPage));
-      } else {
-        throw new Error("Unexpected response format");
-      }
-    } catch (err) {
-      console.error("Error fetching data:", err);
-      setError(err);
-    } finally {
-      setIsLoading(false);
+    if (getListData && getListData.data) {
+      const { list, totalElements } = getListData.data;
+      setGetData(list);
+      setTotalPost(totalElements);
+      setTotalPages(calculateTotalPages(totalElements, itemsPerPage));
     }
-  };
+  }, [getListData, itemsPerPage]);
 
   const handlePageClick = event => {
-    const selectedPage = event.selected + 1; // ReactPaginate는 0부터 시작하므로 +1
+    const selectedPage = event.selected + 1;
     setCurrentPage(selectedPage);
     navigate(
       `/notice/page/${selectedPage}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
@@ -86,14 +68,14 @@ function Notice() {
     const newValue = parseInt(event.target.value, 10);
     setItemsPerPage(newValue);
     sessionStorage.setItem("itemsPerPage", newValue.toString());
-    setTotalPages(Math.ceil(totalPost / newValue));
+    setTotalPages(calculateTotalPages(totalPost, newValue));
   };
 
   const handleOrderClick = () => {
     const newOrder = order === 3 ? 0 : 3;
     setOrder(newOrder);
     sessionStorage.setItem("order", newOrder.toString());
-    setOrderText(newOrder === 3 ? "오래된 순" : "최신 순");
+    setOrderText(getOrderText(newOrder));
     navigate(
       `/notice/page/1${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
     );
@@ -102,13 +84,36 @@ function Notice() {
   const handleSearchResult = (searchData, searchType, searchQuery) => {
     setGetData(searchData.list);
     setTotalPost(searchData.list.length);
-    const newTotalPages = Math.ceil(searchData.list.length / itemsPerPage);
+    const newTotalPages = calculateTotalPages(
+      searchData.list.length,
+      itemsPerPage,
+    );
     setTotalPages(newTotalPages);
     setCurrentPage(1);
     setSearchParams({ searchType, searchQuery });
     navigate(
       `/notice/page/1?searchType=${searchType}&searchQuery=${encodeURIComponent(searchQuery)}`,
     );
+  };
+
+  const bestButtonClick = async () => {
+    try {
+      const list = await fetchBestPost();
+      setBestPost(list);
+      setShowBest(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const allButtonClick = async () => {
+    try {
+      const list = await fetchAllPosts(currentPage, itemsPerPage, order);
+      setGetData(list);
+      setShowBest(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -123,12 +128,17 @@ function Notice() {
           itemsPerPage={itemsPerPage}
           handleItemsPerPageChange={handleItemsPerPageChange}
           orderText={orderText}
+          bestButtonClick={bestButtonClick}
+          allButtonClick={allButtonClick}
         />
-        <NoticeMain handleSearchResult={handleSearchResult} getData={getData} />
+        <NoticeMain
+          handleSearchResult={handleSearchResult}
+          getData={showBest ? bestPost : getData}
+        />
         <NoticeBottom />
         <PageNation
           pageCount={totalPages}
-          currentPage={currentPage - 1} // ReactPaginate는 0부터 시작하므로 -1
+          currentPage={currentPage - 1}
           onPageChange={handlePageClick}
         />
         <SearchComponent onSearch={handleSearchResult} />
