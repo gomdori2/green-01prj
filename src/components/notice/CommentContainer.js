@@ -8,13 +8,20 @@ const CommentContainer = () => {
   const [comments, setComments] = useState([]);
   const [formData, setFormData] = useState({
     boardSeq: writerSeq,
-    writer: 1,
+    writer: "",
     content: "",
   });
   const [editIndex, setEditIndex] = useState(-1); // 현재 수정 중인 댓글의 인덱스
   const [editContent, setEditContent] = useState(""); // 수정 중인 댓글 내용
 
   useEffect(() => {
+    const storedUser = JSON.parse(sessionStorage.getItem("user"));
+    const userSeq = storedUser?.userSeq;
+    if (!userSeq) {
+      alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+      return;
+    }
+    setFormData(prevFormData => ({ ...prevFormData, writer: userSeq }));
     fetchComments();
   }, [writerSeq]);
 
@@ -31,8 +38,16 @@ const CommentContainer = () => {
 
   const postComment = async () => {
     try {
+      if (!formData.writer) {
+        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        return;
+      }
+
       await axios.post("/api/community/comment", formData);
-      setFormData({ boardSeq: writerSeq, writer: 1, content: "" });
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        content: "",
+      }));
       fetchComments();
     } catch (error) {
       console.error("Error posting comment:", error);
@@ -41,10 +56,17 @@ const CommentContainer = () => {
 
   const updateComment = async (commentSeq, content) => {
     try {
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+      const userSeq = storedUser?.userSeq;
+      if (!userSeq) {
+        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        return;
+      }
+
       await axios.patch(`/api/community/comment`, null, {
         params: {
           commentSeq: commentSeq,
-          writer: 1,
+          writer: userSeq,
           content: content,
         },
       });
@@ -57,10 +79,17 @@ const CommentContainer = () => {
 
   const deleteComment = async commentSeq => {
     try {
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+      const userSeq = storedUser?.userSeq;
+      if (!userSeq) {
+        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        return;
+      }
+
       await axios.delete(`/api/community/comment`, {
         params: {
           commentSeq: commentSeq,
-          writer: 1,
+          writer: userSeq,
         },
       });
       fetchComments();
