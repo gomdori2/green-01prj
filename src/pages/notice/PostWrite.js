@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import "./PostWrite.scss";
@@ -47,7 +46,7 @@ const PostWrite = () => {
       setFormData({
         title: "",
         content: "",
-        writerSeq: "1",
+        writerSeq: "",
       });
     } catch (error) {
       console.error("서버 요청 중 오류 발생:", error);
