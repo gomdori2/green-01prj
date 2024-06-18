@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import "../userprofile/userprofile.scss";
-import { getUserNickName, patchUserProfile } from "../../apis/user/userapi";
-import PasswordCheckModal from "../../components/common/PasswordCheckModal";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserNickName, patchUserProfile } from "../../apis/user/userapi";
 import { userInfoContext } from "../../context/UserInfoProvider";
+import "../userprofile/userprofile.scss";
+import ProfileModifySuccessModal from "../../components/common/ProfileModifyModal";
 
 const UserProfile = () => {
   const { contextUserData } = useContext(userInfoContext);
@@ -27,6 +27,7 @@ const UserProfile = () => {
     /^[a-zA-Z가-힣0-9]{2,10}$/,
   );
   const [nickNameValid, setNickNameValid] = useState(true);
+  const [isModifyModalOpen, setIisModifyModalOpen] = useState(false);
 
   useEffect(() => {
     if (contextUserData === null) {
@@ -87,7 +88,15 @@ const UserProfile = () => {
     // 수정된 유저 정보
     const profileUpdateResult = await patchUserProfile(profileUpdateReqData);
     console.log(profileUpdateResult);
-    alert("수정이 완료되었습니다!");
+    // alert("수정이 완료되었습니다!");
+    setIisModifyModalOpen(true);
+    setTimeout(() => {
+      navigate("/notice");
+    }, 2000);
+  };
+
+  const closeModal = () => {
+    setIisModifyModalOpen(false);
   };
 
   return (
@@ -146,6 +155,10 @@ const UserProfile = () => {
           <input type="submit" value="수정하기" className="modify-bt" />
         </div>
       </form>
+      <ProfileModifySuccessModal
+        isOpen={isModifyModalOpen}
+        onRequestClose={closeModal}
+      />
     </div>
   );
 };
