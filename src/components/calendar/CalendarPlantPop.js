@@ -204,8 +204,8 @@ const CalendarPlantsPop = ({
             }}
           >
             <div className="imgBox">
-              {item.imgUrl ? (
-                <img className="imgStyle" src={item.imgUrl}></img>
+              {item.plantPic ? (
+                <img className="imgStyle" src={item.plantPic}></img>
               ) : (
                 // 수정해야함.
                 <TbPlantOff

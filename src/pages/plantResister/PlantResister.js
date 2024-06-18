@@ -5,6 +5,9 @@ import PlantPublicDataList from "../../components/plantresister/PlantPublicDataL
 import TextArea from "../../components/common/TextArea";
 import { getOpenData, postData } from "../../axios/plantresister/plantresister";
 import { userInfoContext } from "../../context/UserInfoProvider";
+import { toast } from "react-toastify";
+import Loading from "../../components/common/Loading";
+import { useNavigate } from "react-router-dom";
 // 클래스로 바꿔라 제발
 const DetailDivStyle = styled.div`
   width: 100%;
@@ -67,7 +70,8 @@ const PlantResister = () => {
   const [odataSeq, setOdataSeq] = useState();
   const [userSeqData, setuserSeqData] = useState(0);
   const [plantName, setPlantName] = useState();
-
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   // 팝업 데이터 받아와야함
   // 필요없어짐. seq만 넘기면된다함 {} X seq
 
@@ -95,10 +99,26 @@ const PlantResister = () => {
     plantNickName,
     etc,
   }) => {
-    await postData({ userSeq: userSeqDataData, odataSeq, plantNickName, etc });
+    setIsLoading(true);
+    try {
+      await postData({
+        userSeq: userSeqDataData,
+        odataSeq,
+        plantNickName,
+        etc,
+      });
+      toast.success("등록 되었습니다.");
+      navigate("/plantResisterList");
+    } catch (error) {
+      toast.error("오류가 발생하였습니다.");
+    } finally {
+      setIsLoading(false);
+    }
   };
   useEffect(() => {}, [isClicked]);
-
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <DetailDivStyle>
       <DetailDivInnerStyle>
@@ -155,6 +175,8 @@ const PlantResister = () => {
           >
             <button
               type="button"
+              className="btn"
+              style={{ background: "rgb(35, 47, 175)" }}
               onClick={() => {
                 postHandler({
                   userSeq: contextUserData.userSeq,
@@ -166,7 +188,6 @@ const PlantResister = () => {
             >
               등록
             </button>
-            <button onClick={() => {}}>뒤로가기</button>
           </div>
         </form>
       </DetailDivInnerStyle>

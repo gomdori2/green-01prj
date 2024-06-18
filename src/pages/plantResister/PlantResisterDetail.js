@@ -2,7 +2,12 @@ import styled from "@emotion/styled";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import TextArea from "../../components/common/TextArea";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import {
   deleteData,
   getOneData,
@@ -10,6 +15,8 @@ import {
 } from "../../axios/plantresister/plantresister";
 import { userInfoContext } from "../../context/UserInfoProvider";
 import { TbPlantOff } from "react-icons/tb";
+import { toast } from "react-toastify";
+import Loading from "../../components/common/Loading";
 // 클래스로 바꿔라 제발
 const DetailDivStyle = styled.div`
   width: 100%;
@@ -76,6 +83,7 @@ const PlantResisterDetail = () => {
   // text area 때문에 만들어 놓음
   // 이미지 하나 있어야함.
   const { contextUserData } = useContext(userInfoContext);
+  const navigate = useNavigate();
   if (!contextUserData) {
     return;
   }
@@ -87,6 +95,8 @@ const PlantResisterDetail = () => {
   const [patchPlantNickName, setPatchPlantNickName] = useState("");
   const [patchEtc, setPatchEtc] = useState("");
   const [isClicked, setIsClicked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     // get 계속 도는거 보기싫어서 해놓음
     if (!patchPlantNickName) {
@@ -100,24 +110,51 @@ const PlantResisterDetail = () => {
     patchPlantNickName,
     patchEtc,
   ) => {
+    setIsLoading(true);
     console.log(userSeq, plantSeq, patchPlantNickName, patchEtc);
-    await patchData(userSeq, plantSeq, patchPlantNickName, patchEtc);
+    try {
+      await patchData(userSeq, plantSeq, patchPlantNickName, patchEtc);
+      toast.success("수정되었습니다.");
+    } catch (error) {
+      toast.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   const getPlantsData = async () => {
-    const result = await getOneData(userSeq, plantSeq);
-    setDataObj(result?.data.data);
-    setPatchPlantNickName(result?.data.data.plantNickName);
-    setPatchEtc(result?.data.data.etc);
+    setIsLoading(true);
+    try {
+      const result = await getOneData(userSeq, plantSeq);
+      setDataObj(result?.data.data);
+      setPatchPlantNickName(result?.data.data.plantNickName);
+      setPatchEtc(result?.data.data.etc);
+      toast.success("조회 되었습니다.");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   useEffect(() => {
     console.log(isClicked);
   }, [isClicked]);
   useEffect(() => {}, [patchPlantNickName, patchEtc]);
   // 따로 변경될 사항이 아니라서 ...
-  const handleClickDelete = () => {
-    deleteData(userSeq, plantSeq);
+  const handleClickDelete = async () => {
+    setIsLoading(true);
+    try {
+      await deleteData(userSeq, plantSeq);
+      toast.success(`${patchPlantNickName}삭제 되었습니다.`);
+      navigate("/plantResisterList");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <DetailDivStyle>
       <TitleDivStyle>등록 식물 상세 페이지</TitleDivStyle>
@@ -201,12 +238,12 @@ const PlantResisterDetail = () => {
               ></TextArea>
             </div>
           </div>
-          <div>
+          <div style={{ gap: "10px", justifyContent: "end" }}>
             {/* 제발 좀 객체 따놓고 스트링 붙여서 보내지말자 */}
             <button
               type="button"
+              className="btn"
               onClick={() => {
-                alert(patchPlantNickName, patchEtc);
                 handleClickPatch(
                   userSeq,
                   plantSeq,
@@ -218,6 +255,8 @@ const PlantResisterDetail = () => {
               수정
             </button>
             <button
+              className="btn"
+              style={{ background: "red" }}
               onClick={() => {
                 handleClickDelete(userSeq, plantSeq);
               }}
