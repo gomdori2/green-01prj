@@ -1,23 +1,38 @@
 import styled from "@emotion/styled";
 import { PulseLoader } from "react-spinners";
-const LoadingStyle = styled.div``;
-const LoadingText = styled.div`
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   position: fixed;
-  color: #57d7b7;
-  left: 55%;
-  top: 53%;
-  font-weight: 700;
-  font-size: 15px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Optional: Semi-transparent background */
   z-index: 9999;
 `;
 
-// padding 되는곳에 넣기.
+const LoadingText = styled.div`
+  color: #57d7b7;
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: 10px; /* Space between loader and text */
+`;
+
 const Loading = () => {
   return (
-    <>
-      <PulseLoader style={{ position: "fixed", top: "50%" }} color="#36d7b7" />
-      <LoadingText>loading...</LoadingText>
-    </>
+    <LoadingWrapper>
+      <PulseLoader color="#36d7b7" />
+      <LoadingText>Loading...</LoadingText>
+    </LoadingWrapper>
   );
 };
 

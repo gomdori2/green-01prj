@@ -6,7 +6,7 @@ import { userInfoContext } from "../../context/UserInfoProvider";
 import { FiLogOut } from "react-icons/fi";
 import { FaUserPen } from "react-icons/fa6";
 
-const Header = ({ userInfo }) => {
+const Header = () => {
   const { contextUserData, setContextUserData } = useContext(userInfoContext);
   const [userSeq, setUserSeq] = useState();
   const location = useLocation();

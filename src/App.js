@@ -20,6 +20,7 @@ import PlantResisterDetail from "./pages/plantResister/PlantResisterDetail";
 import PlantResisterList from "./pages/plantResister/PlantResisterList";
 import Register from "./pages/register/Register";
 import SignUp from "./pages/register/SignUp";
+import CalendarResister from "./components/calendar/CalendarResister";
 
 function App() {
   // 사용자 로그인 정보
@@ -46,6 +47,10 @@ function App() {
               <Route path="/signup" element={<SignUp />}></Route>
               <Route path="/userprofile" element={<UserProfile />}></Route>
               <Route path="/reactCalendar" element={<ReactCalendar />}></Route>
+              <Route
+                path="/calendarResister"
+                element={<CalendarResister />}
+              ></Route>
               <Route
                 path="/reactCalendar/:pk"
                 element={<CalendarDetail />}

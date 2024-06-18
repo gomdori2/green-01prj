@@ -86,10 +86,6 @@ const PlantResister = () => {
   }, [plantNickName, etc]);
   // 일단 default로 보냄.
   // 해당 되는 컴포넌트 하나 필요
-  const getPlantsData = async () => {
-    // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
-    await axios.get("/api/getPlants");
-  };
   const isClickFunc = () => {
     setIsClicked(true);
   };

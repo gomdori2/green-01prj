@@ -2,36 +2,13 @@ import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import CalendarList from "../../components/calendar/CalendarList";
-// ***************************************** 물주기 아이콘  ********************************************* //
-import { GiWateringCan } from "react-icons/gi";
-import { IoIosWater } from "react-icons/io";
-import { GiPlantWatering } from "react-icons/gi";
-// ***************************************** 물주기 아이콘  ********************************************* //
-
-// ***************************************** 환경(일조량) 아이콘  ********************************************* //
-import { PiSunFill } from "react-icons/pi";
-import { CiSun } from "react-icons/ci";
-import { IoIosSunny } from "react-icons/io";
-// ***************************************** 환경(일조량) 아이콘  ********************************************* //
-
-// ***************************************** 환기 아이콘  ********************************************* //
 import { FaSeedling, FaSun, FaTree, FaWind } from "react-icons/fa6";
-import { LuWind } from "react-icons/lu";
-import { BsWind } from "react-icons/bs";
-// ***************************************** 환기 아이콘  ********************************************* //
-
-// ***************************************** 형태(가지치기)  아이콘  ********************************************* //
-import { RiTreeFill } from "react-icons/ri";
-import { BiSolidTreeAlt } from "react-icons/bi";
-import { RiPlantFill } from "react-icons/ri";
-import { Link, Navigate, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import Loading from "../../components/common/Loading";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { getDayReadSch, getMonthCalendar } from "../../axios/calendar/calendar";
+import Loading from "../../components/common/Loading";
 import { userInfoContext } from "../../context/UserInfoProvider";
-// ***************************************** 형태(가지치기) 아이콘  ********************************************* //
 
 const ReactCalendarStyle = styled.div`
   display: flex;
@@ -85,6 +62,7 @@ const ReactCalendar = () => {
   const { contextUserData } = useContext(userInfoContext);
   const [userSeq, setUserSeq] = useState(null);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   // 날짜 요일 출력
   // 캘린더의 날짜 출력을 US 달력으로 변경하기
@@ -100,30 +78,8 @@ const ReactCalendar = () => {
   }, []);
 
   useEffect(() => {
-    console.log(userSeq);
-    return () => {};
-  }, [userSeq]);
-
-  useEffect(() => {
     getMonthCalendars();
   }, []);
-
-  // 특정 날짜 클래스 적용하기
-  //   const tileClassName = ({ date }) => {
-  //     // 날짜 요일 잡아주기
-  //     // 0 > Sun May 26 2024 00:00:00 GMT+0900 (한국 표준시) _ 일요일임.
-  //     // console.log(date.getDay());
-  //     const day = date.getDay();
-  //     let classNames = "";
-  //     // 화요일
-  //     if (day === 2) {
-  //       classNames += "rain";
-  //     }
-  //     if (day === 4) {
-  //       classNames += "thu";
-  //     }
-  //     return classNames;
-  //   };
 
   // 외부 데이터의 내용을 날짜에 출력하기
   // axios.get("todos") 리턴결과
@@ -139,17 +95,22 @@ const ReactCalendar = () => {
   };
 
   const getDayData = async (userSeq, getClickDay, page) => {
-    await getDayReadSch(userSeq, getClickDay, page);
+    const result = await getDayReadSch(userSeq, getClickDay, page);
+    console.log(result);
+    setAllData(result?.data.data.list);
+    console.log(allData);
   };
 
   // 내용 출력하기
+  // 캘린더 날짜 숫자만큼 실행 됨
   const tileContent = ({ date }) => {
     // MM : 2자리 월
     // DD : 2자리 일
     const checkDay = moment(date).format("yyyy-MM-DD");
     // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
-    const dayResult = allData.find(item => checkDay === item.day);
-
+    const dayResult = allData?.find(
+      item => checkDay === item.managementDate.toString(),
+    );
     //const filteredDay = ;
     // map으로 객체 1,2,3,4 값에 해당 되는 아이콘 빼기.
     const uiIcon = {
@@ -158,11 +119,11 @@ const ReactCalendar = () => {
       3: <FaWind size="20" color="#fff" />,
       4: <FaTree size="20" style={{ color: "#fff" }} />,
     };
-
-    if (dayResult) {
+    // console.log(dayResult);
+    if (!dayResult) {
       return (
         <div>
-          {dayResult.title.map(iconKey => (
+          {dayResult?.title.map(iconKey => (
             <span key={iconKey}>{uiIcon[iconKey]}</span>
           ))}
         </div>
@@ -177,7 +138,7 @@ const ReactCalendar = () => {
 
     const checkDay = moment(date).format("yyyy-MM-DD");
     // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
-    const dayResult = allData.find(item => checkDay === item.day);
+    const dayResult = allData?.find(item => checkDay === item.day);
     if (dayResult) {
       return "sun";
     }
@@ -190,34 +151,45 @@ const ReactCalendar = () => {
   useEffect(() => {
     // 죄송합니다. 강제로 onClickDay 함수를
     // 실행하면서 날짜를 전달하였습니다.
-    console.log();
+    console.log(allData);
     onClickDay(moment().format("yyyy-MM-DD"));
   }, []);
   const formatDay = (locale, date) => moment(date).format("D");
   // 날짜 선택 시 처리
-  const onClickDay = (value, event) => {
-    const checkDay = moment(value).format("yyyy-MM-DD");
-    console.log(checkDay);
-
-    setClickDay(checkDay);
-
-    // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
-    const dayResult = allData.find(item => checkDay === item.day);
-    if (dayResult) {
-      setClickInfo(dayResult);
-      getDayData(userSeq, checkDay, page);
-      toast.success("조회 되었습니다.");
-    } else {
-      setClickInfo(null);
+  const onClickDay = async (value, event) => {
+    setIsLoading(true);
+    try {
+      const checkDay = moment(value).format("yyyy-MM-DD");
+      setClickDay(checkDay);
+      await getDayData(contextUserData.userSeq, checkDay, page);
+      // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
+      // const dayResult = allData?.find(
+      //   item => checkDay.toString() === item.managementDate,
+      // );
+      if (allData) {
+        toast.success("조회 되었습니다.");
+      } else {
+        setAllData(null);
+      }
+    } catch (error) {
+      toast.warning("오류가 발생하였습니다. 해당 연락처로 연락 부탁드립니다.");
+    } finally {
+      setIsLoading(false);
     }
   };
   // getOneData
-  useEffect(() => {
-    const dayFilterData = allData.filter(item => item.day === clickDay);
-    console.log(dayFilterData);
-    setCalendarFilterData(dayFilterData);
-  }, [clickDay]);
+  // useEffect(() => {
+  // console.log("wwwww", allData.managementDate, clickDay);
+  // const dayFilterData = allData?.filter(
+  //   item => item.managementDate.toString() === clickDay.toString(),
+  // );
+  // console.log("asdasdadasd", dayFilterData);
+  // setCalendarFilterData(dayFilterData);
+  // }, []);
   // ************************* 데이터 변경 ********************************* //
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <ReactCalendarStyle>
       <TitleDivStyle>일정 관리</TitleDivStyle>
@@ -249,15 +221,14 @@ const ReactCalendar = () => {
           </li>
         </CalendarListUlStyle>
         {/* plantSeq 받아서 pk로 받아넣기 */}
-        {calendarFilterData && calendarFilterData.length > 0 ? (
-          calendarFilterData.map((item, index) => (
-            <CalendarList key={item.managementDate} item={item}></CalendarList>
+        {allData && allData.length > 0 ? (
+          allData?.map((item, index) => (
+            <CalendarList key={item.gardenSeq} item={item}></CalendarList>
           ))
         ) : (
           <div
             style={{
               display: "flex",
-
               fontWeight: "bold",
               margin: "0 auto",
               height: "70px",
@@ -274,7 +245,7 @@ const ReactCalendar = () => {
           <button
             type="button"
             onClick={() => {
-              navigate("/plantResister");
+              navigate("/calendarResister", { state: clickDay });
             }}
           >
             등록

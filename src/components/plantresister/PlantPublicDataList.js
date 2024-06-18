@@ -110,6 +110,7 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
     setIsLoading(true);
     try {
       const result = await getOpenData({ searchKeyword, page });
+      console.log(result);
       setOpenListData(result.data.data.list);
       setPageCount(result.data.data.totalPage);
     } catch (error) {
@@ -212,7 +213,10 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
                 <img className="imgStyle" src={item.imgUrl}></img>
               ) : (
                 // 수정해야함.
-                <TbPlantOff size={20} />
+                <TbPlantOff
+                  size={40}
+                  style={{ width: "110px", height: "60px !important" }}
+                />
               )}
             </div>
             <div>
