@@ -19,6 +19,8 @@ const CommentContainer = () => {
   });
   const [editIndex, setEditIndex] = useState(-1); // 현재 수정 중인 댓글의 인덱스
   const [editContent, setEditContent] = useState(""); // 수정 중인 댓글 내용
+  const [cmtTotal, setCmtTotal] = useState(0);
+  const [cmtEl, setCmtEl] = useState(0);
 
   useEffect(() => {
     const storedUser = JSON.parse(sessionStorage.getItem("user"));
@@ -37,6 +39,10 @@ const CommentContainer = () => {
         `/api/community/comment?board_seq=${writerSeq}&page=${page + 1}`,
       );
       setComments(res.data.data.list);
+      // 갯수 추가
+      setCmtTotal(res.data.data.totalPage);
+      setCmtEl(res.data.data.totalElements);
+
       setTotalPages(res.data.data.totalPages); // 전체 페이지 수 설정
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -134,7 +140,7 @@ const CommentContainer = () => {
 
   return (
     <div>
-      <h3>전체 댓글 {comments.length}개</h3>
+      <h3>전체 댓글 {cmtEl}개</h3>
       {comments.map((comment, index) => (
         <div key={index} className="comment">
           <div className="comment__wrap">
@@ -184,7 +190,7 @@ const CommentContainer = () => {
       ))}
 
       <PageNation
-        pageCount={2}
+        pageCount={cmtTotal}
         onPageChange={handlePageChange}
         currentPage={currentPage}
       />
