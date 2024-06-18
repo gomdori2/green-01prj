@@ -1,4 +1,3 @@
-// src/pages/Notice.js
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import "./Notice.scss";
@@ -98,9 +97,15 @@ function Notice() {
 
   const bestButtonClick = async () => {
     try {
+      const newOrder = order === 1 ? 2 : 1;
+      setOrder(newOrder);
+      sessionStorage.setItem("order", newOrder.toString());
       const list = await fetchBestPost();
       setBestPost(list);
       setShowBest(true);
+      navigate(
+        `/notice/page/1${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+      );
     } catch (error) {
       console.log(error);
     }
