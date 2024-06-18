@@ -130,6 +130,8 @@ const CommentContainer = () => {
     setCurrentPage(selected);
   };
 
+  console.log(comments.length);
+
   return (
     <div>
       <h3>전체 댓글 {comments.length}개</h3>
@@ -181,6 +183,12 @@ const CommentContainer = () => {
         </div>
       ))}
 
+      <PageNation
+        pageCount={2}
+        onPageChange={handlePageChange}
+        currentPage={currentPage}
+      />
+
       <form onSubmit={handleFormSubmit} className="comment__form">
         <textarea
           value={formData.content}
@@ -192,12 +200,6 @@ const CommentContainer = () => {
           등록
         </button>
       </form>
-
-      <PageNation
-        pageCount={2}
-        onPageChange={handlePageChange}
-        currentPage={currentPage}
-      />
     </div>
   );
 };
