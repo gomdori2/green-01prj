@@ -63,7 +63,7 @@ const PostEdit = () => {
       };
 
       const res = await axios.patch(`/api/community/`, updatedPost);
-      console.log("서버 응답:", res.data);
+      // console.log("서버 응답:", res.data);
       if (res.data.code === 1) {
         navigate(`/notice/post/${writerSeq}`);
       } else {

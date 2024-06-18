@@ -116,7 +116,7 @@ function Notice() {
         }`,
       );
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -126,7 +126,7 @@ function Notice() {
       setGetData(list);
       setShowBest(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
