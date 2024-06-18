@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./PostEdit.scss";
+import Loading from "../../components/common/Loading";
 
 const PostEdit = () => {
   const { writerSeq } = useParams();
@@ -62,7 +63,7 @@ const PostEdit = () => {
       };
 
       const res = await axios.patch(`/api/community/`, updatedPost);
-      console.log("서버 응답:", res.data);
+      // console.log("서버 응답:", res.data);
       if (res.data.code === 1) {
         navigate(`/notice/post/${writerSeq}`);
       } else {
@@ -77,7 +78,7 @@ const PostEdit = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
 
   return (

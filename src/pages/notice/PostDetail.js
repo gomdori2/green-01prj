@@ -4,6 +4,7 @@ import CommentComponent from "../../components/notice/CommentContainer";
 import "./PostDetail.scss";
 import axios from "axios";
 import ConfirmModal from "../../components/common/ConfirmModal";
+import Loading from "../../components/common/Loading";
 
 const PostDetail = () => {
   const { writerSeq } = useParams();
@@ -63,7 +64,7 @@ const PostDetail = () => {
       );
       navigate("/notice");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setIsModalOpen(false);
     }
@@ -100,7 +101,7 @@ const PostDetail = () => {
   };
 
   const handleLikeClick = async () => {
-    console.log("추천 버튼 클릭됨");
+    // console.log("추천 버튼 클릭됨");
     try {
       const storedUser = JSON.parse(sessionStorage.getItem("user"));
       const userSeq = storedUser?.userSeq;
@@ -112,7 +113,7 @@ const PostDetail = () => {
       const response = await axios.get(
         `/api/community/like?boardSeq=${post.data.boardSeq}&writer=${userSeq}`,
       );
-      console.log("추천 요청 성공:", response.data);
+      // console.log("추천 요청 성공:", response.data);
 
       // 서버 응답에 따라 상태 업데이트
       if (response.data.code === 1) {
@@ -130,12 +131,12 @@ const PostDetail = () => {
         alert("추천 요청 실패: " + response.data.msg);
       }
     } catch (error) {
-      console.log("추천 요청 실패:", error);
+      // console.log("추천 요청 실패:", error);
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
