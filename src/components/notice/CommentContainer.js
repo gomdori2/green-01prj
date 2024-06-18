@@ -189,11 +189,15 @@ const CommentContainer = () => {
         </div>
       ))}
 
-      <PageNation
-        pageCount={cmtTotal}
-        onPageChange={handlePageChange}
-        currentPage={currentPage}
-      />
+      {cmtEl < 15 ? (
+        <></>
+      ) : (
+        <PageNation
+          pageCount={cmtTotal}
+          onPageChange={handlePageChange}
+          currentPage={currentPage}
+        />
+      )}
 
       <form onSubmit={handleFormSubmit} className="comment__form">
         <textarea
