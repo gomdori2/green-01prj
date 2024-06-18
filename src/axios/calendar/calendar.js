@@ -10,10 +10,10 @@ export const getMonthCalendar = async () => {
 };
 // 식물일정등록 삭제	n
 // /api/schedule/plant/management
-export const deletePlantSch = async (userSeq, plantManagementSeq) => {
+export const deletePlantSch = async (plantSeq, gardenSeq) => {
   try {
     const result = await axios.delete(
-      `/api/schedule/plant/management?userSeq=${userSeq}&plantManagementSeq=${plantManagementSeq}`,
+      `/api/schedule/plant/management?plantSeq=${plantSeq}&plantManagementSeq=${gardenSeq}`,
     );
     return result;
   } catch (error) {
@@ -53,15 +53,16 @@ export const getDayReadSch = async (userSeq, managementDate, page) => {
 export const calendarPatchData = async (
   plantSeq,
   plantManagementSeq,
-  checkedValues,
-  modContent,
+  gardening,
+  contents,
 ) => {
+  console.log(plantSeq, plantManagementSeq, gardening, contents);
   try {
     const result = await axios.patch("/api/schedule/plant/management", {
       plantSeq,
       plantManagementSeq,
-      checkedValues,
-      modContent,
+      gardening,
+      contents,
     });
     return result;
   } catch (error) {

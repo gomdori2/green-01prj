@@ -1,11 +1,13 @@
 import styled from "@emotion/styled";
 import { useContext, useState } from "react";
 import { FaSeedling, FaSun, FaTree, FaWind } from "react-icons/fa6";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { postPlantSch } from "../../axios/calendar/calendar";
 import TextArea from "../common/TextArea";
 import { userInfoContext } from "../../context/UserInfoProvider";
 import CalendarPlantsPop from "./CalendarPlantPop";
+import { toast } from "react-toastify";
+import Loading from "../common/Loading";
 
 const DetailDivStyle = styled.div`
   width: 100%;
@@ -76,10 +78,12 @@ const CalendarResister = () => {
   // const [textData, setTextData] = useState();
   const { contextUserData } = useContext(userInfoContext);
   const [checkedValues, setCheckedValues] = useState([]);
-  const [content, setContent] = useState(1, 2, 3, 4);
+  const [content, setContent] = useState("");
   const [plantName, setPlantName] = useState();
   const [plantSeq, setPlantSeq] = useState(null);
   const [isClicked, setIsClicked] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const clickDay = location.state;
 
   const handleIconClick = value => {
@@ -105,14 +109,31 @@ const CalendarResister = () => {
     gardning,
     contents,
   ) => {
-    // 배열을 스트링으로 넘겨줘야해서 일단 문자열로 변환
-    gardning = gardning.join("");
-    const result = await postPlantSch(plantSeq, modContent, gardning, contents);
-    return result;
+    setIsLoading(true);
+    try {
+      // 배열을 스트링으로 넘겨줘야해서 일단 문자열로 변환
+      gardning = gardning.join("");
+      const result = await postPlantSch(
+        plantSeq,
+        modContent,
+        gardning,
+        contents,
+      );
+      toast.success("일정정보가 등록 되었습니다.");
+      navigate("/reactCalendar");
+      return result;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   const isClickFunc = () => {
     setIsClicked(true);
   };
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   // ****************삭제**************
   return (
     <DetailDivStyle>
@@ -245,8 +266,10 @@ const CalendarResister = () => {
               ></TextArea>
             </div>
           </div>
-          <div>
+          <div style={{ justifyContent: "end" }}>
             <button
+              className="btn"
+              style={{ background: "rgb(35, 47, 175)" }}
               onClick={() => {
                 postPlantSchCalendar(
                   plantSeq,
@@ -264,7 +287,6 @@ const CalendarResister = () => {
             >
               등록
             </button>
-            <button>초기화</button>
           </div>
         </form>
       </DetailDivInnerStyle>

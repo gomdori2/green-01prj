@@ -75,27 +75,26 @@ const PlantResisterList = () => {
 
   useEffect(() => {}, [userSeq]);
 
-  const getDataList = async ({ userSeq, page }) => {
-    // setIsLoading(true);
-
-    const result = await getData({ userSeq, page });
-    console.log(result);
-    if (userSeq) {
-      if (result) {
-        const stauts = result.status.toString().charAt(0);
-        if (stauts === "2") {
-          setList(result?.data.data.list);
-          setPageCount(result?.data.data.totalPage);
-          console.log(result);
-        }
-        setIsLoading(false);
-      }
+  const getDataList = async (userSeq, page) => {
+    setIsLoading(true);
+    try {
+      const result = await getData(userSeq, page);
+      console.log(result);
+      const stauts = result.status.toString().charAt(0);
+      setList(result?.data.data.list);
+      setPageCount(result?.data.data.totalPage);
+      console.log(result);
+      toast.success("조회 되었습니다.");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const navigate = useNavigate();
   useEffect(() => {
-    getDataList({ userSeq, page });
+    getDataList(userSeq, page);
     // if (userSeq) {
     // }
   }, [userSeq, page]);
@@ -105,9 +104,9 @@ const PlantResisterList = () => {
     // getDataList({ userSeq: userSeq, size: size, page: page });
   };
 
-  // if (isLoading) {
-  //   return <Loading></Loading>;
-  // }
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <ReactCalendarStyle>
       <TitleDivStyle>등록 식물 리스트</TitleDivStyle>
@@ -140,15 +139,19 @@ const PlantResisterList = () => {
             등록 된 데이터가 없습니다.
           </div>
         )}
-
-        <button
-          style={{ textAlign: "end", marginRight: "20px" }}
-          onClick={() => {
-            navigate(`/PlantResister`);
-          }}
-        >
-          등록
-        </button>
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <button
+            style={{
+              background: "rgb(35, 47, 175)",
+            }}
+            className="btn"
+            onClick={() => {
+              navigate(`/PlantResister`);
+            }}
+          >
+            등록
+          </button>
+        </div>
       </ReactCalendarListStyle>
       {pageCount > 0 && (
         <PageNation

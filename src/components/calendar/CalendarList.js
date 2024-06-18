@@ -40,16 +40,10 @@ const CalendarList = ({ item }) => {
     managementDate,
     plantName,
     plantPic,
+    plantSeq,
   } = item;
+  console.log(plantSeq);
   let spGardening = gardening?.toString().split("");
-  console.log(
-    gardenSeq,
-    gardening,
-    isMorePaging,
-    managementDate,
-    plantName,
-    plantPic,
-  );
 
   const uiIcon = {
     1: (
@@ -81,7 +75,7 @@ const CalendarList = ({ item }) => {
     <CalendarListUlStyle key={managementDate}>
       <Link
         to={`/reactCalendar/${item.gardenSeq}`}
-        state={{ managementDate, gardenSeq }}
+        state={{ managementDate, gardenSeq, plantSeq }}
       >
         <li>
           <span

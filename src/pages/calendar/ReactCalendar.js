@@ -64,6 +64,8 @@ const ReactCalendar = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const month = moment(new Date()).format("yyyy-mm");
+
   // 날짜 요일 출력
   // 캘린더의 날짜 출력을 US 달력으로 변경하기
   const weekName = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
@@ -72,13 +74,14 @@ const ReactCalendar = () => {
     return weekName[idx];
   };
   useEffect(() => {
-    setUserSeq(contextUserData.userSeq);
+    setUserSeq(contextUserData?.userSeq);
     console.log(userSeq);
+    console.log(month);
     return () => {};
   }, []);
 
   useEffect(() => {
-    getMonthCalendars();
+    getMonthCalendars(contextUserData?.userSeq);
   }, []);
 
   // 외부 데이터의 내용을 날짜에 출력하기
@@ -96,9 +99,7 @@ const ReactCalendar = () => {
 
   const getDayData = async (userSeq, getClickDay, page) => {
     const result = await getDayReadSch(userSeq, getClickDay, page);
-    console.log(result);
     setAllData(result?.data.data.list);
-    console.log(allData);
   };
 
   // 내용 출력하기
@@ -244,6 +245,8 @@ const ReactCalendar = () => {
         <div style={{ textAlign: "end", marginRight: "10px" }}>
           <button
             type="button"
+            className="btn"
+            style={{ background: "#232faf" }}
             onClick={() => {
               navigate("/calendarResister", { state: clickDay });
             }}
