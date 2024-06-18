@@ -45,10 +45,18 @@ const PostEdit = () => {
         return;
       }
 
+      // 세션에서 writerSeq 가져오기
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+      const userSeq = storedUser?.userSeq;
+      if (!userSeq) {
+        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        return;
+      }
+
       setLoading(true);
       const updatedPost = {
         boardSeq: writerSeq,
-        writerSeq: 1, // 수정 필요: 실제 로그인한 사용자의 writerSeq로 변경
+        writerSeq: userSeq, // 수정된 부분: 실제 로그인한 사용자의 writerSeq로 변경
         title: title,
         content: content,
       };

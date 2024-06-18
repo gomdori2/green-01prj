@@ -22,6 +22,9 @@ function NoticeTop({
         <button className="order-old" onClick={orderClick}>
           {orderText}
         </button>
+        <button className="order-old" onClick={orderClick}>
+          {orderText}
+        </button>
       </div>
       <div className="notice__top__icon flex-gap-4">
         <button className="view-Type border">

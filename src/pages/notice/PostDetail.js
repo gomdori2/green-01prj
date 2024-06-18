@@ -51,8 +51,15 @@ const PostDetail = () => {
 
   const handleDelete = async () => {
     try {
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+      const userSeq = storedUser?.userSeq;
+      if (!userSeq) {
+        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        return;
+      }
+
       await axios.delete(
-        `/api/community/?boardSeq=${post.data.boardSeq}&writerSeq=1`,
+        `/api/community/?boardSeq=${post.data.boardSeq}&writerSeq=${userSeq}`,
       );
       navigate("/notice");
     } catch (error) {
@@ -95,11 +102,33 @@ const PostDetail = () => {
   const handleLikeClick = async () => {
     console.log("추천 버튼 클릭됨");
     try {
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+      const userSeq = storedUser?.userSeq;
+      if (!userSeq) {
+        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        return;
+      }
+
       const response = await axios.get(
-        `/api/community/like?boardSeq=${post.data.boardSeq}&writer=1`,
+        `/api/community/like?boardSeq=${post.data.boardSeq}&writer=${userSeq}`,
       );
       console.log("추천 요청 성공:", response.data);
-      // 필요한 경우 상태를 업데이트
+
+      // 서버 응답에 따라 상태 업데이트
+      if (response.data.code === 1) {
+        setPost(prevPost => ({
+          ...prevPost,
+          data: {
+            ...prevPost.data,
+            fav:
+              response.data.data === 1
+                ? prevPost.data.fav + 1
+                : prevPost.data.fav - 1,
+          },
+        }));
+      } else {
+        alert("추천 요청 실패: " + response.data.msg);
+      }
     } catch (error) {
       console.log("추천 요청 실패:", error);
     }

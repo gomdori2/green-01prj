@@ -61,6 +61,11 @@ const SearchComponent = ({ onSearch }) => {
         type="text"
         value={searchQuery}
         onChange={handleSearchInputChange}
+        onKeyDown={event => {
+          if (event.key === "Enter") {
+            handleSearch();
+          }
+        }}
       />
       <button className="btn" onClick={handleSearch}>
         검색
