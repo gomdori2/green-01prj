@@ -4,8 +4,8 @@ import { FaSeedling, FaSun, FaTree, FaWind } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 import { postPlantSch } from "../../axios/calendar/calendar";
 import TextArea from "../common/TextArea";
-import CalendarPlantsPop from "./CalendarPlantsPop";
 import { userInfoContext } from "../../context/UserInfoProvider";
+import CalendarPlantsPop from "./CalendarPlantPop";
 
 const DetailDivStyle = styled.div`
   width: 100%;

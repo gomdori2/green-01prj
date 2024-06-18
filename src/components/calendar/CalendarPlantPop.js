@@ -1,9 +1,8 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { getData, getOpenData } from "../../axios/plantresister/plantresister";
-import PageNation from "../common/PageNation";
-import Loading from "../common/Loading";
 import { TbPlantOff } from "react-icons/tb";
+import { getData } from "../../axios/plantresister/plantresister";
+import PageNation from "../common/PageNation";
 // 클래스로 바꿔라 제발
 const FixedArea = styled.div`
   position: fixed;
