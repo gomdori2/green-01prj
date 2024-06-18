@@ -59,7 +59,9 @@ function Notice() {
     const selectedPage = event.selected + 1;
     setCurrentPage(selectedPage);
     navigate(
-      `/notice/page/${selectedPage}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+      `/notice/page/${selectedPage}${
+        searchParams.toString() ? `?${searchParams.toString()}` : ""
+      }`,
     );
   };
 
@@ -76,7 +78,9 @@ function Notice() {
     sessionStorage.setItem("order", newOrder.toString());
     setOrderText(getOrderText(newOrder));
     navigate(
-      `/notice/page/1${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+      `/notice/page/1${
+        searchParams.toString() ? `?${searchParams.toString()}` : ""
+      }`,
     );
   };
 
@@ -91,7 +95,9 @@ function Notice() {
     setCurrentPage(1);
     setSearchParams({ searchType, searchQuery });
     navigate(
-      `/notice/page/1?searchType=${searchType}&searchQuery=${encodeURIComponent(searchQuery)}`,
+      `/notice/page/1?searchType=${searchType}&searchQuery=${encodeURIComponent(
+        searchQuery,
+      )}`,
     );
   };
 
@@ -104,7 +110,9 @@ function Notice() {
       setBestPost(list);
       setShowBest(true);
       navigate(
-        `/notice/page/1${searchParams.toString() ? `?${searchParams.toString()}` : ""}`,
+        `/notice/page/1${
+          searchParams.toString() ? `?${searchParams.toString()}` : ""
+        }`,
       );
     } catch (error) {
       console.log(error);
