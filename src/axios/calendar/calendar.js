@@ -1,8 +1,11 @@
 import axios from "axios";
 
-export const getMonthCalendar = async () => {
+export const getMonthCalendar = async (userSeq, clickDay) => {
+  console.log(userSeq, clickDay);
   try {
-    const result = await axios.get("/api/schedule/plant/management/month");
+    const result = await axios.get(
+      `/api/schedule/plant/management/month?userSeq=${userSeq}&managementDate=${clickDay}`,
+    );
     return result;
   } catch (error) {
     console.log(error);

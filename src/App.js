@@ -68,7 +68,6 @@ function App() {
               <Route path="*" element={<NotFound />}></Route>
             </Routes>
           </Main>
-          <Footer />
         </Wrap>
       </BrowserRouter>
     </UserInfoProvider>

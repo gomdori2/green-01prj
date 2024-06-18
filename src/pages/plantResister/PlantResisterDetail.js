@@ -128,7 +128,6 @@ const PlantResisterDetail = () => {
       setDataObj(result?.data.data);
       setPatchPlantNickName(result?.data.data.plantNickName);
       setPatchEtc(result?.data.data.etc);
-      toast.success("조회 되었습니다.");
     } catch (error) {
       console.log(error);
     } finally {

@@ -91,7 +91,12 @@ const TitleDivStyle = styled.div`
   color: black;
   padding-left: 5px;
 `;
-const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
+const PlantPublicDataList = ({
+  setIsClicked,
+  setOdataSeq,
+  setPlantName,
+  setPlantPic,
+}) => {
   // 팝업에서 데이터 빼서 앞에 input에 넘기기
   // 앞에 있는 곳에서 set 만 넘겨서 담아서 올릴 것
 
@@ -181,7 +186,7 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
                   onClick={() => {
                     publicDataRead({ searchKeyword, size, page });
                   }}
-                  className="post-all btn"
+                  className="btn"
                 >
                   검색
                 </button>
@@ -199,12 +204,14 @@ const PlantPublicDataList = ({ setIsClicked, setOdataSeq, setPlantName }) => {
         </li>
         {openListData.map(item => (
           <li
+            style={{ cursor: "pointer" }}
             key={item.plantPilbkNo}
             onClick={() => {
               if (confirm("선택하시겠습니까?")) {
                 setOdataSeq(item.plantPilbkNo);
                 setPlantName(item.plantGnrlNm);
                 setIsClicked(false);
+                setPlantPic(item.imgUrl);
               }
             }}
           >

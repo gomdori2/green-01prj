@@ -76,19 +76,13 @@ const PlantResisterList = () => {
   useEffect(() => {}, [userSeq]);
 
   const getDataList = async (userSeq, page) => {
-    setIsLoading(true);
     try {
       const result = await getData(userSeq, page);
-      console.log(result);
-      const stauts = result.status.toString().charAt(0);
       setList(result?.data.data.list);
       setPageCount(result?.data.data.totalPage);
       console.log(result);
-      toast.success("조회 되었습니다.");
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

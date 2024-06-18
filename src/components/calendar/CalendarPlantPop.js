@@ -94,6 +94,7 @@ const CalendarPlantsPop = ({
   setIsClicked,
   setPlantName,
   setPlantSeq,
+  setImgUrl,
   userSeq,
 }) => {
   // 팝업에서 데이터 빼서 앞에 input에 넘기기
@@ -195,10 +196,12 @@ const CalendarPlantsPop = ({
         {plantListData.map(item => (
           <li
             key={item.plantPilbkNo}
+            style={{ cursor: "pointer" }}
             onClick={() => {
               if (confirm("선택하시겠습니까?")) {
                 setPlantSeq(item.plantSeq);
                 setPlantName(item.plantNickName);
+                setImgUrl(item.plantPic);
                 setIsClicked(false);
               }
             }}

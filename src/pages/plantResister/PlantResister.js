@@ -8,6 +8,7 @@ import { userInfoContext } from "../../context/UserInfoProvider";
 import { toast } from "react-toastify";
 import Loading from "../../components/common/Loading";
 import { useNavigate } from "react-router-dom";
+import { TbPlantOff } from "react-icons/tb";
 // 클래스로 바꿔라 제발
 const DetailDivStyle = styled.div`
   width: 100%;
@@ -51,8 +52,10 @@ const DetailDivInnerStyle = styled.div`
     font-size: 20px;
     width: 30%;
   }
+  label::after {
+    content: "";
+  }
 `;
-
 const PlantResister = () => {
   const { contextUserData } = useContext(userInfoContext);
   if (!contextUserData) {
@@ -71,6 +74,7 @@ const PlantResister = () => {
   const [userSeqData, setuserSeqData] = useState(0);
   const [plantName, setPlantName] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [plantPic, setPlantPic] = useState();
   const navigate = useNavigate();
   // 팝업 데이터 받아와야함
   // 필요없어짐. seq만 넘기면된다함 {} X seq
@@ -128,37 +132,94 @@ const PlantResister = () => {
           }}
         >
           {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
-          <div>
-            <label>식물명</label>
-            <input
-              value={plantName ? plantName : ""}
-              readOnly
-              placeholder="식물불러오기로 등록해주세요."
-            />
-            {isClicked ? (
-              <PlantPublicDataList
-                // setOdataSeq={setOdataSeq}
-                setIsClicked={setIsClicked}
-                setOdataSeq={setOdataSeq}
-                setPlantName={setPlantName}
-              />
-            ) : null}
-            <button type="button" onClick={() => isClickFunc()}>
-              식물불러오기
-            </button>
-          </div>
-          <div className="flex-box-div">
-            <label>식물 애칭(별명)</label>
-            <input
-              value={plantNickName}
-              onChange={e => {
-                setPlantNickName(e.target.value);
-                console.log(e.target.value);
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-              placeholder="식물 애칭을 입력해주세요."
-            />
+            >
+              {plantPic ? (
+                <img
+                  style={{ width: "196px", height: "120px" }}
+                  src={plantPic}
+                ></img>
+              ) : (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0",
+                    justifyContent: "center",
+                    textAlign: "center",
+                  }}
+                >
+                  <TbPlantOff size={120} />
+                  <div
+                    style={{
+                      display: "block",
+                      fontSize: "15px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    식물 이미지가 없습니다.
+                  </div>
+                </div>
+              )}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div>
+                <label>식물명</label>
+                <div style={{ marginLeft: "13px", gap: 15 }}>
+                  <input
+                    value={plantName ? plantName : ""}
+                    style={{ width: "120px" }}
+                    readOnly
+                    placeholder="불러오기로 등록"
+                  />
+                  {isClicked ? (
+                    <PlantPublicDataList
+                      // setOdataSeq={setOdataSeq}
+                      setIsClicked={setIsClicked}
+                      setOdataSeq={setOdataSeq}
+                      setPlantName={setPlantName}
+                      setPlantPic={setPlantPic}
+                    />
+                  ) : null}
+                  <button
+                    type="button"
+                    className="btn"
+                    style={{ background: "rgb(35, 47, 175)" }}
+                    onClick={() => isClickFunc()}
+                  >
+                    불러오기
+                  </button>
+                </div>
+              </div>
+              <div className="flex-box-div">
+                <label>식물애칭</label>
+                <input
+                  value={plantNickName}
+                  onChange={e => {
+                    setPlantNickName(e.target.value);
+                    console.log(e.target.value);
+                  }}
+                  placeholder="식물 애칭을 입력해주세요."
+                />
+              </div>
+            </div>
           </div>
-
           <div className="flex-box-div text-area-div">
             <label htmlFor="text">기타사항</label>
             <div className="text-area-style">

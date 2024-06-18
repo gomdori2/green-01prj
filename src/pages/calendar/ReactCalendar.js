@@ -63,8 +63,8 @@ const ReactCalendar = () => {
   const [userSeq, setUserSeq] = useState(null);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [monthData, setMonthData] = useState([]);
   const navigate = useNavigate();
-  const month = moment(new Date()).format("yyyy-mm");
 
   // 날짜 요일 출력
   // 캘린더의 날짜 출력을 US 달력으로 변경하기
@@ -75,15 +75,18 @@ const ReactCalendar = () => {
   };
   useEffect(() => {
     setUserSeq(contextUserData?.userSeq);
-    console.log(userSeq);
-    console.log(month);
     return () => {};
   }, []);
-
   useEffect(() => {
-    getMonthCalendars(contextUserData?.userSeq);
-  }, []);
-
+    console.log(userSeq);
+  }, [userSeq]);
+  useEffect(() => {
+    if (userSeq) {
+      const monthData = clickDay.replaceAll("-", "");
+      getMonthCalendars(contextUserData?.userSeq, monthData.substr(0, 6));
+      console.log("sadfsadfasdfasfasfds", monthData);
+    }
+  }, [userSeq]);
   // 외부 데이터의 내용을 날짜에 출력하기
   // axios.get("todos") 리턴결과
   // 이건 api 만들어지면 해당 데이터 아이디 매칭해야됨
@@ -91,9 +94,10 @@ const ReactCalendar = () => {
   // todoApi
   const [allData, setAllData] = useState([]);
   // 조회
-  const getMonthCalendars = async () => {
-    const result = await getMonthCalendar();
-    console.log(result);
+  const getMonthCalendars = async (userSeq, clickDay) => {
+    const result = await getMonthCalendar(userSeq, clickDay);
+    console.log(result.data.data);
+    setMonthData(result.data.data);
     return result;
   };
 
@@ -109,23 +113,29 @@ const ReactCalendar = () => {
     // DD : 2자리 일
     const checkDay = moment(date).format("yyyy-MM-DD");
     // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
-    const dayResult = allData?.find(
+    console.log(monthData);
+    const dayResult = monthData?.find(
       item => checkDay === item.managementDate.toString(),
     );
+    console.log("safasfasfasdfasf", dayResult);
     //const filteredDay = ;
     // map으로 객체 1,2,3,4 값에 해당 되는 아이콘 빼기.
     const uiIcon = {
-      1: <FaSun size="20" style={{ color: "#fff" }} />,
-      2: <FaSeedling size="20" style={{ color: "#fff" }} />,
-      3: <FaWind size="20" color="#fff" />,
-      4: <FaTree size="20" style={{ color: "#fff" }} />,
+      1: <FaSun size="15" style={{ color: "yellow" }} />,
+      2: <FaSeedling size="15" style={{ color: "green" }} />,
+      3: <FaWind size="15" color="rgb(0, 191, 255)" />,
+      4: <FaTree size="15" style={{ color: "green" }} />,
     };
     // console.log(dayResult);
-    if (!dayResult) {
+    const dayResultArr = dayResult?.gardening.toString().split("");
+    // console.log(dayResultArr);
+    if (dayResultArr) {
       return (
         <div>
-          {dayResult?.title.map(iconKey => (
-            <span key={iconKey}>{uiIcon[iconKey]}</span>
+          {dayResultArr.map(iconKey => (
+            <span style={{ marginLeft: "3px" }} key={iconKey}>
+              {uiIcon[iconKey]}
+            </span>
           ))}
         </div>
       );
