@@ -19,21 +19,11 @@ const SearchComponent = ({ onSearch }) => {
     const order = sessionStorage.getItem("order") || 3; // 기본값 3 설정
     const size = sessionStorage.getItem("itemsPerPage") || 15; // 기본값 15 설정
 
-    let searchValue = 1; // 기본적으로 제목으로 검색 설정
-
-    // searchType에 따라 searchValue 설정
-    if (searchType === "titleAndContent") {
-      setSearchType("2");
-    }
-    if (searchType === "writer") {
-      setSearchType("3");
-    }
-
     try {
       const res = await axios.get(`/api/community/list`, {
         params: {
           order,
-          search: searchValue,
+          search: searchType, // searchType 값 직접 사용
           keyword: searchQuery,
           size,
           page: 1,
