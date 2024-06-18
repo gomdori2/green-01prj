@@ -10,7 +10,7 @@ import "./css/calendar.css";
 import NotFound from "./pages/NotFound";
 import ReactCalendar from "./pages/calendar/ReactCalendar";
 import Login from "./pages/login/Login";
-import UserProfile from "./pages/login/UserProfile";
+import UserProfile from "./pages/userprofile/UserProfile";
 import Notice from "./pages/notice/Notice";
 import PostDetail from "./pages/notice/PostDetail";
 import PostEdit from "./pages/notice/PostEdit";

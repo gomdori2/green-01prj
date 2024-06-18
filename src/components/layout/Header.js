@@ -9,9 +9,7 @@ import { FaUserPen } from "react-icons/fa6";
 const Header = ({ userInfo }) => {
   const { contextUserData, setContextUserData } = useContext(userInfoContext);
   const [userSeq, setUserSeq] = useState();
-  console.log(contextUserData);
   const location = useLocation();
-
   const navigate = useNavigate();
   useEffect(() => {
     setUserSeq(contextUserData?.userSeq);
@@ -35,7 +33,8 @@ const Header = ({ userInfo }) => {
       <HeaderDiv>
         <h1>
           <Link to="/notice">
-            <img src="./www/images/plantDiaryLogo.png" alt="logo" />
+            {/* 로드 시에 로고 안사라지게 경로 잡아둠  */}
+            <img src={`/www/images/plantDiaryLogo2.png`} alt="logo" />
           </Link>
         </h1>
         <ul className="menu">

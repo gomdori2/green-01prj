@@ -2,29 +2,35 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserEmail, getUserEmailToken } from "../../apis/user/userapi";
 import "../register/register.scss";
+import EmailSentModal from "../../components/common/EmailSentModal";
+import TokenAuthModal from "../../components/common/TokenAuthModal";
 
 const Register = () => {
   const [userEmail, setUserEmail] = useState("");
   const [emailSend, setEmailSend] = useState(false);
-  const [emailPattern, setEmailPattern] = useState(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
-  const [emailValid, setEmailValid] = useState(true)
+  // 이메일 형식 유효성 검사
+  const [emailPattern, setEmailPattern] = useState(
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+  );
+  const [emailValid, setEmailValid] = useState(true);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
   const [authCode, setAuthCode] = useState("");
-  
+  const [isTokenModalOpen, setIsTokenModalOpen] = useState(false);
   const navigate = useNavigate();
 
   // 메일 인증 시 처리할 함수
-  const mailSubmit = async (e) => {
+  const mailSubmit = async e => {
     e.preventDefault();
 
     // 이메일 형식 유효성 검사
-    const emailPattern = () =>{
-    // /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(userEmail)) {
-      setEmailValid(false)
-      return;
-    }
-    }
+    const emailPattern = () => {
+      // /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(userEmail)) {
+        setEmailValid(false);
+        return;
+      }
+    };
 
     try {
       // 백엔드로 전달할 메일주소
@@ -34,9 +40,9 @@ const Register = () => {
 
       if (result.data.code === 1) {
         //메일 전송 완료 알림
-        alert("메일이 전송되었습니다. 메일에서 인증코드를 확인해주세요");
+        // alert("메일이 전송되었습니다. 메일에서 인증코드를 확인해주세요");
+        setIsEmailModalOpen(true);
         setEmailSend(true);
-        // 인증 코드를 작성하는 곳을 작업시작
       }
       if (result.data.code === -2) {
         alert("이미 가입된 메일입니다.");
@@ -47,22 +53,32 @@ const Register = () => {
     }
   };
 
+  const closeModal = () => {
+    setIsEmailModalOpen(false);
+  };
+
   // 인증 코드 확인 시 처리할 함수
-  const verifyCode = async (e) => {
+  const verifyCode = async e => {
     e.preventDefault();
     // 인증 코드 확인을 위해 콘솔에 출력
-    console.log("Auth Code:", authCode); 
+    console.log("Auth Code:", authCode);
 
     // 토큰 인증 처리
     const tokenData = `/api/user/auth/email/token?token=${authCode}`;
     const result = await getUserEmailToken(tokenData);
 
     if (result.data.code === 1) {
-      alert("인증이 성공했습니다!");
-      navigate("/signup", { state: { email: userEmail, token: authCode } });
+      // alert("인증이 성공했습니다!");
+      setIsEmailModalOpen(true);
+      // navigate("/signup", { state: { email: userEmail, token: authCode } });
     } else {
       alert("인증에 실패했습니다. 다시 시도해주세요.");
     }
+  };
+
+  const tokenCloseModal = () => {
+    setIsTokenModalOpen(false);
+    navigate("/signup", { state: { email: userEmail, token: authCode } });
   };
 
   useEffect(() => {
@@ -88,9 +104,9 @@ const Register = () => {
               className="user-email"
               required
               placeholder="메일주소를 입력해주세요"
-              onChange={e => 
-                {setUserEmail(e.target.value)
-                setEmailValid(emailPattern.test(e.target.value))
+              onChange={e => {
+                setUserEmail(e.target.value);
+                setEmailValid(emailPattern.test(e.target.value));
               }}
             />
             <button type="submit" className="send-button">
@@ -98,7 +114,18 @@ const Register = () => {
             </button>
           </div>
         </form>
-            {!emailValid && (<p style={{ color: "red", fontSize: "12px", padding:"0px 10px 10px 10px"}}>이메일 형식이 올바르지 않습니다.</p>) }
+        <EmailSentModal isOpen={isEmailModalOpen} onRequestClose={closeModal} />
+        {!emailValid && (
+          <p
+            style={{
+              color: "red",
+              fontSize: "12px",
+              padding: "0px 10px 10px 10px",
+            }}
+          >
+            이메일 형식이 올바르지 않습니다.
+          </p>
+        )}
         {emailSend && (
           <form onSubmit={verifyCode}>
             <div className="registerform-group">
@@ -119,6 +146,10 @@ const Register = () => {
             </p>
           </form>
         )}
+        <TokenAuthModal
+          isOpen={isTokenModalOpen}
+          onRequestClose={tokenCloseModal}
+        />
       </div>
     </main>
   );
