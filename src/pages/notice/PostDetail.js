@@ -4,6 +4,7 @@ import CommentComponent from "../../components/notice/CommentContainer";
 import "./PostDetail.scss";
 import axios from "axios";
 import ConfirmModal from "../../components/common/ConfirmModal";
+import Loading from "../../components/common/Loading";
 
 const PostDetail = () => {
   const { writerSeq } = useParams();
@@ -135,7 +136,7 @@ const PostDetail = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {

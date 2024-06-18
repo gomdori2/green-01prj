@@ -9,6 +9,7 @@ import PageNation from "../../components/common/PageNation";
 import useGetList from "../../hooks/notice/useGetList";
 import { fetchBestPost, fetchAllPosts } from "../../apis/notice/api";
 import { calculateTotalPages, getOrderText } from "../../utils/utils";
+import Loading from "../../components/common/Loading";
 
 function Notice() {
   const navigate = useNavigate();
@@ -129,7 +130,7 @@ function Notice() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
