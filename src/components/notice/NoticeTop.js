@@ -24,12 +24,12 @@ function NoticeTop({
         </button>
       </div>
       <div className="notice__top__icon flex-gap-4">
-        <button className="view-Type border">
+        {/* <button className="view-Type border">
           <BsCardText size={15} />
         </button>
         <button className="view-Type border">
           <BsViewStacked size={15} />
-        </button>
+        </button> */}
         <select
           className="select"
           name="itemsPerPage"
