@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import TextArea from "../../components/common/TextArea";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import {
   deleteData,
   getOneData,
@@ -79,60 +79,48 @@ const PlantResisterDetail = () => {
   if (!contextUserData) {
     return;
   }
-
-  const [plantNickName, setPlantNickName] = useState("");
-  const [plantOpenImg, setPlantOpenImg] = useState("");
-  const [etc, setEtc] = useState("");
-  const [plantName, setPlantName] = useState("");
-  const [isClicked, setIsClicked] = useState(false);
-  // 팝업 데이터 받아와야함
   const data = useLocation();
-  const [publicPlantsData, setPublicPlantsData] = useState({});
-  const [plantSeq, setPlantSeq] = useState(0);
-  const [userSeq, setUserSeq] = useState();
-  const [plantPic, setPlantPic] = useState(null);
+  const [dataObj, setDataObj] = useState(null);
+  const { plantSeq, userSeq } = data.state;
+  // 디테일 데이터 db에서 받아온 자료 dataObj
+  // 각각 뿌릴때 넣어줘야할거같음.
+  const [patchPlantNickName, setPatchPlantNickName] = useState("");
+  const [patchEtc, setPatchEtc] = useState("");
+  const [isClicked, setIsClicked] = useState(false);
   useEffect(() => {
-    // setPlantSeq(data?.state);
-    setPlantSeq(1);
-    // pk 만 받아와서 뿌릴 것. _ 공공데이터 관련 사항 때문에 ... 이미지
-    // post 할 데이터_상세페이지_수정, 삭제
-    // 현재 안만들어둠.
-    // setPlantOpenImg(data.state.img);
-  }, [plantNickName, etc]);
-  useEffect(() => {
-    setUserSeq(contextUserData?.userSeq);
-  }, [contextUserData]);
-  useEffect(() => {
-    const plantData = {
-      userSeq,
-      plantSeq,
-    };
-    // axios는 됨
-    if (userSeq && plantSeq) {
+    // get 계속 도는거 보기싫어서 해놓음
+    if (!patchPlantNickName) {
       getPlantsData(userSeq, plantSeq);
     }
-    // console.log("userSeq ", userSeq);
   }, [userSeq]);
 
-  const handleClickPatch = async (userSeq, plantSeq, plantNickName, etc) => {
-    // pk 는 수정때매 필요 / 날짜는 수정 안한다해서 빼놓음.
-    patchData({ userSeq, plantSeq, plantNickName, etc });
+  const handleClickPatch = async (
+    userSeq,
+    plantSeq,
+    patchPlantNickName,
+    patchEtc,
+  ) => {
+    console.log(userSeq, plantSeq, patchPlantNickName, patchEtc);
+    await patchData(userSeq, plantSeq, patchPlantNickName, patchEtc);
   };
   const getPlantsData = async () => {
-    getOneData(userSeq, plantSeq);
+    const result = await getOneData(userSeq, plantSeq);
+    setDataObj(result?.data.data);
+    setPatchPlantNickName(result?.data.data.plantNickName);
+    setPatchEtc(result?.data.data.etc);
   };
   useEffect(() => {
     console.log(isClicked);
   }, [isClicked]);
+  useEffect(() => {}, [patchPlantNickName, patchEtc]);
   // 따로 변경될 사항이 아니라서 ...
   const handleClickDelete = () => {
-    console.log(userSeq, plantSeq);
     deleteData(userSeq, plantSeq);
   };
 
   return (
     <DetailDivStyle>
-      <TitleDivStyle>등록 식물 리스트</TitleDivStyle>
+      <TitleDivStyle>등록 식물 상세 페이지</TitleDivStyle>
       <DetailDivInnerStyle>
         <form
           onSubmit={e => {
@@ -156,10 +144,10 @@ const PlantResisterDetail = () => {
                 alignItems: "center",
               }}
             >
-              {plantPic ? (
+              {dataObj?.plantPic ? (
                 <img
                   style={{ width: "196px", height: "120px" }}
-                  src={plantPic}
+                  src={dataObj?.plantPic}
                 ></img>
               ) : (
                 <div
@@ -189,16 +177,15 @@ const PlantResisterDetail = () => {
             <div className="divBoxStyle">
               <div>
                 <label>식물명</label>
-                <input value={plantName} readOnly />
+                <input value={dataObj?.plantName} readOnly />
               </div>
               <div>
                 <label>식물애칭</label>
                 <input
-                  value={plantNickName}
+                  value={patchPlantNickName}
                   onChange={e => {
-                    setPlantNickName(e.target.value);
-
-                    console.log(e.target.value);
+                    setPatchPlantNickName(e.target.value);
+                    console.log(patchPlantNickName);
                   }}
                 />
               </div>
@@ -208,23 +195,31 @@ const PlantResisterDetail = () => {
             <label htmlFor="text">기타사항</label>
             <div className="text-area-style">
               <TextArea
-                valueDatas={etc}
-                setTextData={setEtc}
+                valueDatas={patchEtc}
+                setTextData={setPatchEtc}
                 maxLength="100"
               ></TextArea>
             </div>
           </div>
           <div>
+            {/* 제발 좀 객체 따놓고 스트링 붙여서 보내지말자 */}
             <button
+              type="button"
               onClick={() => {
-                handleClickPatch(userSeq, plantSeq, plantNickName, etc);
+                alert(patchPlantNickName, patchEtc);
+                handleClickPatch(
+                  userSeq,
+                  plantSeq,
+                  patchPlantNickName,
+                  patchEtc,
+                );
               }}
             >
               수정
             </button>
             <button
               onClick={() => {
-                handleClickDelete();
+                handleClickDelete(userSeq, plantSeq);
               }}
             >
               삭제

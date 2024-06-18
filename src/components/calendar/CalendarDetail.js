@@ -6,9 +6,12 @@ import { FaSeedling, FaSun, FaTree, FaWind } from "react-icons/fa6";
 import {
   calendarPatchData,
   deletePlantSch,
+  getDetailSch,
   postPlantSch,
 } from "../../axios/calendar/calendar";
 import { userInfoContext } from "../../context/UserInfoProvider";
+import { toast } from "react-toastify";
+import Loading from "../common/Loading";
 
 const DetailDivStyle = styled.div`
   width: 100%;
@@ -71,10 +74,13 @@ const GardningIconStyle = styled.div`
 `;
 const CalendarDetail = () => {
   const location = useLocation();
+  const { managementDate, gardenSeq } = location.state;
   // 앞에서 받으면 편한거 같긴한데 일단 선언해서사용
   const { contextUserData } = useContext(userInfoContext);
   const [userSeq, setUserSeq] = useState(null);
   const { plantManagementSeq } = useParams(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [detailData, setDetailData] = useState([]);
   // location.state가 null일 경우 빈 객체로 대체_ null 났을 때 오류 잡으려고
   // const state = location.state || {};
   // const { title, text, day } = state;
@@ -83,33 +89,8 @@ const CalendarDetail = () => {
   const [checkedValues, setCheckedValues] = useState([]);
   const [modContent, setModContent] = useState(1, 2, 3, 4);
   useEffect(() => {
-    setUserSeq(contextUserData.userSeq);
-
-    console.log(userSeq);
-    return () => {};
-  }, []);
-
-  useEffect(() => {
-    console.log(userSeq);
-    return () => {};
-  }, [userSeq]);
-
-  const item = {
-    managementDate: "2024-02-20",
-    plantPic: "ss",
-    plantName: "asdasd",
-    gardning: "1,2,3",
-    content: "테스트 내용",
-  };
-  const { managementDate, plantPic, plantName, gardning, content } = item;
-  useEffect(() => {
     // 받아온 gardning 데이터 1,2,3,4 넣어주자
     // 이외에 데이터는 그냥 쓰믄됨
-    const gardeningArray = item.gardning.split(",").map(num => parseInt(num));
-    console.log(gardeningArray);
-    setCheckedValues(gardeningArray);
-    console.log(checkedValues);
-    //setCheckedValues(arrayGardning);
     //const datas = { titleData, textData, checkedValues };
     // post 할 데이터_상세페이지_수정, 삭제
     // console.log(datas);
@@ -131,6 +112,28 @@ const CalendarDetail = () => {
       }
     });
   };
+  const getDetailData = async stateData => {
+    setIsLoading(true);
+    try {
+      const result = await getDetailSch(stateData);
+      setDetailData(result.data.data);
+      console.log(result);
+      // 데이터 불러올 때 아이콘 갱신
+      const gardeningArray = result?.data.data.gardening
+        .toString()
+        .split("")
+        .map(num => parseInt(num));
+      setCheckedValues(gardeningArray);
+      setModContent(result?.data.data.gardening.content);
+    } catch (error) {
+      toast.error("오류가 발생하였습니다.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    getDetailData(location.state);
+  }, []);
   const uiIcon = {
     1: <FaSun size="20" style={{ color: "#fff" }} />,
     2: <FaSeedling size="20" style={{ color: "#fff" }} />,
@@ -138,6 +141,7 @@ const CalendarDetail = () => {
     4: <FaTree size="20" style={{ color: "#fff" }} />,
   };
   // ****************수정**************
+  // 수정 삭제의 경우 내일 getData에 뭐가 담겨서 넘어오는지 보고 결정
   const handlePatchData = (
     plantSeq,
     plantManagementSeq,
@@ -154,22 +158,15 @@ const CalendarDetail = () => {
       modContent,
     );
   };
-  // ****************등록 : 등록페이지가 있어야하면 뺄것.**************
-  const postPlantSchCalendar = async (
-    plantSeq,
-    modContent,
-    gardning,
-    contents,
-  ) => {
-    const result = await postPlantSch(plantSeq, modContent, gardning, contents);
-    return result;
-  };
   // ****************삭제**************
   const deleteData = async () => {
     // 일단 값을 넣어서 보냄\
     // plantManagementSeq 확인 해볼 것
-    await deletePlantSch(userSeq, plantManagementSeq);
+    await deletePlantSch(gardenSeq, plantManagementSeq);
   };
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
   return (
     <DetailDivStyle>
       <DetailDivInnerStyle>
@@ -181,11 +178,13 @@ const CalendarDetail = () => {
           {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
           <div>
             <label>관리날짜</label>
+            {/* managementDate */}
             <input id="day" value={managementDate} readOnly />
           </div>
           <div>
             <label>등록식물</label>
-            <input id="day" value={plantName} readOnly />
+            {/* plantName */}
+            <input id="day" value={detailData.plantName} readOnly />
           </div>
           {/* <div>
             <label htmlFor="title"></label>
@@ -276,7 +275,7 @@ const CalendarDetail = () => {
             </IconStyle>
           </div>
           <div>
-            <strong>체크된 값 </strong> {checkedValues?.join(", ")}
+            <strong>체크된 값 </strong> {checkedValues?.join("")}
           </div>
           <div className="text-area-div">
             <label htmlFor="text">기타사항</label>
@@ -294,7 +293,7 @@ const CalendarDetail = () => {
                 const plantManagementSeq = 1;
                 const plantSeq = 10;
                 handlePatchData(
-                  plantSeq,
+                  gardenSeq,
                   plantManagementSeq,
                   checkedValues,
                   modContent,
@@ -311,7 +310,7 @@ const CalendarDetail = () => {
             </button>
             <button
               onClick={() => {
-                deleteData(userSeq, plantManagementSeq);
+                deleteData(gardenSeq, plantManagementSeq);
               }}
             >
               삭제

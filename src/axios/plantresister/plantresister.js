@@ -18,7 +18,7 @@ export const getOpenData = async ({ searchKeyword, page }) => {
 // 식물등록리스트 조회
 // /api/schedule/plant/list
 // /api/schedule/plant/list?userSeq=1&page=1&size=10
-export const getData = async ({ userSeq, page }) => {
+export const getData = async (userSeq, page) => {
   try {
     const data = await axios.get(
       `/api/schedule/plant/list?userSeq=${userSeq}&page=${page}&size=10`,
@@ -77,13 +77,19 @@ export const postData = async ({ userSeq, odataSeq, plantNickName, etc }) => {
 //   "etc": "string"
 // }
 
-export const patchData = async ({ userSeq, plantSeq, plantNickName, etc }) => {
+export const patchData = async (
+  userSeq,
+  plantSeq,
+  patchPlantNickName,
+  patchEtc,
+) => {
+  console.log(userSeq, plantSeq, patchPlantNickName, patchEtc);
   try {
     const data = await axios.patch("/api/schedule/plant", {
       userSeq,
       plantSeq,
-      plantNickName,
-      etc,
+      plantNickName: patchPlantNickName,
+      etc: patchEtc,
     });
     return data;
   } catch (error) {

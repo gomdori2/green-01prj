@@ -59,7 +59,7 @@ const CalendarListUlStyle = styled.div`
 `;
 
 const PlantResisterList = () => {
-  const { localUserData } = useContext(userInfoContext);
+  const { contextUserData } = useContext(userInfoContext);
   const [userSeq, setUserSeq] = useState(null);
   const [todoApiData, setTodoApiData] = useState(["todoApi"]);
   const [list, setList] = useState([]);
@@ -70,8 +70,8 @@ const PlantResisterList = () => {
   const [currentPage, setCurrentPage] = useState();
 
   useEffect(() => {
-    setUserSeq(localUserData?.userSeq);
-  }, [localUserData]);
+    setUserSeq(contextUserData?.userSeq);
+  }, [contextUserData]);
 
   useEffect(() => {}, [userSeq]);
 
@@ -80,20 +80,24 @@ const PlantResisterList = () => {
 
     const result = await getData({ userSeq, page });
     console.log(result);
-    const stauts = result.status.toString().charAt(0);
-    if (stauts === "2") {
-      setList(result?.data.data.list);
-      setPageCount(result?.data.data.totalPage);
-      console.log(result);
+    if (userSeq) {
+      if (result) {
+        const stauts = result.status.toString().charAt(0);
+        if (stauts === "2") {
+          setList(result?.data.data.list);
+          setPageCount(result?.data.data.totalPage);
+          console.log(result);
+        }
+        setIsLoading(false);
+      }
     }
-    setIsLoading(false);
   };
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (userSeq) {
-      getDataList({ userSeq, page });
-    }
+    getDataList({ userSeq, page });
+    // if (userSeq) {
+    // }
   }, [userSeq, page]);
   // handlePageChange 페이지 네이션 클릭 시 마다 이벤트
   const handlePageChange = data => {

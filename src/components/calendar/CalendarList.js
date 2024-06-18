@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { FaSeedling, FaSun, FaTree, FaWind } from "react-icons/fa6";
+import { TbPlantOff } from "react-icons/tb";
 import { Link } from "react-router-dom";
 const CalendarListUlStyle = styled.div`
   display: flex;
@@ -32,7 +33,24 @@ const SpanIcon = styled.span`
 const CalendarList = ({ item }) => {
   // 이름은 굳이 필요없음.
   // 조회에 있어서 넣어둠
-  const { managementDate, plantPic, plantName, gardning, content } = item;
+  const {
+    gardenSeq,
+    gardening,
+    isMorePaging,
+    managementDate,
+    plantName,
+    plantPic,
+  } = item;
+  let spGardening = gardening?.toString().split("");
+  console.log(
+    gardenSeq,
+    gardening,
+    isMorePaging,
+    managementDate,
+    plantName,
+    plantPic,
+  );
+
   const uiIcon = {
     1: (
       <FaSun
@@ -59,29 +77,38 @@ const CalendarList = ({ item }) => {
       />
     ),
   };
-
   return (
     <CalendarListUlStyle key={managementDate}>
       <Link
-        to={`/reactCalendarDetail/${managementDate}`}
-        state={{ managementDate }}
+        to={`/reactCalendar/${item.gardenSeq}`}
+        state={{ managementDate, gardenSeq }}
       >
         <li>
-          <span>
-            <img
-              src={plantPic}
-              style={{
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "contain",
-                width: "50px",
-                height: "50px",
-              }}
-            ></img>
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {plantPic ? (
+              <img
+                src={plantPic}
+                style={{
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "contain",
+                  width: "50px",
+                  height: "50px",
+                }}
+              ></img>
+            ) : (
+              <TbPlantOff size={50} />
+            )}
           </span>
-          <span>{content}</span>
+          <span>{plantName}</span>
           <SpanIcon>
             <div>
-              {gardning?.map(iconKey => (
+              {spGardening?.map(iconKey => (
                 <span key={iconKey}>{uiIcon[iconKey]}</span>
               ))}
             </div>
