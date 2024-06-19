@@ -3,7 +3,6 @@ import axios from "axios";
 export const postUserLogin = async data => {
   try {
     const response = await axios.post(data);
-    console.log(response);
     return response;
   } catch (error) {
     return error;
@@ -25,7 +24,6 @@ export const getUserEmail = async data => {
 export const getUserEmailToken = async data => {
   try {
     const response = await axios.get(data);
-    console.log(response);
     return { success: true, data: response.data };
   } catch (error) {
     console.log(error);
@@ -46,7 +44,6 @@ export const getUserNickName = async data => {
   // console.log("getUserNickName data :", data);
   try {
     const response = await axios.get(data);
-    console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -56,7 +53,6 @@ export const getUserNickName = async data => {
 // 회원 정보 등록 중복확인
 export const postUserSignUp = async data => {
   try {
-    console.log("postUserSignUp data :", data);
     // {
     //   "id": "string",
     //   "pw": "string",
@@ -75,7 +71,6 @@ export const postUserSignUp = async data => {
 export const patchUserProfile = async data => {
   try {
     const response = await axios.patch("/api/user", data);
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);

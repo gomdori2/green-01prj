@@ -83,7 +83,6 @@ export const patchData = async (
   patchPlantNickName,
   patchEtc,
 ) => {
-  console.log(userSeq, plantSeq, patchPlantNickName, patchEtc);
   try {
     const data = await axios.patch("/api/schedule/plant", {
       userSeq,

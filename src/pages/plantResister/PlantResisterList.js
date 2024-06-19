@@ -80,7 +80,6 @@ const PlantResisterList = () => {
       const result = await getData(userSeq, page);
       setList(result?.data.data.list);
       setPageCount(result?.data.data.totalPage);
-      console.log(result);
     } catch (error) {
       console.log(error);
     }

@@ -115,7 +115,6 @@ const PlantPublicDataList = ({
     setIsLoading(true);
     try {
       const result = await getOpenData({ searchKeyword, page });
-      console.log(result);
       setOpenListData(result.data.data.list);
       setPageCount(result.data.data.totalPage);
     } catch (error) {
@@ -125,7 +124,6 @@ const PlantPublicDataList = ({
   };
 
   useEffect(() => {
-    console.log(searchKeyword);
     publicDataRead({ searchKeyword, page });
   }, [searchKeyword, page]);
   // handlePageChange 페이지 네이션 클릭 시 마다 이벤트

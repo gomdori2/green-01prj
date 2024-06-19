@@ -16,7 +16,6 @@ const Header = () => {
   }, [contextUserData]);
 
   useEffect(() => {
-    // console.log("userSeq ", userSeq);
   }, [userSeq]);
 
   // useEffect(() => {

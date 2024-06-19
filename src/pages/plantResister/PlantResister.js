@@ -56,6 +56,12 @@ const DetailDivInnerStyle = styled.div`
     content: "";
   }
 `;
+const TitleDivStyle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  padding-left: 5px;
+`;
 const PlantResister = () => {
   const { contextUserData } = useContext(userInfoContext);
   if (!contextUserData) {
@@ -90,7 +96,6 @@ const PlantResister = () => {
     // 아직 안됨. - 공공데이터
 
     // postData({ userSeqData, plantsName, etc, plantNickName });
-    console.log(datas);
   }, [plantNickName, etc]);
   // 일단 default로 보냄.
   // 해당 되는 컴포넌트 하나 필요
@@ -124,135 +129,144 @@ const PlantResister = () => {
     return <Loading></Loading>;
   }
   return (
-    <DetailDivStyle>
-      <DetailDivInnerStyle>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-          }}
-        >
-          {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        marginLeft: "20px",
+      }}
+    >
+      <TitleDivStyle>식물 등록 페이지</TitleDivStyle>
+      <DetailDivStyle>
+        <DetailDivInnerStyle>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
             }}
           >
+            {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
             <div
               style={{
-                width: "100%",
-                height: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              {plantPic ? (
-                <img
-                  style={{ width: "196px", height: "120px" }}
-                  src={plantPic}
-                ></img>
-              ) : (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0",
-                    justifyContent: "center",
-                    textAlign: "center",
-                  }}
-                >
-                  <TbPlantOff size={120} />
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {plantPic ? (
+                  <img
+                    style={{ width: "196px", height: "120px" }}
+                    src={plantPic}
+                  ></img>
+                ) : (
                   <div
                     style={{
-                      display: "block",
-                      fontSize: "15px",
-                      fontWeight: "bold",
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0",
+                      justifyContent: "center",
+                      textAlign: "center",
                     }}
                   >
-                    식물 이미지가 없습니다.
+                    <TbPlantOff size={120} />
+                    <div
+                      style={{
+                        display: "block",
+                        fontSize: "15px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      식물 이미지가 없습니다.
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div>
+                  <label>식물명</label>
+                  <div style={{ marginLeft: "13px", gap: 15 }}>
+                    <input
+                      value={plantName ? plantName : ""}
+                      style={{ width: "120px" }}
+                      readOnly
+                      placeholder="불러오기로 등록"
+                    />
+                    {isClicked ? (
+                      <PlantPublicDataList
+                        // setOdataSeq={setOdataSeq}
+                        setIsClicked={setIsClicked}
+                        setOdataSeq={setOdataSeq}
+                        setPlantName={setPlantName}
+                        setPlantPic={setPlantPic}
+                      />
+                    ) : null}
+                    <button
+                      type="button"
+                      className="btn"
+                      style={{ background: "rgb(35, 47, 175)" }}
+                      onClick={() => isClickFunc()}
+                    >
+                      불러오기
+                    </button>
                   </div>
                 </div>
-              )}
-            </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div>
-                <label>식물명</label>
-                <div style={{ marginLeft: "13px", gap: 15 }}>
+                <div className="flex-box-div">
+                  <label>식물애칭</label>
                   <input
-                    value={plantName ? plantName : ""}
-                    style={{ width: "120px" }}
-                    readOnly
-                    placeholder="불러오기로 등록"
+                    value={plantNickName}
+                    onChange={e => {
+                      setPlantNickName(e.target.value);
+                    }}
+                    placeholder="식물 애칭을 입력해주세요."
                   />
-                  {isClicked ? (
-                    <PlantPublicDataList
-                      // setOdataSeq={setOdataSeq}
-                      setIsClicked={setIsClicked}
-                      setOdataSeq={setOdataSeq}
-                      setPlantName={setPlantName}
-                      setPlantPic={setPlantPic}
-                    />
-                  ) : null}
-                  <button
-                    type="button"
-                    className="btn"
-                    style={{ background: "rgb(35, 47, 175)" }}
-                    onClick={() => isClickFunc()}
-                  >
-                    불러오기
-                  </button>
                 </div>
               </div>
-              <div className="flex-box-div">
-                <label>식물애칭</label>
-                <input
-                  value={plantNickName}
-                  onChange={e => {
-                    setPlantNickName(e.target.value);
-                    console.log(e.target.value);
-                  }}
-                  placeholder="식물 애칭을 입력해주세요."
-                />
+            </div>
+            <div className="flex-box-div text-area-div">
+              <label htmlFor="text">기타사항</label>
+              <div className="text-area-style">
+                <TextArea
+                  valueDatas={etc}
+                  setTextData={setEtc}
+                  maxLength={100}
+                ></TextArea>
               </div>
             </div>
-          </div>
-          <div className="flex-box-div text-area-div">
-            <label htmlFor="text">기타사항</label>
-            <div className="text-area-style">
-              <TextArea
-                valueDatas={etc}
-                setTextData={setEtc}
-                maxLength={100}
-              ></TextArea>
-            </div>
-          </div>
-          <div
-            className="flex-box-div"
-            style={{ display: "flex", justifyContent: "end", gap: 15 }}
-          >
-            <button
-              type="button"
-              className="btn"
-              style={{ background: "rgb(35, 47, 175)" }}
-              onClick={() => {
-                postHandler({
-                  userSeq: contextUserData.userSeq,
-                  odataSeq,
-                  plantNickName,
-                  etc,
-                });
-              }}
+            <div
+              className="flex-box-div"
+              style={{ display: "flex", justifyContent: "end", gap: 15 }}
             >
-              등록
-            </button>
-          </div>
-        </form>
-      </DetailDivInnerStyle>
-    </DetailDivStyle>
+              <button
+                type="button"
+                className="btn"
+                style={{ background: "rgb(35, 47, 175)" }}
+                onClick={() => {
+                  postHandler({
+                    userSeq: contextUserData.userSeq,
+                    odataSeq,
+                    plantNickName,
+                    etc,
+                  });
+                }}
+              >
+                등록
+              </button>
+            </div>
+          </form>
+        </DetailDivInnerStyle>
+      </DetailDivStyle>
+    </div>
   );
 };
 

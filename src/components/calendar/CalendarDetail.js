@@ -114,7 +114,6 @@ const CalendarDetail = () => {
       try {
         const result = await getDetailSch(stateData);
         setDetailData(result.data.data);
-        console.log(result);
         // 데이터 불러올 때 아이콘 갱신
         const gardeningArray = result?.data.data.gardening
           .toString()
@@ -149,7 +148,6 @@ const CalendarDetail = () => {
   ) => {
     // 넘길때 , 떼고 숫자로 넘김
     setIsLoading(true);
-    console.log(plantSeq, gardenSeq, checkedValues, modContent);
     try {
       const checkeArray = checkedValues.join("");
       const parseCheckeArray = parseInt(checkeArray);

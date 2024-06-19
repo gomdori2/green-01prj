@@ -2,7 +2,6 @@ import { useLocation } from "react-router-dom";
 
 const Footer = () => {
   const location = useLocation();
-  // console.log(location);
   if (location.pathname !== "/") {
     return (
       <footer className="footer">
