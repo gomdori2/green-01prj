@@ -13,12 +13,12 @@ function NoticeTop({
   return (
     <div className="notice__top">
       <div className="flex-gap-4">
-        <button className="post-all btn" onClick={allButtonClick}>
+        {/* <button className="post-all btn" onClick={allButtonClick}>
           전체글
-        </button>
-        <button className="post-best btn-normal" onClick={bestButtonClick}>
+        </button> */}
+        {/* <button className="post-best btn-normal" onClick={bestButtonClick}>
           추천글
-        </button>
+        </button> */}
         <button className="order-old" onClick={orderClick}>
           {orderText}
         </button>
@@ -30,7 +30,7 @@ function NoticeTop({
         <button className="view-Type border">
           <BsViewStacked size={15} />
         </button> */}
-        <select
+        {/* <select
           className="select"
           name="itemsPerPage"
           value={itemsPerPage}
@@ -43,7 +43,7 @@ function NoticeTop({
           <option value="30">30개씩</option>
           <option value="40">40개씩</option>
           <option value="50">50개씩</option>
-        </select>
+        </select> */}
       </div>
     </div>
   );
