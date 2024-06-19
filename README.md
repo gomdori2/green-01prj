@@ -26,7 +26,7 @@ https://github.com/gomdori2/green-01prj/assets/96719788/dde1d256-3f5a-4d02-976d-
 
 <img src="https://img.shields.io/badge/sass-CC6699?style=for-the-badge&logo=Sass&logoColor=white">
 
-<img src="https://img.shields.io/badge/emotion-black?style=for-the-badge&logo=emotion&logoColor=white">
+<img src="https://img.shields.io/badge/emotion-cc6ac4?style=for-the-badge&logo=emotion&logoColor=white">
 </div>
 <br/>
 <div>
