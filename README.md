@@ -46,31 +46,7 @@
 ![image](https://github.com/gomdori2/green-01prj/assets/96719788/99881a19-5c70-40eb-bf01-ddc1d1728893)
 
 
-## 사용 기술
-
-- 기본 웹 기술
-  - HTML
-  - CSS
-  - JavaScript
-- 스타일링
-
-  - emotion
-  - scss
-  - restCss
-
-- 형상 관리도구
-
-  - gitHub
-
-- 개발 도구
-
-  - esLint
-  - prettier
-
-- 라이브러리
-  - react
-  - react-router
-  - axios
+## 사용 라이브러리
   - react-icons
   - react-calendar
   - moment
