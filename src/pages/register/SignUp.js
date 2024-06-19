@@ -37,7 +37,6 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Token:", token);
   }, [token]);
 
   // 아이디 중복 검사 함수
@@ -137,7 +136,6 @@ const SignUp = () => {
 
     // 회원가입 정보
     const signUpResult = await postUserSignUp(signUpReqData);
-    console.log(signUpResult);
 
     if (signUpResult.data.code === 1) {
       alert("회원가입이 완료되었습니다! 로그인 창에서 로그인 후 이용해주세요");

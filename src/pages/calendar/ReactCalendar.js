@@ -78,13 +78,11 @@ const ReactCalendar = () => {
     return () => {};
   }, []);
   useEffect(() => {
-    console.log(userSeq);
   }, [userSeq]);
   useEffect(() => {
     if (userSeq) {
       const monthData = clickDay.replaceAll("-", "");
       getMonthCalendars(contextUserData?.userSeq, monthData.substr(0, 6));
-      console.log("sadfsadfasdfasfasfds", monthData);
     }
   }, [userSeq]);
   // 외부 데이터의 내용을 날짜에 출력하기
@@ -96,7 +94,6 @@ const ReactCalendar = () => {
   // 조회
   const getMonthCalendars = async (userSeq, clickDay) => {
     const result = await getMonthCalendar(userSeq, clickDay);
-    console.log(result.data.data);
     setMonthData(result.data.data);
     return result;
   };
@@ -113,11 +110,9 @@ const ReactCalendar = () => {
     // DD : 2자리 일
     const checkDay = moment(date).format("yyyy-MM-DD");
     // 아래 구문은 api 데이터의 날짜와 현재 체크 날짜를 비교한다.
-    console.log(monthData);
     const dayResult = monthData?.find(
       item => checkDay === item.managementDate.toString(),
     );
-    console.log("safasfasfasdfasf", dayResult);
     //const filteredDay = ;
     // map으로 객체 1,2,3,4 값에 해당 되는 아이콘 빼기.
     const uiIcon = {
@@ -162,7 +157,6 @@ const ReactCalendar = () => {
   useEffect(() => {
     // 죄송합니다. 강제로 onClickDay 함수를
     // 실행하면서 날짜를 전달하였습니다.
-    console.log(allData);
     onClickDay(moment().format("yyyy-MM-DD"));
   }, []);
   const formatDay = (locale, date) => moment(date).format("D");

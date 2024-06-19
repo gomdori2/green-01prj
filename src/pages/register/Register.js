@@ -36,7 +36,6 @@ const Register = () => {
       // 백엔드로 전달할 메일주소
       const reqData = `/api/user/auth/email?email=${userEmail}`;
       const result = await getUserEmail(reqData);
-      console.log(result);
 
       if (result.data.code === 1) {
         //메일 전송 완료 알림

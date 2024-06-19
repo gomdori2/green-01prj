@@ -87,7 +87,6 @@ const UserProfile = () => {
 
     // 수정된 유저 정보
     const profileUpdateResult = await patchUserProfile(profileUpdateReqData);
-    console.log(profileUpdateResult);
     // alert("수정이 완료되었습니다!");
     setIisModifyModalOpen(true);
     setTimeout(() => {

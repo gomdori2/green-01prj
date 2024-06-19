@@ -114,7 +114,6 @@ const CalendarPlantsPop = ({
 
   // setOdataSeq > click 했을 때 seq 담아야함
   const getPlantDataRead = async (userSeq, page) => {
-    console.log(userSeq, page);
     setIsLoading(true);
     try {
       const result = await getData(userSeq, page);
@@ -127,7 +126,6 @@ const CalendarPlantsPop = ({
   };
 
   useEffect(() => {
-    console.log(searchKeyword);
     getPlantDataRead(userSeq, page);
   }, [page]);
   // handlePageChange 페이지 네이션 클릭 시 마다 이벤트

@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const getMonthCalendar = async (userSeq, clickDay) => {
-  console.log(userSeq, clickDay);
   try {
     const result = await axios.get(
       `/api/schedule/plant/management/month?userSeq=${userSeq}&managementDate=${clickDay}`,
@@ -40,7 +39,6 @@ export const getDetailSch = async ({ gardenSeq, managementDate }) => {
 // /api/schedule/plant/management/day
 // http://34.70.113.56:8080/api/schedule/plant/management/day?userSeq=10&managementDate=2024-01-02&page=1&size=10
 export const getDayReadSch = async (userSeq, managementDate, page) => {
-  console.log(userSeq, managementDate, page);
   try {
     const result = await axios.get(
       `/api/schedule/plant/management/day?userSeq=${userSeq}&managementDate=${managementDate}&page=${page}&size=10`,
@@ -59,7 +57,6 @@ export const calendarPatchData = async (
   gardening,
   contents,
 ) => {
-  console.log(plantSeq, plantManagementSeq, gardening, contents);
   try {
     const result = await axios.patch("/api/schedule/plant/management", {
       plantSeq,
@@ -81,7 +78,6 @@ export const postPlantSch = async (
   gardening,
   contents,
 ) => {
-  console.log(plantSeq, managementDate, gardening, contents);
   try {
     const result = await axios.post("/api/schedule/plant/management", {
       plantSeq,

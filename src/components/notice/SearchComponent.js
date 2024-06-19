@@ -30,7 +30,6 @@ const SearchComponent = ({ onSearch }) => {
         },
       });
       onSearch(res.data.data, searchType, searchQuery); // 검색 결과와 검색 유형, 검색어를 전달
-      console.log("검색결과", res.data);
     } catch (error) {
       console.error("Error while fetching data:", error);
     }

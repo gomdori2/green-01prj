@@ -42,7 +42,6 @@ const CalendarList = ({ item }) => {
     plantPic,
     plantSeq,
   } = item;
-  console.log(plantSeq);
   let spGardening = gardening?.toString().split("");
 
   const uiIcon = {

@@ -111,7 +111,6 @@ const PlantResisterDetail = () => {
     patchEtc,
   ) => {
     setIsLoading(true);
-    console.log(userSeq, plantSeq, patchPlantNickName, patchEtc);
     try {
       await patchData(userSeq, plantSeq, patchPlantNickName, patchEtc);
       toast.success("수정되었습니다.");
@@ -135,7 +134,6 @@ const PlantResisterDetail = () => {
     }
   };
   useEffect(() => {
-    console.log(isClicked);
   }, [isClicked]);
   useEffect(() => {}, [patchPlantNickName, patchEtc]);
   // 따로 변경될 사항이 아니라서 ...
@@ -228,7 +226,6 @@ const PlantResisterDetail = () => {
                     value={patchPlantNickName}
                     onChange={e => {
                       setPatchPlantNickName(e.target.value);
-                      console.log(patchPlantNickName);
                     }}
                   />
                 </div>

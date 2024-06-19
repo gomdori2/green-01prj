@@ -96,7 +96,6 @@ const PlantResister = () => {
     // 아직 안됨. - 공공데이터
 
     // postData({ userSeqData, plantsName, etc, plantNickName });
-    console.log(datas);
   }, [plantNickName, etc]);
   // 일단 default로 보냄.
   // 해당 되는 컴포넌트 하나 필요
@@ -228,7 +227,6 @@ const PlantResister = () => {
                     value={plantNickName}
                     onChange={e => {
                       setPlantNickName(e.target.value);
-                      console.log(e.target.value);
                     }}
                     placeholder="식물 애칭을 입력해주세요."
                   />

@@ -4,7 +4,6 @@ function checkUserID() {
     const username = useridInput.value;
 
     // AJAX를 사용하여 서버에 아이디 중복 확인 요청을 보냅니다.
-    console.log('아이디 중복확인:', username);
 
     // 서버 응답에 따라 메시지를 표시합니다.
     const isDuplicate = false; // 서버 응답을 받아와서 중복 여부를 결정해야 합니다.

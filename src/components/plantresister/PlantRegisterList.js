@@ -28,9 +28,7 @@ const PlantRegListUlStyle = styled.div`
 const PlantRegisterList = ({ item, index }) => {
   const { plantSeq } = item;
   const { contextUserData } = useContext(userInfoContext);
-  useEffect(() => {
-    console.log(item);
-  }, []);
+  useEffect(() => {}, []);
   // useSearchParams로 pk 뺄것.
   return (
     <PlantRegListUlStyle key={plantSeq}>
