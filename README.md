@@ -109,4 +109,4 @@ npm start
 - **404Page 이미지**:
   - <a href="https://kr.freepik.com/author/ntl-studio">ntl-studio: 404Page.jpg</a>
 - **파비콘 이미지**:
-  - <a href="https://www.flaticon.com/kr/free-icons/" title="화분 아이콘">화분 아이콘 제작자: DinosoftLabs - Flaticon</a>
+  - 화분 아이콘 제작자 : DinosoftLabs - Flaticon
