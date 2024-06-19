@@ -15,7 +15,6 @@ function Notice() {
   const navigate = useNavigate();
   const { page } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialOrder = Number(sessionStorage.getItem("order")) || 0;
   const initialItemsPerPage =
     parseInt(sessionStorage.getItem("itemsPerPage"), 10) || 10;
 
@@ -25,8 +24,7 @@ function Notice() {
   const [totalPages, setTotalPages] = useState(0);
   const [searchResult, setSearchResult] = useState(null);
   const [itemsPerPage, setItemsPerPage] = useState(initialItemsPerPage);
-  const [order, setOrder] = useState(initialOrder);
-  const [orderText, setOrderText] = useState(getOrderText(initialOrder));
+  const [order, setOrder] = useState(3);
   const [bestPost, setBestPost] = useState([]);
   const [showBest, setShowBest] = useState(false);
 
@@ -77,7 +75,6 @@ function Notice() {
     const newOrder = order === 3 ? 0 : 3;
     setOrder(newOrder);
     sessionStorage.setItem("order", newOrder.toString());
-    setOrderText(getOrderText(newOrder));
     navigate(
       `/notice/page/1${
         searchParams.toString() ? `?${searchParams.toString()}` : ""
@@ -141,7 +138,6 @@ function Notice() {
           orderClick={handleOrderClick}
           itemsPerPage={itemsPerPage}
           handleItemsPerPageChange={handleItemsPerPageChange}
-          orderText={orderText}
           bestButtonClick={bestButtonClick}
           allButtonClick={allButtonClick}
         />

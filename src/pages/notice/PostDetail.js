@@ -18,7 +18,7 @@ const PostDetail = () => {
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
-        const res = await axios.get("/api/community/list?size=1000");
+        const res = await axios.get("/api/community/list?size=100");
         setAllPosts(res.data.data.list);
       } catch (error) {
         setError(error);
