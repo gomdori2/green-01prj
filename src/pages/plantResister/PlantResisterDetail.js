@@ -77,7 +77,7 @@ const TitleDivStyle = styled.div`
   font-size: 20px;
   font-weight: bold;
   color: black;
-  padding-left: 5px;
+  padding-left: 20px;
 `;
 const PlantResisterDetail = () => {
   // text area 때문에 만들어 놓음
@@ -155,117 +155,125 @@ const PlantResisterDetail = () => {
     return <Loading></Loading>;
   }
   return (
-    <DetailDivStyle>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+      }}
+    >
       <TitleDivStyle>등록 식물 상세 페이지</TitleDivStyle>
-      <DetailDivInnerStyle>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-          }}
-        >
-          {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+      <DetailDivStyle>
+        <DetailDivInnerStyle>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
             }}
           >
+            {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
             <div
               style={{
-                width: "100%",
-                height: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              {dataObj?.plantPic ? (
-                <img
-                  style={{ width: "196px", height: "120px" }}
-                  src={dataObj?.plantPic}
-                ></img>
-              ) : (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0",
-                    justifyContent: "center",
-                    textAlign: "center",
-                  }}
-                >
-                  <TbPlantOff size={120} />
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {dataObj?.plantPic ? (
+                  <img
+                    style={{ width: "196px", height: "120px" }}
+                    src={dataObj?.plantPic}
+                  ></img>
+                ) : (
                   <div
                     style={{
-                      display: "block",
-                      fontSize: "15px",
-                      fontWeight: "bold",
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0",
+                      justifyContent: "center",
+                      textAlign: "center",
                     }}
                   >
-                    식물 이미지가 없습니다.
+                    <TbPlantOff size={120} />
+                    <div
+                      style={{
+                        display: "block",
+                        fontSize: "15px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      식물 이미지가 없습니다.
+                    </div>
                   </div>
+                )}
+              </div>
+              <div className="divBoxStyle">
+                <div>
+                  <label>식물명</label>
+                  <input value={dataObj?.plantName} readOnly />
                 </div>
-              )}
-            </div>
-            <div className="divBoxStyle">
-              <div>
-                <label>식물명</label>
-                <input value={dataObj?.plantName} readOnly />
-              </div>
-              <div>
-                <label>식물애칭</label>
-                <input
-                  value={patchPlantNickName}
-                  onChange={e => {
-                    setPatchPlantNickName(e.target.value);
-                    console.log(patchPlantNickName);
-                  }}
-                />
+                <div>
+                  <label>식물애칭</label>
+                  <input
+                    value={patchPlantNickName}
+                    onChange={e => {
+                      setPatchPlantNickName(e.target.value);
+                      console.log(patchPlantNickName);
+                    }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="text-area-div">
-            <label htmlFor="text">기타사항</label>
-            <div className="text-area-style">
-              <TextArea
-                valueDatas={patchEtc}
-                setTextData={setPatchEtc}
-                maxLength="100"
-              ></TextArea>
+            <div className="text-area-div">
+              <label htmlFor="text">기타사항</label>
+              <div className="text-area-style">
+                <TextArea
+                  valueDatas={patchEtc}
+                  setTextData={setPatchEtc}
+                  maxLength="100"
+                ></TextArea>
+              </div>
             </div>
-          </div>
-          <div style={{ gap: "10px", justifyContent: "end" }}>
-            {/* 제발 좀 객체 따놓고 스트링 붙여서 보내지말자 */}
-            <button
-              type="button"
-              className="btn"
-              onClick={() => {
-                handleClickPatch(
-                  userSeq,
-                  plantSeq,
-                  patchPlantNickName,
-                  patchEtc,
-                );
-              }}
-            >
-              수정
-            </button>
-            <button
-              className="btn"
-              style={{ background: "red" }}
-              onClick={() => {
-                handleClickDelete(userSeq, plantSeq);
-              }}
-            >
-              삭제
-            </button>
-          </div>
-        </form>
-      </DetailDivInnerStyle>
-    </DetailDivStyle>
+            <div style={{ gap: "10px", justifyContent: "end" }}>
+              {/* 제발 좀 객체 따놓고 스트링 붙여서 보내지말자 */}
+              <button
+                type="button"
+                className="btn"
+                onClick={() => {
+                  handleClickPatch(
+                    userSeq,
+                    plantSeq,
+                    patchPlantNickName,
+                    patchEtc,
+                  );
+                }}
+              >
+                수정
+              </button>
+              <button
+                className="btn"
+                style={{ background: "red" }}
+                onClick={() => {
+                  handleClickDelete(userSeq, plantSeq);
+                }}
+              >
+                삭제
+              </button>
+            </div>
+          </form>
+        </DetailDivInnerStyle>
+      </DetailDivStyle>
+    </div>
   );
 };
 

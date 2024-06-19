@@ -72,6 +72,13 @@ const GardningIconStyle = styled.div`
   gap: 13px !important;
   margin-left: 25px;
 `;
+const TitleDivStyle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  padding-left: 5px;
+  padding-bottom: 20px;
+`;
 const CalendarResister = () => {
   const location = useLocation();
   // 앞에서 받으면 편한거 같긴한데 일단 선언해서사용
@@ -141,100 +148,102 @@ const CalendarResister = () => {
   }
   // ****************삭제**************
   return (
-    <DetailDivStyle>
-      <DetailDivInnerStyle>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-          }}
-        >
-          {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+    <div>
+      <TitleDivStyle>식물 일정 등록</TitleDivStyle>
+      <DetailDivStyle>
+        <DetailDivInnerStyle>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
             }}
           >
             {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
             <div
               style={{
-                width: "100%",
-                height: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              {imgUrl ? (
-                <img
-                  style={{ width: "196px", height: "120px" }}
-                  src={imgUrl}
-                ></img>
-              ) : (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0",
-                    justifyContent: "center",
-                    textAlign: "center",
-                  }}
-                >
-                  <TbPlantOff size={120} />
+              {/* 날짜 / 순번은 고정 값이라 변경 예정 */}
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {imgUrl ? (
+                  <img
+                    style={{ width: "196px", height: "120px" }}
+                    src={imgUrl}
+                  ></img>
+                ) : (
                   <div
                     style={{
-                      display: "block",
-                      fontSize: "15px",
-                      fontWeight: "bold",
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0",
+                      justifyContent: "center",
+                      textAlign: "center",
                     }}
                   >
-                    식물 이미지가 없습니다.
+                    <TbPlantOff size={120} />
+                    <div
+                      style={{
+                        display: "block",
+                        fontSize: "15px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      식물 이미지가 없습니다.
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div>
+                  <label style={{ marginRight: "11px" }}>관리날짜</label>
+                  <div style={{ gap: 5 }}>
+                    <input
+                      id="day"
+                      value={clickDay}
+                      style={{ width: "100px" }}
+                      readOnly
+                    />
+                    {isClicked ? (
+                      <CalendarPlantsPop
+                        // setOdataSeq={setOdataSeq}
+                        setIsClicked={setIsClicked}
+                        setPlantSeq={setPlantSeq}
+                        setPlantName={setPlantName}
+                        userSeq={contextUserData.userSeq}
+                        setImgUrl={setImgUrl}
+                      />
+                    ) : null}
+                    <button
+                      className="btn"
+                      style={{
+                        marginLeft: "20px",
+                        background: "rgb(35, 47, 175)",
+                      }}
+                      type="button"
+                      onClick={() => isClickFunc()}
+                    >
+                      불러오기
+                    </button>
                   </div>
                 </div>
-              )}
-            </div>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div>
-                <label style={{ marginRight: "11px" }}>관리날짜</label>
-                <div style={{ gap: 5 }}>
-                  <input
-                    id="day"
-                    value={clickDay}
-                    style={{ width: "100px" }}
-                    readOnly
-                  />
-                  {isClicked ? (
-                    <CalendarPlantsPop
-                      // setOdataSeq={setOdataSeq}
-                      setIsClicked={setIsClicked}
-                      setPlantSeq={setPlantSeq}
-                      setPlantName={setPlantName}
-                      userSeq={contextUserData.userSeq}
-                      setImgUrl={setImgUrl}
-                    />
-                  ) : null}
-                  <button
-                    className="btn"
-                    style={{
-                      marginLeft: "20px",
-                      background: "rgb(35, 47, 175)",
-                    }}
-                    type="button"
-                    onClick={() => isClickFunc()}
-                  >
-                    불러오기
-                  </button>
+                <div>
+                  <label>식물애칭</label>
+                  <input id="day" value={plantName} readOnly />
                 </div>
-              </div>
-              <div>
-                <label>식물애칭</label>
-                <input id="day" value={plantName} readOnly />
-              </div>
 
-              {/* <div>
+                {/* <div>
             <label htmlFor="title"></label>
             <input
               id="title"
@@ -244,124 +253,125 @@ const CalendarResister = () => {
               }}
             />
           </div> */}
-              <div>
-                {/* 가드닝 이미지 왔다갔다 시키기 / 거기에 체크박스 none + label로 아이콘에 checkbox 사용해서 값 넘기기 */}
-                <label htmlFor="title">가드닝</label>
-                <IconStyle>
-                  <div>
-                    <GardningIconStyle>
-                      <div
-                        onClick={() => handleIconClick(1)}
-                        style={{
-                          background: checkedValues?.includes(1)
-                            ? "#FFD700"
-                            : "#F5DEB3",
-                          borderRadius: "10px",
-                          width: "40px",
-                          height: "40px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <FaSun style={{ color: "#fff" }} />
-                      </div>
-                      <div
-                        onClick={() => handleIconClick(2)}
-                        style={{
-                          background: checkedValues?.includes(2)
-                            ? "#32CD32"
-                            : "#98FB98",
-                          borderRadius: "10px",
-                          width: "40px",
-                          height: "40px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <FaSeedling style={{ color: "#fff" }} />
-                      </div>
-                      <div
-                        onClick={() => handleIconClick(3)}
-                        style={{
-                          background: checkedValues?.includes(3)
-                            ? "#00BFFF"
-                            : "#87CEEB",
-                          borderRadius: "10px",
-                          width: "40px",
-                          height: "40px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <FaWind style={{ color: "#fff" }} />
-                      </div>
-                      <div
-                        onClick={() => handleIconClick(4)}
-                        style={{
-                          background: checkedValues?.includes(4)
-                            ? "#32CD32"
-                            : "#98FB98",
-                          borderRadius: "10px",
-                          width: "40px",
-                          height: "40px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <FaTree style={{ color: "#fff" }} />
-                      </div>
-                    </GardningIconStyle>
-                  </div>
-                </IconStyle>
+                <div>
+                  {/* 가드닝 이미지 왔다갔다 시키기 / 거기에 체크박스 none + label로 아이콘에 checkbox 사용해서 값 넘기기 */}
+                  <label htmlFor="title">가드닝</label>
+                  <IconStyle>
+                    <div>
+                      <GardningIconStyle>
+                        <div
+                          onClick={() => handleIconClick(1)}
+                          style={{
+                            background: checkedValues?.includes(1)
+                              ? "#FFD700"
+                              : "#F5DEB3",
+                            borderRadius: "10px",
+                            width: "40px",
+                            height: "40px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <FaSun style={{ color: "#fff" }} />
+                        </div>
+                        <div
+                          onClick={() => handleIconClick(2)}
+                          style={{
+                            background: checkedValues?.includes(2)
+                              ? "#32CD32"
+                              : "#98FB98",
+                            borderRadius: "10px",
+                            width: "40px",
+                            height: "40px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <FaSeedling style={{ color: "#fff" }} />
+                        </div>
+                        <div
+                          onClick={() => handleIconClick(3)}
+                          style={{
+                            background: checkedValues?.includes(3)
+                              ? "#00BFFF"
+                              : "#87CEEB",
+                            borderRadius: "10px",
+                            width: "40px",
+                            height: "40px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <FaWind style={{ color: "#fff" }} />
+                        </div>
+                        <div
+                          onClick={() => handleIconClick(4)}
+                          style={{
+                            background: checkedValues?.includes(4)
+                              ? "#32CD32"
+                              : "#98FB98",
+                            borderRadius: "10px",
+                            width: "40px",
+                            height: "40px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <FaTree style={{ color: "#fff" }} />
+                        </div>
+                      </GardningIconStyle>
+                    </div>
+                  </IconStyle>
+                </div>
               </div>
             </div>
-          </div>
-          {/* <div>
+            {/* <div>
             <strong>체크된 값 </strong> {checkedValues?.join(", ")}
           </div> */}
-          <div className="text-area-div">
-            <label htmlFor="text">기타사항</label>
-            <div className="text-area-style">
-              <TextArea
-                valueDatas={content}
-                setTextData={setContent}
-                maxLength={100}
-              ></TextArea>
+            <div className="text-area-div">
+              <label htmlFor="text">기타사항</label>
+              <div className="text-area-style">
+                <TextArea
+                  valueDatas={content}
+                  setTextData={setContent}
+                  maxLength={100}
+                ></TextArea>
+              </div>
             </div>
-          </div>
-          <div style={{ justifyContent: "end" }}>
-            <button
-              className="btn"
-              style={{ background: "rgb(35, 47, 175)" }}
-              onClick={() => {
-                postPlantSchCalendar(
-                  plantSeq,
-                  clickDay,
-                  checkedValues,
-                  content,
-                );
-                // 등록 페이지가 있을 시 빼고 얘기해보고 필요없다 하면
-                // 그냥 무조건 등록 / 수정
-                // const plantSeq = 11;
-                // const gardning = "1,2,3,4";
-                // const contents = "asdfasdfasdfasfsadfsda";
-                // postPlantSchCalendar(plantSeq, modContent, gardning, contents);
-              }}
-            >
-              등록
-            </button>
-          </div>
-        </form>
-      </DetailDivInnerStyle>
-    </DetailDivStyle>
+            <div style={{ justifyContent: "end" }}>
+              <button
+                className="btn"
+                style={{ background: "rgb(35, 47, 175)" }}
+                onClick={() => {
+                  postPlantSchCalendar(
+                    plantSeq,
+                    clickDay,
+                    checkedValues,
+                    content,
+                  );
+                  // 등록 페이지가 있을 시 빼고 얘기해보고 필요없다 하면
+                  // 그냥 무조건 등록 / 수정
+                  // const plantSeq = 11;
+                  // const gardning = "1,2,3,4";
+                  // const contents = "asdfasdfasdfasfsadfsda";
+                  // postPlantSchCalendar(plantSeq, modContent, gardning, contents);
+                }}
+              >
+                등록
+              </button>
+            </div>
+          </form>
+        </DetailDivInnerStyle>
+      </DetailDivStyle>
+    </div>
   );
 };
 
