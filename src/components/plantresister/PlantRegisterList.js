@@ -61,8 +61,8 @@ const PlantRegisterList = ({ item, index }) => {
             )}
           </span>
 
-          <span>{item.plantNickName}</span>
           <span>{item.plantName}</span>
+          <span>{item.plantNickName}</span>
         </li>
       </Link>
     </PlantRegListUlStyle>

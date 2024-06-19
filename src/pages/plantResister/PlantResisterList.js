@@ -70,7 +70,6 @@ const PlantResisterList = () => {
   const [currentPage, setCurrentPage] = useState();
 
   const getDataList = async (userSeq, page) => {
-    console.log(userSeq);
     try {
       const result = await getData(userSeq, page);
       setList(result?.data.data.list);
@@ -83,13 +82,15 @@ const PlantResisterList = () => {
   const navigate = useNavigate();
   useEffect(() => {
     getDataList(contextUserData?.userSeq, page);
+
     // if (userSeq) {
     // }
   }, [userSeq, page]);
+  useEffect(() => {}, []);
   // handlePageChange 페이지 네이션 클릭 시 마다 이벤트
   const handlePageChange = data => {
     setPage(data.selected + 1);
-    // getDataList({ userSeq: userSeq, size: size, page: page });
+    //getDataList({ userSeq: userSeq, size: size, page: page });
   };
 
   if (isLoading) {
@@ -102,8 +103,8 @@ const PlantResisterList = () => {
         <CalendarListUlStyle>
           <li>
             <span>이미지</span>
+            <span>식물명</span>
             <span>애칭</span>
-            <span>기타사항</span>
           </li>
         </CalendarListUlStyle>
         {/* 인덱스로 받는거 pk로 바꿔야함. */}
