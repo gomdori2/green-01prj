@@ -18,7 +18,7 @@ const PostDetail = () => {
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
-        const res = await axios.get("/api/community/list?size=1000");
+        const res = await axios.get("/api/community/list?size=100");
         setAllPosts(res.data.data.list);
       } catch (error) {
         setError(error);
@@ -64,7 +64,7 @@ const PostDetail = () => {
       );
       navigate("/notice");
     } catch (error) {
-      // console.log(error);
+      console.error(error);
     } finally {
       setIsModalOpen(false);
     }
@@ -101,7 +101,6 @@ const PostDetail = () => {
   };
 
   const handleLikeClick = async () => {
-    // console.log("추천 버튼 클릭됨");
     try {
       const storedUser = JSON.parse(sessionStorage.getItem("user"));
       const userSeq = storedUser?.userSeq;
@@ -113,7 +112,6 @@ const PostDetail = () => {
       const response = await axios.get(
         `/api/community/like?boardSeq=${post.data.boardSeq}&writer=${userSeq}`,
       );
-      // console.log("추천 요청 성공:", response.data);
 
       // 서버 응답에 따라 상태 업데이트
       if (response.data.code === 1) {
@@ -131,7 +129,7 @@ const PostDetail = () => {
         alert("추천 요청 실패: " + response.data.msg);
       }
     } catch (error) {
-      // console.log("추천 요청 실패:", error);
+      console.error("추천 요청 실패:", error);
     }
   };
 
