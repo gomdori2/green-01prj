@@ -2,6 +2,7 @@
 # 1차 그린 프로젝트
 
 ### 식물 일정 관리앱
+![plantDiaryLogo2](https://github.com/gomdori2/green-01prj/assets/96719788/46205511-419f-49b7-9bc7-ee8f9c6b2458)
 
 ### 소개
 
