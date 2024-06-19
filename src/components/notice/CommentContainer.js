@@ -136,8 +136,6 @@ const CommentContainer = () => {
     setCurrentPage(selected);
   };
 
-  console.log(comments.length);
-
   return (
     <div>
       <h3>전체 댓글 {cmtEl}개</h3>

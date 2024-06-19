@@ -48,7 +48,6 @@ const Register = () => {
       }
     } catch (error) {
       alert("메일 전송 중 오류가 발생했습니다. 다시 시도해주세요");
-      console.log("메일 전송 오류:", error);
     }
   };
 

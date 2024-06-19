@@ -28,7 +28,6 @@ const Login = ({ setUserInfo }) => {
     // console.log("백엔드로 전달할 로그인비번", loginPw);
     const reqData = `/api/user/login?id=${loginId}&pwd=${loginPw}`;
     const result = await postUserLogin(reqData);
-    console.log(result.data);
 
     if (result.data.code === 1) {
       // 로그인 성공시 sessionStorage에  사용자정보 저장

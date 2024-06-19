@@ -81,7 +81,6 @@ export const patchUserProfile = async data => {
 export const getUserLogout = async () => {
   try {
     const response = await axios.get("/api/user/logout");
-    console.log(response);
     return response;
   } catch (error) {
     console.log(error);

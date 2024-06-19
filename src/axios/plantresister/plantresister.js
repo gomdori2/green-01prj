@@ -23,7 +23,6 @@ export const getData = async (userSeq, page) => {
     const data = await axios.get(
       `/api/schedule/plant/list?userSeq=${userSeq}&page=${page}&size=10`,
     );
-    console.log(data);
     return data;
   } catch (error) {
     toast.warning(error);
