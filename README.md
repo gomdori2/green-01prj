@@ -41,7 +41,8 @@
 
 </a> <a href = "hun-se.slack.com"> <img alt="Slack" src ="https://img.shields.io/badge/Slack-4A154B.svg?&style=for-the-badge&logo=Slack&logoColor=white"/></a>
 
-![alt text](image.png)
+![image](https://github.com/gomdori2/green-01prj/assets/96719788/99881a19-5c70-40eb-bf01-ddc1d1728893)
+
 
 ## 사용 기술
 
