@@ -5,6 +5,7 @@ import { userInfoContext } from "../../context/UserInfoProvider";
 // 정보수정, 로그아웃 아이콘
 import { FiLogOut } from "react-icons/fi";
 import { FaUserPen } from "react-icons/fa6";
+import { getUserLogout } from "../../apis/user/userapi";
 
 const Header = () => {
   const { contextUserData, setContextUserData } = useContext(userInfoContext);
@@ -15,8 +16,19 @@ const Header = () => {
     setUserSeq(contextUserData?.userSeq);
   }, [contextUserData]);
 
-  useEffect(() => {
-  }, [userSeq]);
+  useEffect(() => {}, [userSeq]);
+
+  // 로그아웃 처리 함수
+  const handleLogout = async e => {
+    e.preventDefault();
+    const result = await getUserLogout();
+    if (result.status === 200) {
+      alert("로그아웃되었습니다.");
+      sessionStorage.removeItem("user");
+      setContextUserData(null);
+      navigate("/");
+    }
+  };
 
   // useEffect(() => {
   //   setUserSeq(localUserData.userSeq);
@@ -64,10 +76,8 @@ const Header = () => {
                 /
                 <button
                   className="action-item"
-                  onClick={() => {
-                    sessionStorage.removeItem("user");
-                    setContextUserData(null);
-                    navigate("/");
+                  onClick={e => {
+                    handleLogout(e);
                   }}
                 >
                   로그아웃
