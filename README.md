@@ -52,9 +52,9 @@ https://github.com/gomdori2/green-01prj/assets/96719788/dde1d256-3f5a-4d02-976d-
 <a href = "https://github.com/gomdori2/green-01prj.git"><img alt="GitHub" src ="https://img.shields.io/badge/GitHub-181717.svg?&style=for-the-badge&logo=GitHub&logoColor=white"/>
 </a>
 
-### 빽엔드와 협업 도구
+### BackEnd 협업 도구
 
-</a> <a href = "hun-se.slack.com"> <img alt="Slack" src ="https://img.shields.io/badge/Slack-4A154B.svg?&style=for-the-badge&logo=Slack&logoColor=white"/></a>
+ <a href = "hun-se.slack.com"> <img alt="Slack" src ="https://img.shields.io/badge/Slack-4A154B.svg?&style=for-the-badge&logo=Slack&logoColor=white"/></a>
 
 ### 사용언어 비율
 ![image](https://github.com/gomdori2/green-01prj/assets/96719788/99881a19-5c70-40eb-bf01-ddc1d1728893)
@@ -68,41 +68,35 @@ https://github.com/gomdori2/green-01prj/assets/96719788/dde1d256-3f5a-4d02-976d-
   - react-paginate
 
 ### 주요 기능
-
-- **로그인**
-  - contextApi로 전역상태를 관리
-  - 세션을 활용
-
-  
-- **회원가입**
-  - 메일 인증
-  - 회원가입
-
-
-- **유저정보 수정**
-  - 수정
-
+- **담당자 : 조원영**
+  - **로그인**
+    - contextApi로 전역상태를 관리
+    - 세션을 활용
+  - **회원가입**
+    - 메일 인증
+    - 회원가입
+  - **유저정보 수정**
+    - 수정
     
-- **식물 등록**
-  - 식물공공데이터를 받아와 식물 등록
-  - 식물 정보
-    - 등록 / 조회 / 수정 / 삭제 가능
+- **담당자 : 윤성환**
+  - **식물 등록**
+    - 식물공공데이터를 받아와 식물 등록
+    - 식물 정보
+      - 등록 / 조회 / 수정 / 삭제 가능
+  - **캘린더**
+    - 각 관리상태를 아이콘으로 관리
+    - 캘린더를 활용하여 원하는 관리일자에 일정 등록
+    - 일정
+      - 등록 / 조회 / 수정 / 삭제 가능
 
-  
-- **캘린더**
-  - 각 관리상태를 아이콘으로 관리
-  - 캘린더를 활용하여 원하는 관리일자에 일정 등록
-  - 일정
-    - 등록 / 조회 / 수정 / 삭제 가능
-
-
-- **커뮤니티**
-  - 게시글
-    - 등록 / 조회 / 수정 / 삭제 가능
-  - 좋아요 / 댓글 구현
-    - 등록 / 조회 / 수정 / 삭제 가능
-  - 검색
-    - 검색 조건에 맞게 검색
+**- 담당자 : 곽도억**
+  - **커뮤니티**
+    - 게시글
+      - 등록 / 조회 / 수정 / 삭제 가능
+    - 좋아요 / 댓글 구현
+      - 등록 / 조회 / 수정 / 삭제 가능
+    - 검색
+      - 검색 조건에 맞게 검색
 
 
 **저작권자 표시**
