@@ -8,7 +8,6 @@
 
 ## 사용 기술
 
-- **Frontend**: React,
 - 기본 웹 기술
   - HTML
   - CSS
