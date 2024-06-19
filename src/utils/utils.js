@@ -4,5 +4,5 @@ export const calculateTotalPages = (totalElements, itemsPerPage) => {
 };
 
 export const getOrderText = order => {
-  return order === 3 ? "오래된 순" : "최신 순";
+  return order === 3 ? "최신 순" : "오래된 순";
 };
