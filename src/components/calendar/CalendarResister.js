@@ -221,7 +221,7 @@ const CalendarResister = () => {
                         setIsClicked={setIsClicked}
                         setPlantSeq={setPlantSeq}
                         setPlantName={setPlantName}
-                        userSeq={contextUserData.userSeq}
+                        userSeq={contextUserData?.userSeq}
                         setImgUrl={setImgUrl}
                       />
                     ) : null}

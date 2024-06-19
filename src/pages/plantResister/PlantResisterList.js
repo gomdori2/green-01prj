@@ -69,13 +69,8 @@ const PlantResisterList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState();
 
-  useEffect(() => {
-    setUserSeq(contextUserData?.userSeq);
-  }, [contextUserData]);
-
-  useEffect(() => {}, [userSeq]);
-
   const getDataList = async (userSeq, page) => {
+    console.log(userSeq);
     try {
       const result = await getData(userSeq, page);
       setList(result?.data.data.list);
@@ -87,7 +82,7 @@ const PlantResisterList = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    getDataList(userSeq, page);
+    getDataList(contextUserData?.userSeq, page);
     // if (userSeq) {
     // }
   }, [userSeq, page]);
