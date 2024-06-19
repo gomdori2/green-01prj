@@ -1,14 +1,14 @@
 
 # 1차 그린 프로젝트
 
-## 식물 일정 관리앱
+### 식물 일정 관리앱
 
-## 소개
+### 소개
 
 - 1차 그린 프로젝트는 사용자가 식물의 관리 일정을 쉽게 추적하고 관리할 수 있도록 돕는 앱입니다. 
 - 현재는 기본적인 기능만 구현되어 있으며, 이후 추가 기능 및 디자인 개선이 예정되어 있습니다.
 
-## 사용 언어 및 라이브러리
+### 사용 언어 및 라이브러리
 
 <div>
 <img alt="Html" src ="https://img.shields.io/badge/HTML-E34F26.svg?&style=for-the-badge&logo=HTML&logoColor=white"/>
@@ -34,27 +34,27 @@
 <img src="https://img.shields.io/badge/react router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
 </div>
 
-## 형상관리 도구
+### 형상관리 도구
 
 <a href = "https://github.com/gomdori2/green-01prj.git"><img alt="GitHub" src ="https://img.shields.io/badge/GitHub-181717.svg?&style=for-the-badge&logo=GitHub&logoColor=white"/>
 </a>
 
-## 빽엔드와 협업 도구
+### 빽엔드와 협업 도구
 
 </a> <a href = "hun-se.slack.com"> <img alt="Slack" src ="https://img.shields.io/badge/Slack-4A154B.svg?&style=for-the-badge&logo=Slack&logoColor=white"/></a>
 
-## 사용언어 비율
+### 사용언어 비율
 ![image](https://github.com/gomdori2/green-01prj/assets/96719788/99881a19-5c70-40eb-bf01-ddc1d1728893)
 
 
-## 사용 라이브러리
+### 사용 라이브러리
   - react-icons
   - react-calendar
   - moment
   - react-toastify
   - react-paginate
 
-## 주요 기능
+### 주요 기능
 
 - 로그인
   - contextApi로 전역상태를 관리
@@ -81,7 +81,7 @@
   - 좋아요 / 댓글 구현
     - 등록 / 조회 / 수정 / 삭제 가능
 
-## 설치 및 실행
+### 설치 및 실행
 
 1. **프로젝트 클론**
 
@@ -105,7 +105,7 @@ npm start
 
 - 이미지 저작권자 표시는 현재 상태에서 팝업으로 변경할 예정입니다.
 
-## 저작권 및 참고 자료
+### 저작권 및 참고 자료
 
 - **404Page 이미지**:
   - <a href="https://kr.freepik.com/author/ntl-studio">ntl-studio: 404Page.jpg</a>
