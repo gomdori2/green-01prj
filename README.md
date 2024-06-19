@@ -59,6 +59,10 @@
 - 로그인
   - contextApi로 전역상태를 관리
   - 세션을 활용
+
+https://github.com/gomdori2/green-01prj/assets/96719788/019a96df-99ee-462e-b641-3d793bbf3b39
+
+
 - 회원가입
 
   - 메일 인증
