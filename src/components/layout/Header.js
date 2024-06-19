@@ -15,8 +15,7 @@ const Header = () => {
     setUserSeq(contextUserData?.userSeq);
   }, [contextUserData]);
 
-  useEffect(() => {
-  }, [userSeq]);
+  useEffect(() => {}, [userSeq]);
 
   // useEffect(() => {
   //   setUserSeq(localUserData.userSeq);
@@ -67,7 +66,7 @@ const Header = () => {
                   onClick={() => {
                     sessionStorage.removeItem("user");
                     setContextUserData(null);
-                    navigate("/");
+                    navigate("/logout");
                   }}
                 >
                   로그아웃

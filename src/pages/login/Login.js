@@ -10,7 +10,6 @@ const Login = ({ setUserInfo }) => {
   const [loginPw, setLoginPw] = useState("whdnjsdud3");
   const [errorMessage, setErrorMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const navigate = useNavigate();
   // const { contextUserData, setContextUserData } = useUser();
   const { contextUserData, setContextUserData } = useContext(userInfoContext);
@@ -47,7 +46,7 @@ const Login = ({ setUserInfo }) => {
       // JSON.stringify(response.data)는 JavaScript 객체를
       // JSON 문자열로 변환하는 함수
       // ('{"userSeq":4,"userId":userId,"userName":userName,"loginType":"email"}');
-      // alert("로그인되었습니다!");
+      alert("로그인되었습니다!");
       setIsModalOpen(true);
       // navigate("/notice");
     } else {
