@@ -6,6 +6,38 @@
 
 1차 그린 프로젝트는 사용자가 식물의 관리 일정을 쉽게 추적하고 관리할 수 있도록 돕는 앱입니다. 현재는 기본적인 기능만 구현되어 있으며, 이후 추가 기능 및 디자인 개선이 예정되어 있습니다.
 
+## 사용 기술
+
+- **Frontend**: React,
+- 기본 웹 기술
+  - HTML
+  - CSS
+  - JavaScript
+- 스타일링
+
+  - emotion
+  - scss
+  - restCss
+
+- 형상 관리도구
+
+  - gitHub
+
+- 개발 도구
+
+  - esLint
+  - prettier
+
+- 라이브러리
+  - react
+  - react-router
+  - axios
+  - react-icons
+  - react-calendar
+  - moment
+  - react-toastify
+  - react-paginate
+
 ## 주요 기능
 
 - 로그인
@@ -52,38 +84,6 @@ npm install
 ```txt
 npm start
 ```
-
-## 사용 기술
-
-- **Frontend**: React,
-- 기본 웹 기술
-  - HTML
-  - CSS
-  - JavaScript
-- 스타일링
-
-  - emotion
-  - scss
-  - restCss
-
-- 형상 관리도구
-
-  - gitHub
-
-- 개발 도구
-
-  - esLint
-  - prettier
-
-- 라이브러리
-  - react
-  - react-router
-  - axios
-  - react-icons
-  - react-calendar
-  - moment
-  - react-toastify
-  - react-paginate
 
 **저작권자 표시**: 이미지 저작권자 표시는 현재 상태에서 팝업으로 변경할 예정입니다.
 
