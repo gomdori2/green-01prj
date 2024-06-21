@@ -67,10 +67,7 @@ const Register = () => {
 
     if (result.data.code === 1) {
       // alert("인증이 성공했습니다!");
-      setIsEmailModalOpen(true);
-      setTimeout(() => {
-        navigate("/signup", { state: { email: userEmail, token: authCode } });
-      }, 2000);
+      setIsTokenModalOpen(true);
       // navigate("/signup", { state: { email: userEmail, token: authCode } });
     } else {
       alert("인증에 실패했습니다. 다시 시도해주세요.");
