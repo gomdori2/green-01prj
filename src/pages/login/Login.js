@@ -6,8 +6,8 @@ import { useUser, userInfoContext } from "../../context/UserInfoProvider";
 import LoginModal from "../../components/common/LoginModal";
 
 const Login = ({ setUserInfo }) => {
-  const [loginId, setLoginId] = useState("jowonyoung3");
-  const [loginPw, setLoginPw] = useState("whdnjsdud3");
+  const [loginId, setLoginId] = useState("");
+  const [loginPw, setLoginPw] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
